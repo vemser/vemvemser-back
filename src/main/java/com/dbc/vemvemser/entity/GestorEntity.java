@@ -1,5 +1,6 @@
 package com.dbc.vemvemser.entity;
 
+import com.dbc.vemvemser.enums.TipoCargo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
@@ -25,20 +26,12 @@ public class GestorEntity {
     private String nome;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "GESTOR_CARGO",
-            joinColumns = @JoinColumn(name = "ID_CARGO"),
-            inverseJoinColumns = @JoinColumn(name = "ID_GESTOR")
-    )
-    private Set<CargoEntity> cargos;
-
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_LOGIN", referencedColumnName = "ID_LOGIN")
-    private LoginEntity login;
-
-    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "gestor")
-    private Set<AvaliacaoEntity> avaliacoes;
+    private Set<CargoEntity> cargo;
+
+//    @JsonIgnore
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "ID_LOGIN", referencedColumnName = "ID_LOGIN")
+//    private LoginEntity login;
+
 }

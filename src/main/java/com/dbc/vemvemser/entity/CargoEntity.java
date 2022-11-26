@@ -1,12 +1,10 @@
 package com.dbc.vemvemser.entity;
 
-import com.dbc.vemvemser.enums.TipoCargo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -19,16 +17,11 @@ public class CargoEntity {
     @Column(name = "ID_CARGO")
     private Integer idCargo;
 
-    private TipoCargo tipoCargo;
-
     private String descricao;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "GESTOR_CARGO",
-            joinColumns = @JoinColumn(name = "ID_CARGO"),
-            inverseJoinColumns = @JoinColumn(name = "ID_GESTOR")
-    )
-    private Set<GestorEntity> gestor;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @MapsId("idCargo")
+    @JoinColumn(name = "Id_Cargo")
+    private GestorEntity gestor;
 }
