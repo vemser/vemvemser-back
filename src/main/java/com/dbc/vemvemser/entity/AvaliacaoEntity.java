@@ -1,6 +1,7 @@
 package com.dbc.vemvemser.entity;
 
 
+import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +27,6 @@ public class AvaliacaoEntity {
     private LoginEntity login;
 
     @Column(name="APROVADO")
-    private boolean aprovado;
+    private TipoMarcacao aprovado;
 
 }
