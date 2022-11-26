@@ -1,19 +1,19 @@
 package com.dbc.vemvemser.entity;
 
 import com.dbc.vemvemser.enums.TipoTurno;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.io.File;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity (name = "FORMULARIO")
+@Entity(name = "FORMULARIO")
 public class FormularioEntity {
 
     @Id
