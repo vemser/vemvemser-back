@@ -1,7 +1,7 @@
 package com.dbc.vemvemser.entity;
 
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,13 +20,12 @@ public class AvaliacaoEntity {
 
     @OneToOne
     @JoinColumn(name="ID_INSCRICAO", referencedColumnName = "ID_INSCRICAO")
-    private InscricaoEntity inscricaoEntity;
+    private InscricaoEntity inscricao;
 
-
-//    @JoinColumn(name = "id_gestor")
-//    @MapsId("idGestor")
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private GestorEntity gestorEntity;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "gestor")
+    private GestorEntity gestor;
 
     @Column(name="APROVADO")
     private boolean aprovado;

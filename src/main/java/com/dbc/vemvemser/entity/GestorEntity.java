@@ -19,7 +19,7 @@ public class GestorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CARGO_SEQUENCIA")
     @SequenceGenerator(name = "CARGO_SEQUENCIA", sequenceName = "SEQ_CARGO", allocationSize = 1)
-    @Column(name = "ID_CARGO")
+    @Column(name = "ID_GESTOR")
     private Integer idGestor;
 
     private String nome;
@@ -38,7 +38,7 @@ public class GestorEntity {
     @JoinColumn(name = "ID_LOGIN", referencedColumnName = "ID_LOGIN")
     private LoginEntity login;
 
-//    @JsonIgnore
-//    @OneToMany(fetch = FetchType.LAZY,mappedBy = "gestor")
-//    private Set<AvaliacaoEntity> avaliacaos;
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "gestor")
+    private Set<AvaliacaoEntity> avaliacoes;
 }
