@@ -1,5 +1,6 @@
 package com.dbc.vemvemser.dto;
 
+import com.dbc.vemvemser.enums.TipoMarcacao;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -17,5 +18,5 @@ public class InscricaoCreateDto {
     private LocalDate dataInscricao;
 
     @NotNull
-    private String avaliacao;
+    private TipoMarcacao avaliacao;
 }

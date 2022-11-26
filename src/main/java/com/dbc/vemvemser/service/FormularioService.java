@@ -19,20 +19,18 @@ public class FormularioService {
 
     private final ObjectMapper objectMapper;
 
-    public FormularioDto create (FormularioCreateDto formularioCreateDto){
+    public FormularioDto create(FormularioCreateDto formularioCreateDto) {
 
-        FormularioEntity formulario = objectMapper.convertValue(formularioCreateDto,FormularioEntity.class);
+        FormularioEntity formulario = objectMapper.convertValue(formularioCreateDto, FormularioEntity.class);
 
+        FormularioEntity formularioEntity1 = formularioRepository.save(formulario);
 
-        formularioRepository.save(formulario);
-
-
-        FormularioDto formularioDto = objectMapper.convertValue(formularioCreateDto, FormularioDto.class);
+        FormularioDto formularioDto = objectMapper.convertValue(formularioEntity1, FormularioDto.class);
 
         return formularioDto;
     }
 
-    public List<FormularioDto> list(){
+    public List<FormularioDto> list() {
         return formularioRepository.findAll().stream()
                 .map(formularioEntity -> objectMapper.convertValue(formularioEntity, FormularioDto.class)).toList();
     }

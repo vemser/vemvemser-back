@@ -1,5 +1,6 @@
 package com.dbc.vemvemser.entity;
 
+import com.dbc.vemvemser.enums.TipoMarcacao;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,7 +35,7 @@ public class InscricaoEntity {
     private LocalDate dataInscricao;
 
     @Column(name = "AVALIADO")
-    private String avaliacao;
+    private TipoMarcacao avaliacao;
 
     @OneToOne
     @JoinColumn(name="ID_AVALIACAO", referencedColumnName = "ID_AVALIACAO")

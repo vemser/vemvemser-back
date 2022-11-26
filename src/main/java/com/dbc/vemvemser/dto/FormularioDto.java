@@ -1,5 +1,6 @@
 package com.dbc.vemvemser.dto;
 
+import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.enums.TipoTurno;
 import lombok.*;
 
@@ -13,32 +14,39 @@ import java.io.File;
 public class FormularioDto {
 
 
-    @NotNull
+
     private Integer idFormulario;
 
-    private boolean matricula;
+
+    private TipoMarcacao matriculado;
+
 
     private String curso;
 
-    private TipoTurno turno;
+
+    private String turno;
+
 
     private String instituicao;
 
+
     private String github;
 
-    private boolean desafios;
 
-    private boolean problema;
+    private TipoMarcacao desafios;
 
-    private boolean reconhecimento;
 
-    private boolean altruismo;
+    private TipoMarcacao problema;
 
-    private boolean outro;
+    private TipoMarcacao reconhecimento;
+
+    private TipoMarcacao altruismo;
+
+    private TipoMarcacao outro;
 
     private String motivo;
 
     private File curriculo;
 
-    private boolean lgpd;
+    private TipoMarcacao lgpd;
 }
