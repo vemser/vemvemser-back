@@ -19,7 +19,7 @@ public class AvaliacaoEntity {
     private Integer idAvaliacao;
 
     @OneToOne
-    @MapsId("idInscricao")
+    @JoinColumn(name="ID_INSCRICAO", referencedColumnName = "ID_INSCRICAO")
     private InscricaoEntity inscricaoEntity;
 
 
