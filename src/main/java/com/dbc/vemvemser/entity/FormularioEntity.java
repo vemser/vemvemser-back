@@ -34,7 +34,7 @@ public class FormularioEntity {
     @Column(name = "INSTITUICAO")
     private String instituicao;
 
-    @Column(name = "TURNO")
+    @Column(name = "GITHUB")
     private String github;
 
     @Column(name = "DESAFIOS")
