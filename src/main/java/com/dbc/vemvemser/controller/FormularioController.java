@@ -35,15 +35,12 @@ public class FormularioController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @PostMapping("post")
+    @PostMapping
     public ResponseEntity<FormularioDto> create(@RequestBody @Valid FormularioCreateDto formularioCreateDto) {
         log.info("ENTROU NO CHAMADO DO CREATE");
-
         FormularioDto formularioDto=formularioService.create(formularioCreateDto);
         return new ResponseEntity<>(formularioDto, HttpStatus.OK);
     }
-
-
 
     @GetMapping
     public ResponseEntity<List<FormularioDto>> listAll() {
