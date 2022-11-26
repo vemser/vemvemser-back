@@ -19,7 +19,7 @@ public class FormularioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FORMULARIO_SEQ")
     @SequenceGenerator(name = "FORMULARIO_SEQ", sequenceName = "SEQ_FORMULARIO", allocationSize = 1)
-    @Column(name = "ID_IFORMULARIO")
+    @Column(name = "ID_FORMULARIO")
     private Integer idFormulario;
 
     @Column(name = "MATRICULADO")
