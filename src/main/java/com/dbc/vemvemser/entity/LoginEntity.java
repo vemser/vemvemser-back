@@ -3,6 +3,7 @@ package com.dbc.vemvemser.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,4 +26,7 @@ public class LoginEntity {
 
     @OneToOne(mappedBy = "login",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private GestorEntity gestorEntity;
+
+    @OneToMany(mappedBy = "login",fetch = FetchType.LAZY)
+    private Set<AvaliacaoEntity> avaliacaoEntitys;
 }
