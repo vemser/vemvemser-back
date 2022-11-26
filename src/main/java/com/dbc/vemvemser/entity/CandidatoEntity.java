@@ -1,4 +1,5 @@
 package com.dbc.vemvemser.entity;
+import com.dbc.vemvemser.enums.TipoGenero;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,8 +21,8 @@ public class CandidatoEntity {
     @Column(name = "nome")
     private String nome;
 
-    @Column(name = "sexo")
-    private char sexo;
+    @Column(name = "genero")
+    private TipoGenero genero;
 
     @Column(name = "email")
     private String email;

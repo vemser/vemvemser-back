@@ -1,4 +1,31 @@
 package com.dbc.vemvemser.dto;
 
-public class CandidatoDto {
+import com.dbc.vemvemser.enums.TipoGenero;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class CandidatoDto{
+
+    private Integer id;
+
+    private String nome;
+
+    private TipoGenero genero;
+
+    private String email;
+
+    private String telefone;
+
+    private String rg;
+
+    private String cpf;
+
+    private String estado;
+
+    private String cidade;
 }
