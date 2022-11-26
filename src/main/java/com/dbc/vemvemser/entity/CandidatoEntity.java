@@ -16,13 +16,13 @@ public class CandidatoEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_CANDIDATO")
     @SequenceGenerator(name = "SEQ_CANDIDATO", sequenceName = "seq_candidato",allocationSize = 1)
     @Column(name = "id_candidato")
-    private Integer id;
+    private Integer idCandidato;
 
     @Column(name = "nome")
     private String nome;
 
     @Column(name = "genero")
-    private TipoGenero genero;
+    private String genero;
 
     @Column(name = "email")
     private String email;
@@ -41,6 +41,10 @@ public class CandidatoEntity {
 
     @Column(name = "cidade")
     private String cidade;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="ID_INSCRICAO", referencedColumnName = "ID_INSCRICAO")
+    private InscricaoEntity inscricaoCandidato;
 
 
 }

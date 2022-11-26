@@ -18,14 +18,12 @@ public class AvaliacaoEntity {
     @Column(name = "ID_AVALIACAO")
     private Integer idAvaliacao;
 
-    @OneToOne
-    @JoinColumn(name="ID_INSCRICAO", referencedColumnName = "ID_INSCRICAO")
-    private InscricaoEntity inscricao;
+    @OneToOne(mappedBy = "avaliacaoEntity",fetch = FetchType.LAZY)
+    private InscricaoEntity inscricaoEntity;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "gestor")
-    private GestorEntity gestor;
+    @JoinColumn(name = "ID_LOGIN", referencedColumnName = "ID_LOGIN")
+    private LoginEntity login;
 
     @Column(name="APROVADO")
     private boolean aprovado;

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.text.Normalizer;
 import java.time.LocalDate;
 
 
@@ -22,12 +23,11 @@ public class InscricaoEntity {
     @Column(name = "ID_INSCRICAO")
     private Integer idInscricao;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="ID_FORMULARIO", referencedColumnName = "ID_FORMULARIO")
+
+    @OneToOne(mappedBy = "inscricaoCandidato", fetch = FetchType.LAZY)
     private FormularioEntity formulario;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="ID_CANDIDATO", referencedColumnName = "ID_CANDIDATO")
+    @OneToOne(mappedBy ="inscricaoCandidato" ,fetch = FetchType.LAZY)
     private CandidatoEntity candidato;
 
     @Column(name = "DATA_INSCRICAO")
@@ -35,5 +35,9 @@ public class InscricaoEntity {
 
     @Column(name = "AVALIADO")
     private String avaliacao;
+
+    @OneToOne
+    @JoinColumn(name="ID_AVALIACAO", referencedColumnName = "ID_AVALIACAO")
+    private AvaliacaoEntity avaliacaoEntity;
 
 }

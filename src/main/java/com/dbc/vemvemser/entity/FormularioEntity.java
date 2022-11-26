@@ -21,7 +21,7 @@ public class FormularioEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FORMULARIO_SEQ")
     @SequenceGenerator(name = "FORMULARIO_SEQ", sequenceName = "SEQ_FORMULARIO", allocationSize = 1)
     @Column(name = "id_formulario")
-    private int idFormulario;
+    private Integer idFormulario;
 
     @Column(name = "MATRICULA")
     private TipoMarcacao matriculado;
@@ -61,5 +61,9 @@ public class FormularioEntity {
 
     @Column(name = "LGPD")
     private TipoMarcacao lgpd;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="ID_INSCRICAO", referencedColumnName = "ID_INSCRICAO")
+    private InscricaoEntity inscricaoCandidato;
 
 }
