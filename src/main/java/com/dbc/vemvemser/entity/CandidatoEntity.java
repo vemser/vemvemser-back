@@ -14,7 +14,7 @@ public class CandidatoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_CANDIDATO")
     @SequenceGenerator(name = "SEQ_CANDIDATO", sequenceName = "seq_candidato",allocationSize = 1)
-    @Column(name = "id_canditado")
+    @Column(name = "id_candidato")
     private Integer id;
 
     @Column(name = "nome")

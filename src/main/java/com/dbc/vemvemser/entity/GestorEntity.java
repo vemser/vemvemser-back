@@ -12,7 +12,6 @@ import java.util.Set;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 @NoArgsConstructor
 @Entity(name = "GESTOR")
 public class GestorEntity {
