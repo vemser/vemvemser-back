@@ -23,6 +23,6 @@ public class LoginEntity {
     @Column(name = "senha")
     private String senha;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "login",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private GestorEntity gestorEntity;
 }

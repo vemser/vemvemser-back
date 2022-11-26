@@ -18,20 +18,22 @@ import java.util.Set;
 public class GestorEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CARGO_SEQUENCIA")
-    @SequenceGenerator(name = "CARGO_SEQUENCIA", sequenceName = "SEQ_CARGO", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_GESTOR")
+    @SequenceGenerator(name = "SEQ_GESTOR", sequenceName = "SEQ_GESTOR", allocationSize = 1)
     @Column(name = "ID_GESTOR")
     private Integer idGestor;
 
     private String nome;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "gestor")
-    private Set<CargoEntity> cargo;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("idCargo")
+    @JoinColumn(name = "id_cargo")
+    private CargoEntity cargoEntity;
 
-//    @JsonIgnore
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "ID_LOGIN", referencedColumnName = "ID_LOGIN")
-//    private LoginEntity login;
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_login", referencedColumnName = "id_login")
+    private LoginEntity login;
 
 }

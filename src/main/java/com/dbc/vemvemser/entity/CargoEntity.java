@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -20,8 +21,6 @@ public class CargoEntity {
     private String descricao;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
-    @MapsId("idCargo")
-    @JoinColumn(name = "Id_Cargo")
-    private GestorEntity gestor;
+    @OneToMany(mappedBy = "cargoEntity",fetch = FetchType.LAZY)
+    private Set<GestorEntity> pessoa;
 }
