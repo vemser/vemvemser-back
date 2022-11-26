@@ -1,16 +1,19 @@
 package com.dbc.vemvemser.enums;
 
 public enum TipoTurno {
-    MANHA(1),
-    TARDE(2),
-    NOITE(3);
+    MANHA("MANHA"),
+    TARDE("TARDE"),
+    NOITE("NOITE");
 
-    private final Integer descricao;
+    private final String descricao;
 
-    TipoTurno(Integer turno) {
+    TipoTurno(String turno) {
         this.descricao = turno;
     }
-        public Integer getDescricao() {
+
+    @Override
+    public String toString() {
         return descricao;
     }
+
 }

@@ -5,7 +5,6 @@ import com.dbc.vemvemser.enums.TipoTurno;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
-import java.io.File;
 
 @Getter
 @Setter
@@ -15,13 +14,13 @@ public class FormularioCreateDto {
 
 
     @NotNull
-    private char matricula;
+    private TipoMarcacao matriculado;
 
     @NotNull
     private String curso;
 
     @NotNull
-    private String turno;
+    private TipoTurno turno;
 
     @NotNull
     private String instituicao;
@@ -29,23 +28,22 @@ public class FormularioCreateDto {
     private String github;
 
     @NotNull
-    private char desafios;
+    private TipoMarcacao desafios;
 
     @NotNull
-    private char problema;
+    private TipoMarcacao problema;
 
     @NotNull
-    private char reconhecimento;
+    private TipoMarcacao reconhecimento;
 
     @NotNull
-    private char altruismo;
+    private TipoMarcacao altruismo;
 
-    private char outro;
+    private TipoMarcacao outro;
 
     private String motivo;
 
 //    private File curriculo;
-
     @NotNull
-    private char lgpd;
+    private TipoMarcacao lgpd;
 }

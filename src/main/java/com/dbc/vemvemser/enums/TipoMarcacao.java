@@ -1,5 +1,8 @@
 package com.dbc.vemvemser.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum TipoMarcacao {
     TRUE("T"),
     FALSE("F");
@@ -11,8 +14,4 @@ public enum TipoMarcacao {
     }
 
 
-    @Override
-    public String toString() {
-        return descricao;
-    }
 }

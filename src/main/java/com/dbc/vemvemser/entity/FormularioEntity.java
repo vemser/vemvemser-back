@@ -1,5 +1,6 @@
 package com.dbc.vemvemser.entity;
 
+import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.enums.TipoTurno;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,17 +20,17 @@ public class FormularioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FORMULARIO_SEQ")
     @SequenceGenerator(name = "FORMULARIO_SEQ", sequenceName = "SEQ_FORMULARIO", allocationSize = 1)
-    @Column(name = "ID_FORMULARIO")
-    private Integer idFormulario;
+    @Column(name = "id_formulario")
+    private int idFormulario;
 
-    @Column(name = "MATRICULADO")
-    private boolean matricula;
+    @Column(name = "MATRICULA")
+    private TipoMarcacao matriculado;
 
     @Column(name = "CURSO")
     private String curso;
 
     @Column(name = "TURNO")
-    private Integer turno;
+    private String turno;
 
     @Column(name = "INSTITUICAO")
     private String instituicao;
@@ -38,19 +39,19 @@ public class FormularioEntity {
     private String github;
 
     @Column(name = "DESAFIOS")
-    private boolean desafios;
+    private TipoMarcacao desafios;
 
     @Column(name = "PROBLEMAS")
-    private boolean problema;
+    private TipoMarcacao problema;
 
     @Column(name = "RECONHECIMENTO")
-    private boolean reconhecimento;
+    private TipoMarcacao reconhecimento;
 
     @Column(name = "ALTRUISMO")
-    private boolean altruismo;
+    private TipoMarcacao altruismo;
 
     @Column(name = "OUTRO")
-    private boolean outro;
+    private TipoMarcacao outro;
 
     @Column(name = "MOTIVO")
     private String motivo;
@@ -59,6 +60,6 @@ public class FormularioEntity {
     private File curriculo;
 
     @Column(name = "LGPD")
-    private boolean lgpd;
+    private TipoMarcacao lgpd;
 
 }
