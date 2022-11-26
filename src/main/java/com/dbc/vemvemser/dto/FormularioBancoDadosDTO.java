@@ -1,36 +1,35 @@
 package com.dbc.vemvemser.dto;
 
 import com.dbc.vemvemser.enums.TipoTurno;
-import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.io.File;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class FormularioDto {
-
+public class FormularioBancoDadosDTO {
 
     @NotNull
-    private Integer idFormulario;
-
     private boolean matricula;
 
+    @NotNull
     private String curso;
 
+    @NotNull
     private TipoTurno turno;
 
+    @NotNull
     private String instituicao;
 
     private String github;
 
+    @NotNull
     private boolean desafios;
 
+    @NotNull
     private boolean problema;
 
+    @NotNull
     private boolean reconhecimento;
+
 
     private boolean altruismo;
 
@@ -38,7 +37,9 @@ public class FormularioDto {
 
     private String motivo;
 
+
     private File curriculo;
+
 
     private boolean lgpd;
 }

@@ -29,7 +29,7 @@ public class FormularioEntity {
     private String curso;
 
     @Column(name = "TURNO")
-    private TipoTurno turno;
+    private Integer turno;
 
     @Column(name = "INSTITUICAO")
     private String instituicao;

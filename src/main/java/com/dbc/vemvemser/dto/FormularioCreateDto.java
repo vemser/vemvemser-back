@@ -1,23 +1,27 @@
 package com.dbc.vemvemser.dto;
 
+import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.enums.TipoTurno;
-import lombok.Data;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.io.File;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class FormularioCreateDto {
 
 
     @NotNull
-    private boolean matricula;
+    private char matricula;
 
     @NotNull
     private String curso;
 
     @NotNull
-    private TipoTurno turno;
+    private String turno;
 
     @NotNull
     private String instituicao;
@@ -25,25 +29,23 @@ public class FormularioCreateDto {
     private String github;
 
     @NotNull
-    private boolean desafios;
+    private char desafios;
 
     @NotNull
-    private boolean problema;
+    private char problema;
 
     @NotNull
-    private boolean reconhecimento;
+    private char reconhecimento;
 
     @NotNull
-    private boolean altruismo;
+    private char altruismo;
 
-    private boolean outro;
+    private char outro;
 
-    @NotNull
     private String motivo;
 
-    @NotNull
-    private File curriculo;
+//    private File curriculo;
 
     @NotNull
-    private boolean lgpd;
+    private char lgpd;
 }
