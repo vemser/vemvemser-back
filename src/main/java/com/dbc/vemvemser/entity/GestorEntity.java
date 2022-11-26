@@ -34,10 +34,10 @@ public class GestorEntity {
     )
     private Set<CargoEntity> cargos;
 
-//    @JsonIgnore
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "ID_LOGIN", referencedColumnName = "ID_LOGIN")
-//    private LoginEntity login;
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_LOGIN", referencedColumnName = "ID_LOGIN")
+    private LoginEntity login;
 
 //    @JsonIgnore
 //    @OneToMany(fetch = FetchType.LAZY,mappedBy = "gestor")
