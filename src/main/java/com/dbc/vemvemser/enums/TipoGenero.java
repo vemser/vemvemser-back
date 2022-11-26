@@ -7,7 +7,6 @@ public enum TipoGenero {
 
     private Integer genero;
 
-
     TipoGenero(Integer genero){
         this.genero = genero;
     }

@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GestorRepository extends JpaRepository<GestorEntity, Integer> {
+
+
 }
