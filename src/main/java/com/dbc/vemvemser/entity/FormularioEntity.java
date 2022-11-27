@@ -57,13 +57,6 @@ public class FormularioEntity {
     @Enumerated(EnumType.STRING)
     private TipoMarcacao altruismo;
 
-    @Column(name = "OUTRO")
-    @Enumerated(EnumType.STRING)
-    private TipoMarcacao outro;
-
-    @Column(name = "MOTIVO")
-    private String motivo;
-
     @Column(name = "CURRICULO")
     private File curriculo;
 

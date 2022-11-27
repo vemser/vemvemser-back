@@ -40,10 +40,6 @@ public class FormularioCreateDto {
 
     private TipoMarcacao altruismo;
 
-    private TipoMarcacao outro;
-
-    private String motivo;
-
     private String curriculo;
 
     private TipoMarcacao lgpd;
