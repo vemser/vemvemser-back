@@ -5,11 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
+
 
 @Getter
 @Setter
@@ -23,17 +22,22 @@ public class GestorEntity {
     @Column(name = "ID_GESTOR")
     private Integer idGestor;
 
+    @Column(name = "nome")
     private String nome;
+
+    @Column(name = "id_cargo", insertable = false, updatable = false)
+    private Integer idCargo;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "senha")
+    private String senha;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("idCargo")
     @JoinColumn(name = "id_cargo")
     private CargoEntity cargoEntity;
 
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_login", referencedColumnName = "id_login")
-    private LoginEntity login;
 
 }

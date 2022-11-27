@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CandidatoDto{
 
-    private Integer id;
+    private Integer idCandidato;
 
     private String nome;
 
