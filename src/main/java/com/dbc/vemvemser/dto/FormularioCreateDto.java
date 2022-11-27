@@ -2,10 +2,13 @@ package com.dbc.vemvemser.dto;
 
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.enums.TipoTurno;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.io.File;
 
 @Getter
 @Setter
@@ -14,33 +17,38 @@ import lombok.Setter;
 public class FormularioCreateDto {
 
 
-
-
+    @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
     private TipoMarcacao matriculado;
 
-
+    @Schema(example = "Analise e Desenvolvimento de Software", description = "Nome do curso")
     private String curso;
 
-
+    @Schema(example = "NOITE", description = "Turno que estuda: MANHA, TARDE ou NOITE")
     private TipoTurno turno;
 
-
+    @Schema(example = "PUC", description = "Nome da Instituição onde cursa")
     private String instituicao;
 
-
+    @Schema(example = "https://github.com/link-github", description = "Link referente ao seu Github")
     private String github;
 
-
+    @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
     private TipoMarcacao desafios;
 
-
+    @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
     private TipoMarcacao problema;
 
+    @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
     private TipoMarcacao reconhecimento;
 
+    @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
     private TipoMarcacao altruismo;
 
-    private String curriculo;
+    @Schema(example = "Outro", description = "Motivo pelo qual se interessou pela área de Tecnologia")
+    private String resposta;
 
+    private File curriculo;
+
+    @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
     private TipoMarcacao lgpd;
 }

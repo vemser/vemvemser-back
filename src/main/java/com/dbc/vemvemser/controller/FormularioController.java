@@ -11,11 +11,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.File;
 import java.util.List;
 
 @Slf4j
@@ -50,7 +53,6 @@ public class FormularioController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-
     @GetMapping
     public ResponseEntity<List<FormularioDto>> listAll() {
         log.info("ENTROU NO METODOD");
@@ -68,5 +70,12 @@ public class FormularioController {
         FormularioDto formularioDto = formularioService.update(idFormulario,formularioCreateDto);
         return new ResponseEntity<>(formularioDto,HttpStatus.OK);
     }
+    @PutMapping (value="/curriculo", consumes = {MediaType.IMAGE_JPEG_VALUE , MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<FormularioDto> updateCurriculo(@RequestParam Integer idFormulario, @RequestPart(value = "file") File file) throws RegraDeNegocioException{
+        FormularioDto formularioDto = formularioService.updateCurriculo(file,idFormulario);
+        return new ResponseEntity<>(formularioDto,HttpStatus.OK);
+    }
+
+
 
 }

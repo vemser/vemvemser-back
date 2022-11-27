@@ -7,12 +7,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.File;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class FormularioDto {
-
 
 
     private Integer idFormulario;
@@ -38,15 +39,18 @@ public class FormularioDto {
 
     private TipoMarcacao problema;
 
+
     private TipoMarcacao reconhecimento;
+
 
     private TipoMarcacao altruismo;
 
-    private TipoMarcacao outro;
 
-    private String motivo;
+    private String resposta;
 
-    private String curriculo;
+
+    private File curriculo;
+
 
     private TipoMarcacao lgpd;
 }

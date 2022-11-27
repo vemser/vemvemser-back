@@ -56,7 +56,11 @@ public class FormularioEntity {
     @Enumerated(EnumType.STRING)
     private TipoMarcacao altruismo;
 
+    @Column(name = "RESPOSTA")
+    private String resposta;
+
     @Column(name = "CURRICULO")
+    @Lob
     private File curriculo;
 
     @Column(name = "LGPD")
