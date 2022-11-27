@@ -15,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @Validated
@@ -49,10 +50,23 @@ public class InscricaoController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
+
     @GetMapping("/{id}")
     public ResponseEntity<InscricaoDto> listById(@RequestParam ("id") Integer id) throws RegraDeNegocioException {
         InscricaoDto inscricaoDto=inscricaoService.listById(id);
         return new ResponseEntity<>(inscricaoDto, HttpStatus.OK);
+    }
+    @Operation(summary = "Busca toda lista de inscrições", description = "Retonar uma lista com todas inscrições do Banco de dados.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retornou uma lista de Inscrições com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @GetMapping
+    public ResponseEntity<List<InscricaoDto>> list() {
+        return new ResponseEntity<>(inscricaoService.list(), HttpStatus.OK);
     }
 
 }
