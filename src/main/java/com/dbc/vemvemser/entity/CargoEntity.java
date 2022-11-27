@@ -18,7 +18,8 @@ public class CargoEntity {
     @Column(name = "ID_CARGO")
     private Integer idCargo;
 
-    private String descricao;
+    @Column(name = "nome")
+    private String nome;
 
     @JsonIgnore
     @OneToMany(mappedBy = "cargoEntity",fetch = FetchType.LAZY)

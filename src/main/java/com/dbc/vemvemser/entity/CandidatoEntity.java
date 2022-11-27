@@ -1,5 +1,4 @@
 package com.dbc.vemvemser.entity;
-import com.dbc.vemvemser.enums.TipoGenero;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +13,7 @@ public class CandidatoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_CANDIDATO")
-    @SequenceGenerator(name = "SEQ_CANDIDATO", sequenceName = "seq_candidato",allocationSize = 1)
+    @SequenceGenerator(name = "SEQ_CANDIDATO", sequenceName = "SEQ_CANDIDATO",allocationSize = 1)
     @Column(name = "id_candidato")
     private Integer idCandidato;
 
@@ -42,9 +41,7 @@ public class CandidatoEntity {
     @Column(name = "cidade")
     private String cidade;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="ID_INSCRICAO", referencedColumnName = "ID_INSCRICAO")
-    private InscricaoEntity inscricaoCandidato;
-
+    @OneToOne(mappedBy ="candidato" ,fetch = FetchType.LAZY)
+    private InscricaoEntity inscricao;
 
 }
