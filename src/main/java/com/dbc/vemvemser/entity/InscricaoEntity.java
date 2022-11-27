@@ -24,15 +24,15 @@ public class InscricaoEntity {
     @Column(name = "ID_INSCRICAO")
     private Integer idInscricao;
 
-
-    @OneToOne(mappedBy = "inscricaoCandidato", fetch = FetchType.LAZY)
-    private FormularioEntity formulario;
-
     @Column(name = "DATA_INSCRICAO")
     private LocalDate dataInscricao;
 
     @Column(name = "AVALIADO")
     private TipoMarcacao avaliacao;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="ID_FORMULARIO", referencedColumnName = "ID_FORMULARIO")
+    private FormularioEntity formulario;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="ID_CANDIDATO", referencedColumnName = "ID_CANDIDATO")

@@ -64,8 +64,4 @@ public class FormularioEntity {
     @Enumerated(EnumType.STRING)
     private TipoMarcacao lgpd;
 
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
-    private InscricaoEntity inscricaoCandidato;
-
 }

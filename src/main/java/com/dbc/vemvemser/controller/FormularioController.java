@@ -3,6 +3,7 @@ package com.dbc.vemvemser.controller;
 
 import com.dbc.vemvemser.dto.FormularioCreateDto;
 import com.dbc.vemvemser.dto.FormularioDto;
+import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.service.FormularioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -37,14 +38,35 @@ public class FormularioController {
     )
     @PostMapping
     public ResponseEntity<FormularioDto> create(@RequestBody @Valid FormularioCreateDto formularioCreateDto) {
-        log.info("ENTROU NO CHAMADO DO CREATE");
         FormularioDto formularioDto=formularioService.create(formularioCreateDto);
         return new ResponseEntity<>(formularioDto, HttpStatus.OK);
     }
 
+    @Operation(summary = "Cadastrar Candidato", description = "Cadastro de candidato")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "201", description = "Cadastro realizado com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @PostMapping("/cadastro")
     @GetMapping
     public ResponseEntity<List<FormularioDto>> listAll() {
         log.info("ENTROU NO METODOD");
         return new ResponseEntity<>(formularioService.list(), HttpStatus.OK);
     }
+
+    @PostMapping
+    public void deletarFormulario(@RequestParam Integer idFormulario) throws RegraDeNegocioException {
+        formularioService.deleteById(idFormulario);
+        new ResponseEntity<>(null,HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<FormularioDto> updateFormulario(@RequestParam Integer idFormulario, @RequestBody @Valid FormularioCreateDto formularioCreateDto) throws RegraDeNegocioException{
+        FormularioDto formularioDto = formularioService.update(idFormulario,formularioCreateDto);
+        return new ResponseEntity<>(formularioDto,HttpStatus.OK);
+    }
+
 }

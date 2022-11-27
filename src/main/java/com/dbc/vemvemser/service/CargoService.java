@@ -17,4 +17,5 @@ public class CargoService {
         return cargoRepository.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("Cargo não encontrado"));
     }
+
 }
