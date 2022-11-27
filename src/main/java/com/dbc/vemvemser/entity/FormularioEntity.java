@@ -19,19 +19,21 @@ import java.io.File;
 public class FormularioEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FORMULARIO_SEQ")
-    @SequenceGenerator(name = "FORMULARIO_SEQ", sequenceName = "SEQ_FORMULARIO", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_FORMULARIO")
+    @SequenceGenerator(name = "SEQ_FORMULARIO", sequenceName = "SEQ_FORMULARIO", allocationSize = 1)
     @Column(name = "id_formulario")
     private Integer idFormulario;
 
     @Column(name = "MATRICULA")
+    @Enumerated(EnumType.STRING)
     private TipoMarcacao matriculado;
 
     @Column(name = "CURSO")
     private String curso;
 
     @Column(name = "TURNO")
-    private String turno;
+    @Enumerated(EnumType.ORDINAL)
+    private TipoTurno turno;
 
     @Column(name = "INSTITUICAO")
     private String instituicao;
@@ -40,18 +42,23 @@ public class FormularioEntity {
     private String github;
 
     @Column(name = "DESAFIOS")
+    @Enumerated(EnumType.STRING)
     private TipoMarcacao desafios;
 
     @Column(name = "PROBLEMAS")
+    @Enumerated(EnumType.STRING)
     private TipoMarcacao problema;
 
     @Column(name = "RECONHECIMENTO")
+    @Enumerated(EnumType.STRING)
     private TipoMarcacao reconhecimento;
 
     @Column(name = "ALTRUISMO")
+    @Enumerated(EnumType.STRING)
     private TipoMarcacao altruismo;
 
     @Column(name = "OUTRO")
+    @Enumerated(EnumType.STRING)
     private TipoMarcacao outro;
 
     @Column(name = "MOTIVO")
@@ -61,11 +68,11 @@ public class FormularioEntity {
     private File curriculo;
 
     @Column(name = "LGPD")
+    @Enumerated(EnumType.STRING)
     private TipoMarcacao lgpd;
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name="ID_INSCRICAO", referencedColumnName = "ID_INSCRICAO")
     private InscricaoEntity inscricaoCandidato;
 
 }

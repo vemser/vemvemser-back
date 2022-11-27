@@ -2,11 +2,10 @@ package com.dbc.vemvemser.dto;
 
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.enums.TipoTurno;
-import lombok.*;
-
-import javax.persistence.Column;
-import javax.validation.constraints.NotNull;
-import java.io.File;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -23,7 +22,7 @@ public class FormularioCreateDto {
     private String curso;
 
 
-    private String turno;
+    private TipoTurno turno;
 
 
     private String instituicao;
@@ -45,7 +44,7 @@ public class FormularioCreateDto {
 
     private String motivo;
 
-    private File curriculo;
+    private String curriculo;
 
     private TipoMarcacao lgpd;
 }
