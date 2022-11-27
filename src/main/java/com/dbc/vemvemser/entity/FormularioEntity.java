@@ -2,6 +2,7 @@ package com.dbc.vemvemser.entity;
 
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.enums.TipoTurno;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -62,8 +63,9 @@ public class FormularioEntity {
     @Column(name = "LGPD")
     private TipoMarcacao lgpd;
 
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="ID_INSCRICAO", referencedColumnName = "ID_INSCRICAO")
+//    @JoinColumn(name="ID_INSCRICAO", referencedColumnName = "ID_INSCRICAO")
     private InscricaoEntity inscricaoCandidato;
 
 }
