@@ -69,4 +69,35 @@ public class InscricaoController {
         return new ResponseEntity<>(inscricaoService.list(), HttpStatus.OK);
     }
 
+    @Operation(summary = "Atualizar inscrição", description = "Atualiza uma inscrição por iID")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Atualizou uma inscrição com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @PutMapping ("/{id-inscricao}")
+    public ResponseEntity <InscricaoDto> update(@RequestParam ("id-inscricao") Integer idInscricao,@RequestBody InscricaoCreateDto inscricaoCreateDto) throws RegraDeNegocioException {
+
+        InscricaoDto inscricaoDto= inscricaoService.update(idInscricao,inscricaoCreateDto);
+
+        return new ResponseEntity<>( inscricaoDto, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Deleta inscrição por ID", description = "Deleta inscrição por ID")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Deletou inscrição com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @DeleteMapping ("/{id-inscricao}")
+    public void  delete(@RequestParam ("id-inscricao") Integer idInscricao) throws RegraDeNegocioException {
+
+        inscricaoService.delete(idInscricao);
+
+    }
+
 }
