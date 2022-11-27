@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class InscricaoService {
@@ -16,7 +18,7 @@ public class InscricaoService {
     private final InscricaoRepository inscricaoRepository;
     private final ObjectMapper objectMapper;
 
-    public InscricaoDto create (InscricaoCreateDto inscricaoCreateDto){
+    public InscricaoDto create(InscricaoCreateDto inscricaoCreateDto) {
 
         InscricaoEntity inscricaoEntity = objectMapper.convertValue(inscricaoCreateDto, InscricaoEntity.class);
         inscricaoRepository.save(inscricaoEntity);
@@ -26,8 +28,7 @@ public class InscricaoService {
         return inscricaoDto;
     }
 
-
-        public InscricaoDto update (Integer idInscricao ,InscricaoCreateDto inscricaoCreateDto) throws RegraDeNegocioException {
+    public InscricaoDto update(Integer idInscricao, InscricaoCreateDto inscricaoCreateDto) throws RegraDeNegocioException {
 
         InscricaoEntity inscricaoEntity = findById(idInscricao);
         if (inscricaoEntity == null) {
@@ -35,17 +36,23 @@ public class InscricaoService {
         }
         inscricaoEntity.setAvaliacao(inscricaoCreateDto.getAvaliacao());
 
-       InscricaoDto inscricaoDto = converterParaDTO(inscricaoEntity);
+        InscricaoDto inscricaoDto = converterParaDTO(inscricaoEntity);
 
         return inscricaoDto;
     }
 
-    public InscricaoDto listById (Integer idInscricao) throws RegraDeNegocioException {
-       InscricaoEntity inscricaoEntity = findById(idInscricao);
+    public List<InscricaoDto> list(){
+        return inscricaoRepository.findAll().stream()
+                .map(inscricaoEntity -> objectMapper.convertValue(inscricaoEntity,InscricaoDto.class))
+                .toList();
+    }
 
-       InscricaoDto inscricaoDto = converterParaDTO(inscricaoEntity);
+    public InscricaoDto listById(Integer idInscricao) throws RegraDeNegocioException {
+        InscricaoEntity inscricaoEntity = findById(idInscricao);
 
-       return inscricaoDto;
+        InscricaoDto inscricaoDto = converterParaDTO(inscricaoEntity);
+
+        return inscricaoDto;
     }
 
     public void delete(Integer id) throws RegraDeNegocioException {
@@ -54,17 +61,17 @@ public class InscricaoService {
     }
 
 
-    private InscricaoEntity findById(Integer idInscricao) throws RegraDeNegocioException{
+    private InscricaoEntity findById(Integer idInscricao) throws RegraDeNegocioException {
         InscricaoEntity inscricaoEntity = inscricaoRepository.findByIdInscricao(idInscricao);
 
-        if (inscricaoEntity == null){
+        if (inscricaoEntity == null) {
             throw new RegraDeNegocioException("ID_Inscrição inválido");
         }
 
-        return  inscricaoEntity;
+        return inscricaoEntity;
     }
 
-    private InscricaoDto converterParaDTO (InscricaoEntity inscricaoEntity){
+    private InscricaoDto converterParaDTO(InscricaoEntity inscricaoEntity) {
         InscricaoDto inscricaoDto = objectMapper.convertValue(inscricaoEntity, InscricaoDto.class);
         return inscricaoDto;
     }
