@@ -3,7 +3,6 @@ package com.dbc.vemvemser.service;
 
 import com.dbc.vemvemser.dto.GestorCreateDto;
 import com.dbc.vemvemser.dto.GestorDto;
-import com.dbc.vemvemser.dto.LoginCreateDto;
 import com.dbc.vemvemser.entity.CargoEntity;
 import com.dbc.vemvemser.entity.GestorEntity;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
@@ -59,7 +58,7 @@ public class GestorService {
         gestorEncontrado.setNome(gestorAtualizar.getNome());
         gestorEncontrado.setEmail(gestorAtualizar.getEmail());
         gestorEncontrado.setSenha(gestorAtualizar.getSenha());
-        gestorEncontrado.setCargoEntity(gestorEncontrado.getCargoEntity());
+        gestorEncontrado.setCargoEntity(cargoService.findById(gestorAtualizar.getTipoCargo()));
 
         gestorRepository.save(gestorEncontrado);
 

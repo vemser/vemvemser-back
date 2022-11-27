@@ -2,7 +2,6 @@ package com.dbc.vemvemser.entity;
 
 
 import com.dbc.vemvemser.enums.TipoMarcacao;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

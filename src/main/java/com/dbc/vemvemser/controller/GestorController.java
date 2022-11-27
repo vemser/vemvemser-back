@@ -2,8 +2,6 @@ package com.dbc.vemvemser.controller;
 
 import com.dbc.vemvemser.dto.GestorCreateDto;
 import com.dbc.vemvemser.dto.GestorDto;
-import com.dbc.vemvemser.dto.LoginCreateDto;
-import com.dbc.vemvemser.dto.LoginDto;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.service.GestorService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -94,7 +92,7 @@ public class GestorController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @DeleteMapping("/{idUsuario}")
+    @DeleteMapping("/{idGestor}")
     public ResponseEntity<Void> remover(@PathVariable(name = "idGestor") Integer idGestor) throws RegraDeNegocioException {
         gestorService.remover(idGestor);
         log.info("Usuário deletado com sucesso");

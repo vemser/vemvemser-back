@@ -50,20 +50,20 @@ public class FormularioController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @PostMapping("/cadastro")
+
     @GetMapping
     public ResponseEntity<List<FormularioDto>> listAll() {
         log.info("ENTROU NO METODOD");
         return new ResponseEntity<>(formularioService.list(), HttpStatus.OK);
     }
 
-    @PostMapping
+    @DeleteMapping
     public void deletarFormulario(@RequestParam Integer idFormulario) throws RegraDeNegocioException {
         formularioService.deleteById(idFormulario);
         new ResponseEntity<>(null,HttpStatus.OK);
     }
 
-    @PostMapping
+    @PutMapping
     public ResponseEntity<FormularioDto> updateFormulario(@RequestParam Integer idFormulario, @RequestBody @Valid FormularioCreateDto formularioCreateDto) throws RegraDeNegocioException{
         FormularioDto formularioDto = formularioService.update(idFormulario,formularioCreateDto);
         return new ResponseEntity<>(formularioDto,HttpStatus.OK);

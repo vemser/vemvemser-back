@@ -1,7 +1,6 @@
 package com.dbc.vemvemser.dto;
 
-import com.dbc.vemvemser.entity.CargoEntity;
-import com.dbc.vemvemser.enums.TipoGenero;
+
 import lombok.Data;
 
 import java.util.Set;

@@ -58,7 +58,7 @@ public class CandidatoController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @PostMapping("/deletar")
+    @DeleteMapping("/deletar")
     public void deletarCandidato(@RequestParam Integer idCandidato) throws RegraDeNegocioException {
         candidatoService.deleteById(idCandidato);
         new ResponseEntity<>(null,HttpStatus.OK);
@@ -72,7 +72,7 @@ public class CandidatoController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<CandidatoDto> atualizarCandidato(@RequestParam Integer idCandidato,@RequestBody @Valid CandidatoCreateDto candidatoCreateDto) throws RegraDeNegocioException{
         CandidatoDto candidatoDto = candidatoService.update(idCandidato,candidatoCreateDto);
         return new ResponseEntity<>(candidatoDto,HttpStatus.OK);
