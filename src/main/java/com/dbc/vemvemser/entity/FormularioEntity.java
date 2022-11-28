@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.io.File;
 
 @Getter
 @Setter
@@ -65,7 +64,7 @@ public class FormularioEntity {
 
     @Column(name = "CURRICULO")
     @Lob
-    private File curriculo;
+    private byte[] curriculo;
 
     @Column(name = "LGPD")
     @Enumerated(EnumType.STRING)

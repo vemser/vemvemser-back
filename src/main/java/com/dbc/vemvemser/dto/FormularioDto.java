@@ -2,17 +2,12 @@ package com.dbc.vemvemser.dto;
 
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.enums.TipoTurno;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.io.File;
+import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class FormularioDto {
 
 
@@ -33,6 +28,7 @@ public class FormularioDto {
 
     private String github;
 
+    private String linkedin;
 
     private TipoMarcacao desafios;
 
@@ -49,8 +45,7 @@ public class FormularioDto {
     private String resposta;
 
 
-    private File curriculo;
-
+    private byte[] curriculo;
 
     private TipoMarcacao lgpd;
 }

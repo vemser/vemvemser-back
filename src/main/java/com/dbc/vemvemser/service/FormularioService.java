@@ -4,14 +4,19 @@ package com.dbc.vemvemser.service;
 import com.dbc.vemvemser.dto.FormularioCreateDto;
 import com.dbc.vemvemser.dto.FormularioDto;
 import com.dbc.vemvemser.entity.FormularioEntity;
+import com.dbc.vemvemser.enums.TipoMarcacao;
+import com.dbc.vemvemser.enums.TipoTurno;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.FormularioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,11 +26,54 @@ public class FormularioService {
     private final ObjectMapper objectMapper;
 
 
-    public FormularioDto create(FormularioCreateDto formularioCreateDto) {
+    public FormularioDto create(TipoMarcacao matriculado,
+                                String curso,
+                                TipoTurno turno,
+                                String instituicao,
+                                String github,
+                                String linkedin,
+                                TipoMarcacao desafios,
+                                TipoMarcacao problemas,
+                                TipoMarcacao reconhecimento,
+                                TipoMarcacao altruismo,
+                                String resposta,
+                                MultipartFile curriculo,
+                                TipoMarcacao lgpd) throws IOException {
+
+        FormularioCreateDto formularioCreateDto = new FormularioCreateDto();
+        formularioCreateDto.setMatriculado(matriculado);
+        formularioCreateDto.setCurso(curso);
+        formularioCreateDto.setTurno(turno);
+        formularioCreateDto.setInstituicao(instituicao);
+        formularioCreateDto.setGithub(github);
+        formularioCreateDto.setLinkedin(linkedin);
+        formularioCreateDto.setDesafios(desafios);
+        formularioCreateDto.setProblema(problemas);
+        formularioCreateDto.setReconhecimento(reconhecimento);
+        formularioCreateDto.setAltruismo(altruismo);
+        formularioCreateDto.setResposta(resposta);
+        formularioCreateDto.setCurriculo(curriculo.getBytes());
+        formularioCreateDto.setLgpd(lgpd);
+
         FormularioEntity formulario = objectMapper.convertValue(formularioCreateDto, FormularioEntity.class);
-        FormularioEntity formularioEntity1 = formularioRepository.save(formulario);
-        FormularioDto formularioDto = objectMapper.convertValue(formularioEntity1, FormularioDto.class);
+
+        FormularioEntity formularioRetornoBanco = formularioRepository.save(formulario);
+
+        FormularioDto formularioDto = objectMapper.convertValue(formularioRetornoBanco, FormularioDto.class);
+
         return formularioDto;
+    }
+
+
+    public String retornarCurriculoDoCandidatoDecode(Integer idFormulario) throws RegraDeNegocioException {
+        Optional formularioRetorno = formularioRepository.findById(idFormulario);
+
+        if (formularioRetorno.isEmpty()) {
+            throw new RegraDeNegocioException("Curriculo não encontrado");
+        }
+        FormularioEntity formularioComCurriculo = objectMapper.convertValue(formularioRetorno, FormularioEntity.class);
+
+        return Base64Utils.encodeToString(formularioComCurriculo.getCurriculo());
     }
 
     public List<FormularioDto> list() {
@@ -51,16 +99,16 @@ public class FormularioService {
         return objectMapper.convertValue(formularioEntity, FormularioDto.class);
     }
 
-    public FormularioDto updateCurriculo(File file, Integer idFormulario) throws RegraDeNegocioException {
+    public String updateCurriculo(MultipartFile curriculo, Integer idFormulario) throws RegraDeNegocioException, IOException {
         FormularioEntity formulario = findById(idFormulario);
 
-        formulario.setCurriculo(file);
+        formulario.setCurriculo(curriculo.getBytes());
 
         FormularioEntity formularioRetorno = formularioRepository.save(formulario);
 
         FormularioDto formularioDto = objectMapper.convertValue(formularioRetorno, FormularioDto.class);
 
-        return formularioDto;
+        return Base64Utils.encodeToString(formulario.getCurriculo());
     }
 
 }
