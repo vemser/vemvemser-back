@@ -12,9 +12,8 @@ import javax.validation.constraints.NotNull;
 public class LoginDto {
 
     @NotNull
-    private Integer idLogin;
-
-    @NotNull
     private String email;
 
+    @NotNull
+    private String senha;
 }

@@ -45,7 +45,7 @@ public class FormularioController {
         return new ResponseEntity<>(formularioDto, HttpStatus.OK);
     }
 
-    @Operation(summary = "Cadastrar Candidato", description = "Cadastro de candidato")
+    @Operation(summary = "Cadastrar Formulario", description = "Cadastro de formulario do candidato")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "201", description = "Cadastro realizado com sucesso"),
@@ -55,7 +55,6 @@ public class FormularioController {
     )
     @GetMapping
     public ResponseEntity<List<FormularioDto>> listAll() {
-        log.info("ENTROU NO METODOD");
         return new ResponseEntity<>(formularioService.list(), HttpStatus.OK);
     }
 

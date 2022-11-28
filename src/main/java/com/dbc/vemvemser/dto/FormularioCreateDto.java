@@ -32,6 +32,9 @@ public class FormularioCreateDto {
     @Schema(example = "https://github.com/link-github", description = "Link referente ao seu Github")
     private String github;
 
+    @Schema(example = "https://www.linkedin.com/link-linkedin", description = "Link referente ao seu Linkedin")
+    private String linkedin;
+
     @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
     private TipoMarcacao desafios;
 

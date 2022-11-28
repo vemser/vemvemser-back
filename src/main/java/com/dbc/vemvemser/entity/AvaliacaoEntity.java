@@ -21,9 +21,6 @@ public class AvaliacaoEntity {
     @Column(name = "ID_AVALIACAO")
     private Integer idAvaliacao;
 
-    @JsonIgnore
-    @OneToOne(mappedBy = "avaliacaoEntity",fetch = FetchType.LAZY)
-    private InscricaoEntity inscricaoEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_GESTOR", referencedColumnName = "ID_GESTOR")
@@ -32,4 +29,8 @@ public class AvaliacaoEntity {
     @Column(name="APROVADO")
     private TipoMarcacao aprovado;
 
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="ID_INSCRICAO", referencedColumnName = "ID_INSCRICAO")
+    private InscricaoEntity inscricao;
 }

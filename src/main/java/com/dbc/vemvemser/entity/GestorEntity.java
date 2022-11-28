@@ -23,9 +23,6 @@ public class GestorEntity {
     @Column(name = "nome")
     private String nome;
 
-    @Column(name = "id_cargo", insertable = false, updatable = false)
-    private Integer idCargo;
-
     @Column(name = "email")
     private String email;
 

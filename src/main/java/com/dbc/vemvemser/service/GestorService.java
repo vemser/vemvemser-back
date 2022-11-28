@@ -3,6 +3,8 @@ package com.dbc.vemvemser.service;
 
 import com.dbc.vemvemser.dto.GestorCreateDto;
 import com.dbc.vemvemser.dto.GestorDto;
+import com.dbc.vemvemser.dto.LoginCreateDto;
+import com.dbc.vemvemser.dto.LoginDto;
 import com.dbc.vemvemser.entity.CargoEntity;
 import com.dbc.vemvemser.entity.GestorEntity;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
@@ -24,10 +26,10 @@ public class GestorService {
     private final ObjectMapper objectMapper;
 
 
-    public GestorDto autenticarUsuario(GestorCreateDto gestorCreateDto) throws RegraDeNegocioException {
-        GestorEntity gestorEntity = gestorRepository.findGestorEntityByEmailAndAndSenha(gestorCreateDto.getEmail(),gestorCreateDto.getSenha())
+    public GestorDto autenticarUsuario(LoginCreateDto loginCreateDto) throws RegraDeNegocioException {
+        GestorEntity gestorEntity = gestorRepository.findGestorEntityByEmailAndAndSenha(loginCreateDto.getEmail(),loginCreateDto.getSenha())
                 .orElseThrow(()-> new RegraDeNegocioException("Usuario ou senha invalido!"));
-        return objectMapper.convertValue(gestorEntity,GestorDto.class);
+        return objectMapper.convertValue(gestorEntity, GestorDto.class);
     }
 
     public GestorDto cadastrar(GestorCreateDto gestorCreateDto) throws RegraDeNegocioException {
