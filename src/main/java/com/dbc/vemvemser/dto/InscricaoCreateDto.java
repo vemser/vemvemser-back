@@ -16,8 +16,5 @@ public class InscricaoCreateDto {
     private Integer idCandidato;
 
     @NotNull
-    private LocalDate dataInscricao;
-
-    @NotNull
     private TipoMarcacao avaliacao;
 }
