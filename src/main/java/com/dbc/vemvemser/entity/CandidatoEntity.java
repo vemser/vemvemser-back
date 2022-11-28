@@ -1,4 +1,7 @@
 package com.dbc.vemvemser.entity;
+import com.dbc.vemvemser.enums.TipoMarcacao;
+import com.dbc.vemvemser.enums.TipoPcd;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -41,7 +44,16 @@ public class CandidatoEntity {
     @Column(name = "cidade")
     private String cidade;
 
+    @Column(name = "pcd")
+    @Enumerated(EnumType.STRING)
+    private TipoPcd pcd;
+
     @OneToOne(mappedBy ="candidato" ,fetch = FetchType.LAZY)
     private InscricaoEntity inscricao;
+
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="ID_FORMULARIO", referencedColumnName = "ID_FORMULARIO")
+    private FormularioEntity formulario;
 
 }

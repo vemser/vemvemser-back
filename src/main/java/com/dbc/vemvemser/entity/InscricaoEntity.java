@@ -28,21 +28,15 @@ public class InscricaoEntity {
     private LocalDate dataInscricao;
 
     @Column(name = "AVALIADO")
-    private TipoMarcacao avaliacao;
+    private TipoMarcacao avaliado;
 
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="ID_FORMULARIO", referencedColumnName = "ID_FORMULARIO")
-    private FormularioEntity formulario;
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="ID_CANDIDATO", referencedColumnName = "ID_CANDIDATO")
     private CandidatoEntity candidato;
 
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="ID_AVALIACAO", referencedColumnName = "ID_AVALIACAO")
+    @OneToOne(mappedBy ="inscricao" ,fetch = FetchType.LAZY)
     private AvaliacaoEntity avaliacaoEntity;
 
 }

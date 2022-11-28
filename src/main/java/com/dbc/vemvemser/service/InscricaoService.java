@@ -34,7 +34,7 @@ public class InscricaoService {
         if (inscricaoEntity == null) {
             throw new RegraDeNegocioException("");
         }
-        inscricaoEntity.setAvaliacao(inscricaoCreateDto.getAvaliacao());
+        inscricaoEntity.setAvaliado(inscricaoCreateDto.getAvaliacao());
 
         InscricaoDto inscricaoDto = converterParaDTO(inscricaoEntity);
 

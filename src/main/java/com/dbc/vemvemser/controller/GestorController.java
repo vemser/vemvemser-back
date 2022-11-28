@@ -2,6 +2,7 @@ package com.dbc.vemvemser.controller;
 
 import com.dbc.vemvemser.dto.GestorCreateDto;
 import com.dbc.vemvemser.dto.GestorDto;
+import com.dbc.vemvemser.dto.LoginCreateDto;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.service.GestorService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -50,8 +51,8 @@ public class GestorController {
             }
     )
     @PostMapping
-    public GestorDto auth(@RequestBody @Valid GestorCreateDto gestorCreateDto) throws RegraDeNegocioException {
-        return gestorService.autenticarUsuario(gestorCreateDto);
+    public GestorDto auth(@RequestBody @Valid LoginCreateDto loginCreateDto) throws RegraDeNegocioException {
+        return gestorService.autenticarUsuario(loginCreateDto);
     }
 
     @Operation(summary = "Cadastrar um novo colaborador/administrador", description = "Cadastro de colaborador/administrador")

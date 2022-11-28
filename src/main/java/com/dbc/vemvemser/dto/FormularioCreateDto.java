@@ -2,7 +2,6 @@ package com.dbc.vemvemser.dto;
 
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.enums.TipoTurno;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
