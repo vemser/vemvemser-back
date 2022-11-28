@@ -9,6 +9,11 @@ import java.time.LocalDate;
 @Data
 public class InscricaoCreateDto {
 
+    @NotNull
+    private Integer idFormulario;
+
+    @NotNull
+    private Integer idCandidato;
 
     @NotNull
     private LocalDate dataInscricao;
