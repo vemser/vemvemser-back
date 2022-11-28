@@ -47,4 +47,7 @@ public class CandidatoCreateDto {
     @Size(min = 3, max= 255, message = "O nome deve ter de 3 a 30 caracteres")
     @Schema(description = "Cidade em que habita o candidato", example = "Porto Alegre")
     private String cidade;
+
+    @NotNull
+    private Integer idFormulario;
 }

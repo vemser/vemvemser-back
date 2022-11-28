@@ -33,7 +33,7 @@ public class CandidatoController {
             }
     )
     @PostMapping("/cadastro")
-    public ResponseEntity<CandidatoDto> cadastroCandidato(@Valid @RequestBody CandidatoCreateDto candidatoCreateDto) {
+    public ResponseEntity<CandidatoDto> cadastroCandidato(@Valid @RequestBody CandidatoCreateDto candidatoCreateDto) throws RegraDeNegocioException {
         return ResponseEntity.ok(candidatoService.cadastro(candidatoCreateDto));
     }
 

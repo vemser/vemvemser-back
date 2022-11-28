@@ -17,11 +17,14 @@ public class CandidatoService {
 
     private final CandidatoRepository candidatoRepository;
 
+    private final FormularioService formularioService;
+
     private final ObjectMapper objectMapper;
 
 
-    public CandidatoDto cadastro(CandidatoCreateDto candidatoCreateDto) {
+    public CandidatoDto cadastro(CandidatoCreateDto candidatoCreateDto) throws RegraDeNegocioException {
         CandidatoEntity candidatoEntity = objectMapper.convertValue(candidatoCreateDto, CandidatoEntity.class);
+        candidatoEntity.setFormulario(formularioService.findById(candidatoCreateDto.getIdFormulario()));
         return objectMapper.convertValue(candidatoRepository.save(candidatoEntity), CandidatoDto.class);
     }
 

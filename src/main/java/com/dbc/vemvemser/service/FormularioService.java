@@ -20,7 +20,6 @@ public class FormularioService {
     private final FormularioRepository formularioRepository;
     private final ObjectMapper objectMapper;
 
-    private final CandidatoService candidatoService;
 
     public FormularioDto create(FormularioCreateDto formularioCreateDto) {
         FormularioEntity formulario = objectMapper.convertValue(formularioCreateDto, FormularioEntity.class);
@@ -34,7 +33,7 @@ public class FormularioService {
                 .map(formularioEntity -> objectMapper.convertValue(formularioEntity, FormularioDto.class)).toList();
     }
 
-    private FormularioEntity findById(Integer idFormulario) throws RegraDeNegocioException {
+    public FormularioEntity findById(Integer idFormulario) throws RegraDeNegocioException {
         return formularioRepository.findById(idFormulario)
                 .orElseThrow(() -> new RegraDeNegocioException("Erro ao buscar Formulario"));
     }
