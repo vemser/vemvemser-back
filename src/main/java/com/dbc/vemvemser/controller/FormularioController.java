@@ -33,6 +33,47 @@ public class FormularioController {
     private final FormularioService formularioService;
 
 
+//    @Operation(summary = "Criar um formulário", description = "Criar um formulário para o candidato.")
+//    @ApiResponses(
+//            value = {
+//                    @ApiResponse(responseCode = "200", description = "Criou com sucesso o formulário"),
+//                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+//                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+//            }
+//    )
+//    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE})
+//    public ResponseEntity<FormularioDto> create(
+//                                                @RequestParam TipoMarcacao matriculado,
+//                                                @RequestParam String curso,
+//                                                @RequestParam TipoTurno turno,
+//                                                @RequestParam String instituicao,
+//                                                @RequestParam (required = false, name = "github") String github,
+//                                                @RequestParam (required = false, name = "linkedin") String linkedin,
+//                                                @RequestParam TipoMarcacao desafios,
+//                                                @RequestParam TipoMarcacao problemas,
+//                                                @RequestParam TipoMarcacao reconhecimento,
+//                                                @RequestParam TipoMarcacao altruismo,
+//                                                @RequestParam String resposta,
+//                                                @RequestParam TipoMarcacao lgpd,
+//                                                @RequestPart (required = false, name = "curriculo") MultipartFile curriculo) throws IOException {
+//
+//        FormularioDto formularioDto=formularioService.create(matriculado,
+//                curso,
+//                turno,
+//                instituicao,
+//                github,
+//                linkedin,
+//                desafios,
+//                problemas,
+//                reconhecimento,
+//                altruismo,
+//                resposta,
+//                curriculo,
+//                lgpd);
+//        log.info("Criando Formulario ID:" + formularioDto.getIdFormulario());
+//        return new ResponseEntity<>(formularioDto, HttpStatus.OK);
+//    }
+
     @Operation(summary = "Criar um formulário", description = "Criar um formulário para o candidato.")
     @ApiResponses(
             value = {
@@ -41,39 +82,23 @@ public class FormularioController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<FormularioDto> create(
-                                                @RequestParam TipoMarcacao matriculado,
-                                                @RequestParam String curso,
-                                                @RequestParam TipoTurno turno,
-                                                @RequestParam String instituicao,
-                                                @RequestParam (required = false, name = "github") String github,
-                                                @RequestParam (required = false, name = "linkedin") String linkedin,
-                                                @RequestParam TipoMarcacao desafios,
-                                                @RequestParam TipoMarcacao problemas,
-                                                @RequestParam TipoMarcacao reconhecimento,
-                                                @RequestParam TipoMarcacao altruismo,
-                                                @RequestParam String resposta,
-                                                @RequestParam TipoMarcacao lgpd,
-                                                @RequestPart (required = false, name = "curriculo") MultipartFile curriculo) throws IOException {
+    @PostMapping
+    public ResponseEntity<FormularioDto> create(FormularioCreateDto formularioCreateDto) {
 
-        FormularioDto formularioDto=formularioService.create(matriculado,
-                curso,
-                turno,
-                instituicao,
-                github,
-                linkedin,
-                desafios,
-                problemas,
-                reconhecimento,
-                altruismo,
-                resposta,
-                curriculo,
-                lgpd);
+        FormularioDto formularioDto=formularioService.create(formularioCreateDto);
         log.info("Criando Formulario ID:" + formularioDto.getIdFormulario());
         return new ResponseEntity<>(formularioDto, HttpStatus.OK);
     }
 
+    @PutMapping(value = "/update-curriculo",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Void> updateCurriculo (@RequestParam Integer idFormulario,MultipartFile curriculo) throws IOException, RegraDeNegocioException {
+
+        formularioService.updateCurriculo(curriculo, idFormulario);
+
+        log.info("Atualizando Curriculo em Formulario ID: " +idFormulario);
+
+        return new ResponseEntity<>(null,HttpStatus.OK);
+    }
 
 
     @GetMapping("/get-curriculo/id-formulario")

@@ -26,34 +26,46 @@ public class FormularioService {
     private final ObjectMapper objectMapper;
 
 
-    public FormularioDto create(TipoMarcacao matriculado,
-                                String curso,
-                                TipoTurno turno,
-                                String instituicao,
-                                String github,
-                                String linkedin,
-                                TipoMarcacao desafios,
-                                TipoMarcacao problemas,
-                                TipoMarcacao reconhecimento,
-                                TipoMarcacao altruismo,
-                                String resposta,
-                                MultipartFile curriculo,
-                                TipoMarcacao lgpd) throws IOException {
+//    public FormularioDto create(TipoMarcacao matriculado,
+//                                String curso,
+//                                TipoTurno turno,
+//                                String instituicao,
+//                                String github,
+//                                String linkedin,
+//                                TipoMarcacao desafios,
+//                                TipoMarcacao problemas,
+//                                TipoMarcacao reconhecimento,
+//                                TipoMarcacao altruismo,
+//                                String resposta,
+//                                MultipartFile curriculo,
+//                                TipoMarcacao lgpd) throws IOException {
+//
+//        FormularioCreateDto formularioCreateDto = new FormularioCreateDto();
+//        formularioCreateDto.setMatriculado(matriculado);
+//        formularioCreateDto.setCurso(curso);
+//        formularioCreateDto.setTurno(turno);
+//        formularioCreateDto.setInstituicao(instituicao);
+//        formularioCreateDto.setGithub(github);
+//        formularioCreateDto.setLinkedin(linkedin);
+//        formularioCreateDto.setDesafios(desafios);
+//        formularioCreateDto.setProblema(problemas);
+//        formularioCreateDto.setReconhecimento(reconhecimento);
+//        formularioCreateDto.setAltruismo(altruismo);
+//        formularioCreateDto.setResposta(resposta);
+//        formularioCreateDto.setCurriculo(curriculo.getBytes());
+//        formularioCreateDto.setLgpd(lgpd);
+//
+//        FormularioEntity formulario = objectMapper.convertValue(formularioCreateDto, FormularioEntity.class);
+//
+//        FormularioEntity formularioRetornoBanco = formularioRepository.save(formulario);
+//
+//        FormularioDto formularioDto = objectMapper.convertValue(formularioRetornoBanco, FormularioDto.class);
+//
+//        return formularioDto;
+//    }
 
-        FormularioCreateDto formularioCreateDto = new FormularioCreateDto();
-        formularioCreateDto.setMatriculado(matriculado);
-        formularioCreateDto.setCurso(curso);
-        formularioCreateDto.setTurno(turno);
-        formularioCreateDto.setInstituicao(instituicao);
-        formularioCreateDto.setGithub(github);
-        formularioCreateDto.setLinkedin(linkedin);
-        formularioCreateDto.setDesafios(desafios);
-        formularioCreateDto.setProblema(problemas);
-        formularioCreateDto.setReconhecimento(reconhecimento);
-        formularioCreateDto.setAltruismo(altruismo);
-        formularioCreateDto.setResposta(resposta);
-        formularioCreateDto.setCurriculo(curriculo.getBytes());
-        formularioCreateDto.setLgpd(lgpd);
+
+    public FormularioDto create(FormularioCreateDto formularioCreateDto) {
 
         FormularioEntity formulario = objectMapper.convertValue(formularioCreateDto, FormularioEntity.class);
 

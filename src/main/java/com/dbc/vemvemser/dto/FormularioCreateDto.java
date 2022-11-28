@@ -2,6 +2,7 @@ package com.dbc.vemvemser.dto;
 
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.enums.TipoTurno;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -45,6 +46,7 @@ public class FormularioCreateDto {
     @Schema(example = "Outro", description = "Motivo pelo qual se interessou pela área de Tecnologia")
     private String resposta;
 
+    @JsonIgnore
     private byte[] curriculo;
 
     @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
