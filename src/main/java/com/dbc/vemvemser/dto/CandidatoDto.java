@@ -28,4 +28,6 @@ public class CandidatoDto{
     private String estado;
 
     private String cidade;
+
+    private FormularioDto formulario;
 }

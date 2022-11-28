@@ -2,6 +2,7 @@ package com.dbc.vemvemser.service;
 
 import com.dbc.vemvemser.dto.CandidatoCreateDto;
 import com.dbc.vemvemser.dto.CandidatoDto;
+import com.dbc.vemvemser.dto.FormularioDto;
 import com.dbc.vemvemser.entity.CandidatoEntity;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.CandidatoRepository;
@@ -30,7 +31,11 @@ public class CandidatoService {
 
     public List<CandidatoDto> listAll() {
         return candidatoRepository.findAll().stream()
-                .map(candidatoEntity -> objectMapper.convertValue(candidatoEntity, CandidatoDto.class))
+                .map(candidatoEntity -> {
+                  CandidatoDto candidatoDto = objectMapper.convertValue(candidatoEntity, CandidatoDto.class);
+                  candidatoDto.setFormulario(objectMapper.convertValue(candidatoEntity.getFormulario(), FormularioDto.class));
+                    return candidatoDto;
+                })
                 .toList();
     }
 
