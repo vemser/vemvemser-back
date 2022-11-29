@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -21,6 +22,7 @@ public class InscricaoService {
     public InscricaoDto create(InscricaoCreateDto inscricaoCreateDto) {
 
         InscricaoEntity inscricaoEntity = objectMapper.convertValue(inscricaoCreateDto, InscricaoEntity.class);
+        inscricaoEntity.setDataInscricao(LocalDate.now());
         inscricaoRepository.save(inscricaoEntity);
 
         InscricaoDto inscricaoDto = converterParaDTO(inscricaoEntity);
@@ -28,18 +30,18 @@ public class InscricaoService {
         return inscricaoDto;
     }
 
-    public InscricaoDto update(Integer idInscricao, InscricaoCreateDto inscricaoCreateDto) throws RegraDeNegocioException {
-
-        InscricaoEntity inscricaoEntity = findById(idInscricao);
-        if (inscricaoEntity == null) {
-            throw new RegraDeNegocioException("");
-        }
-        inscricaoEntity.setAvaliado(inscricaoCreateDto.getAvaliacao());
-
-        InscricaoDto inscricaoDto = converterParaDTO(inscricaoEntity);
-
-        return inscricaoDto;
-    }
+//    public InscricaoDto update(Integer idInscricao, InscricaoCreateDto inscricaoCreateDto) throws RegraDeNegocioException {
+//
+//        InscricaoEntity inscricaoEntity = findById(idInscricao);
+//        if (inscricaoEntity == null) {
+//            throw new RegraDeNegocioException("");
+//        }
+//        inscricaoEntity.setAvaliado(inscricaoCreateDto.getAvaliacao());
+//
+//        InscricaoDto inscricaoDto = converterParaDTO(inscricaoEntity);
+//
+//        return inscricaoDto;
+//    }
 
     public List<InscricaoDto> list(){
         return inscricaoRepository.findAll().stream()

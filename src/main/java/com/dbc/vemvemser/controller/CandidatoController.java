@@ -28,7 +28,7 @@ public class CandidatoController {
     @Operation(summary = "Cadastrar Candidato", description = "Cadastro de candidato")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "201", description = "Cadastro realizado com sucesso"),
+                    @ApiResponse(responseCode = "200", description = "Cadastro realizado com sucesso"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
@@ -41,20 +41,20 @@ public class CandidatoController {
     @Operation(summary = "Listar Candidato", description = "Lista de candidatos")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "201", description = "Retorna lista de candidatos."),
+                    @ApiResponse(responseCode = "200", description = "Retorna lista de candidatos."),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
     @GetMapping("/listar")
-    public ResponseEntity<List<CandidatoDto>> listarCandidatos() {
-        return new ResponseEntity<>(candidatoService.listAll(), HttpStatus.OK);
+    public ResponseEntity<PageDto<CandidatoDto>> listarCandidatos(Integer pagina, Integer tamanho) {
+        return new ResponseEntity<>(candidatoService.listAllPaginado(pagina,tamanho), HttpStatus.OK);
     }
 
     @Operation(summary = "Deletar Candidato", description = "deleta o candidato")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "201", description = "Candidato deletado com sucesso"),
+                    @ApiResponse(responseCode = "200", description = "Candidato deletado com sucesso"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
@@ -68,7 +68,7 @@ public class CandidatoController {
     @Operation(summary = "Atualizar Candidato", description = "Atualiza o candidato")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "201", description = "Candidato atualizado com sucesso"),
+                    @ApiResponse(responseCode = "200", description = "Candidato atualizado com sucesso"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }

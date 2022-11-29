@@ -54,7 +54,12 @@ public class GestorService {
                 .toList();
     }
 
-    public GestorEntity findById(Integer id) throws RegraDeNegocioException {
+    public GestorDto findByIdDTO(Integer idGestor) throws RegraDeNegocioException {
+       GestorDto gestorDto= objectMapper.convertValue(findById(idGestor),GestorDto.class);
+       return gestorDto;
+    }
+
+    private GestorEntity findById(Integer id) throws RegraDeNegocioException {
         return gestorRepository.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("Usuario não encontrado!"));
     }

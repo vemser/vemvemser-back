@@ -13,7 +13,7 @@ import lombok.*;
 public class FormularioCreateDto {
 
     @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
-    private TipoMarcacao matriculado;
+    private boolean matriculadoBoolean;
 
     @Schema(example = "Analise e Desenvolvimento de Software", description = "Nome do curso")
     private String curso;
@@ -31,17 +31,17 @@ public class FormularioCreateDto {
     private String Linkedin;
 
     @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
-    private TipoMarcacao desafios;
+    private boolean desafiosBoolean;
 
     @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
-    private TipoMarcacao problema;
+    private boolean problemaBoolean;
 
     @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
-    private TipoMarcacao reconhecimento;
+    private boolean reconhecimentoBoolean;
 
 
     @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
-    private TipoMarcacao altruismo;
+    private boolean altruismoBoolean;
 
     @Schema(example = "Outro", description = "Motivo pelo qual se interessou pela área de Tecnologia")
     private String resposta;
@@ -50,6 +50,6 @@ public class FormularioCreateDto {
     private byte[] curriculo;
 
     @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
-    private TipoMarcacao lgpd;
+    private boolean lgpdBoolean;
 
 }

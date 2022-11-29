@@ -42,6 +42,22 @@ public class GestorController {
         return new ResponseEntity<>(gestorService.listar(), HttpStatus.OK);
     }
 
+    @Operation(summary = "Listar Gestores por ID", description = "Retorna um Gestor por ID do banco de dados")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna Gestor"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @GetMapping("/id-gestor")
+    public ResponseEntity<GestorDto> findById(@RequestParam Integer idGestor) throws RegraDeNegocioException {
+
+        GestorDto gestorDto = gestorService.findByIdDTO(idGestor);
+
+        return new ResponseEntity<>(gestorDto, HttpStatus.OK);
+    }
+
     @Operation(summary = "Logar com um registro de funcionário.", description = "Loga no sistema com um login de funcionário.")
     @ApiResponses(
             value = {

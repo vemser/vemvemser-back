@@ -32,27 +32,31 @@ public class CandidatoService {
         return objectMapper.convertValue(candidatoRepository.save(candidatoEntity), CandidatoDto.class);
     }
 
-    public List<CandidatoDto> listAll() {
-        return candidatoRepository.findAll().stream()
-                .map(candidatoEntity -> {
-                  CandidatoDto candidatoDto = objectMapper.convertValue(candidatoEntity, CandidatoDto.class);
-                  candidatoDto.setFormulario(objectMapper.convertValue(candidatoEntity.getFormulario(), FormularioDto.class));
-                    return candidatoDto;
-                })
+    public PageDto<CandidatoDto> listAllPaginado(Integer pagina, Integer tamanho) {
+        PageRequest pageRequest = PageRequest.of(pagina, tamanho);
+        Page<CandidatoEntity> paginaDoRepositorio = candidatoRepository.findAll(pageRequest);
+        List<CandidatoDto> candidatosPorPagina = paginaDoRepositorio.getContent().stream()
+                .map(candidatoEntity -> objectMapper.convertValue(candidatoEntity, CandidatoDto.class))
                 .toList();
+        return new PageDto<>(paginaDoRepositorio.getTotalElements(),
+                paginaDoRepositorio.getTotalPages(),
+                pagina,
+                tamanho,
+                candidatosPorPagina
+        );
     }
 
-    public void deleteById(Integer idCandidato) throws RegraDeNegocioException{
+    public void deleteById(Integer idCandidato) throws RegraDeNegocioException {
         findById(idCandidato);
         candidatoRepository.deleteById(idCandidato);
     }
 
-    public CandidatoDto update(Integer idCandidato,CandidatoCreateDto candidatoCreateDto) throws RegraDeNegocioException{
+    public CandidatoDto update(Integer idCandidato, CandidatoCreateDto candidatoCreateDto) throws RegraDeNegocioException {
         findById(idCandidato);
-        CandidatoEntity candidatoEntity = objectMapper.convertValue(candidatoCreateDto,CandidatoEntity.class);
+        CandidatoEntity candidatoEntity = objectMapper.convertValue(candidatoCreateDto, CandidatoEntity.class);
         candidatoEntity.setIdCandidato(idCandidato);
         CandidatoEntity candidatoEntity1 = candidatoRepository.save(candidatoEntity);
-        return objectMapper.convertValue(candidatoEntity1,CandidatoDto.class);
+        return objectMapper.convertValue(candidatoEntity1, CandidatoDto.class);
     }
 
     private CandidatoEntity findById(Integer idCandidato) throws RegraDeNegocioException {

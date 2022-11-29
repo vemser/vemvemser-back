@@ -4,6 +4,7 @@ package com.dbc.vemvemser.service;
 import com.dbc.vemvemser.dto.FormularioCreateDto;
 import com.dbc.vemvemser.dto.FormularioDto;
 import com.dbc.vemvemser.entity.FormularioEntity;
+import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.FormularioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,9 +26,13 @@ public class FormularioService {
 
 
     public FormularioDto create(FormularioCreateDto formularioCreateDto) {
-
         FormularioEntity formulario = objectMapper.convertValue(formularioCreateDto, FormularioEntity.class);
-
+        formulario.setMatriculado(convertToEnum(formularioCreateDto.isMatriculadoBoolean()));
+        formulario.setDesafios(convertToEnum(formularioCreateDto.isDesafiosBoolean()));
+        formulario.setProblema(convertToEnum(formularioCreateDto.isProblemaBoolean()));
+        formulario.setReconhecimento(convertToEnum(formularioCreateDto.isReconhecimentoBoolean()));
+        formulario.setAltruismo(convertToEnum(formularioCreateDto.isAltruismoBoolean()));
+        formulario.setLgpd(convertToEnum((formularioCreateDto.isLgpdBoolean())));
         FormularioEntity formularioRetornoBanco = formularioRepository.save(formulario);
 
         FormularioDto formularioDto = objectMapper.convertValue(formularioRetornoBanco, FormularioDto.class);
@@ -80,6 +85,14 @@ public class FormularioService {
         FormularioDto formularioDto = objectMapper.convertValue(formularioRetorno, FormularioDto.class);
 
         return Base64Utils.encodeToString(formulario.getCurriculo());
+    }
+
+    private TipoMarcacao convertToEnum(boolean opcao){
+        if(opcao){
+            return TipoMarcacao.T;
+        }else{
+            return TipoMarcacao.F;
+        }
     }
 
 }
