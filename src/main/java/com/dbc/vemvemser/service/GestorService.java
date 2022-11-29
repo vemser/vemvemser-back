@@ -1,16 +1,17 @@
 package com.dbc.vemvemser.service;
 
 
-import com.dbc.vemvemser.dto.GestorCreateDto;
-import com.dbc.vemvemser.dto.GestorDto;
-import com.dbc.vemvemser.dto.LoginCreateDto;
-import com.dbc.vemvemser.dto.LoginDto;
+import com.dbc.vemvemser.dto.*;
 import com.dbc.vemvemser.entity.CargoEntity;
+import com.dbc.vemvemser.entity.FormularioEntity;
 import com.dbc.vemvemser.entity.GestorEntity;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.GestorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GestorService {
 
+    private static final int ASCENDING = 0;
+    private static final int DESCENDING = 1;
     private final GestorRepository gestorRepository;
 
     private final CargoService cargoService;
@@ -48,10 +51,22 @@ public class GestorService {
         return objectMapper.convertValue(gestorRepository.save(gestorEntity), GestorDto.class);
     }
 
-    public List<GestorDto> listar() {
-        return gestorRepository.findAll().stream()
-                .map(item -> objectMapper.convertValue(item, GestorDto.class))
-                .toList();
+    public PageDto<GestorDto> listar(Integer pagina, Integer tamanho, String sort, int order) {
+        Sort ordenacao = Sort.by(sort).ascending();
+        if (order == DESCENDING) {
+            ordenacao = Sort.by(sort).descending();
+        }
+        PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
+        Page<GestorEntity> paginaGestorEntities = gestorRepository.findAll(pageRequest);
+
+        List<GestorDto> gestorDtos = paginaGestorEntities.getContent().stream()
+                .map(gestorEntity -> objectMapper.convertValue(gestorEntity, GestorDto.class)).toList();
+
+        return new PageDto<>(paginaGestorEntities.getTotalElements(),
+                paginaGestorEntities.getTotalPages(),
+                pagina,
+                tamanho,
+                gestorDtos);
     }
 
     public GestorDto findByIdDTO(Integer idGestor) throws RegraDeNegocioException {

@@ -35,19 +35,6 @@ public class CandidatoService {
         return objectMapper.convertValue(candidatoRepository.save(candidatoEntity), CandidatoDto.class);
     }
 
-    public PageDto<CandidatoDto> listaAllPaginado(Integer pagina, Integer tamanho) {
-        PageRequest pageRequest = PageRequest.of(pagina, tamanho);
-        Page<CandidatoEntity> paginaDoRepositorio = candidatoRepository.findAll(pageRequest);
-        List<CandidatoDto> candidatosPorPagina = paginaDoRepositorio.getContent().stream()
-                .map(candidatoEntity -> objectMapper.convertValue(candidatoEntity, CandidatoDto.class))
-                .toList();
-        return new PageDto<>(paginaDoRepositorio.getTotalElements(),
-                paginaDoRepositorio.getTotalPages(),
-                pagina,
-                tamanho,
-                candidatosPorPagina
-        );
-    }
 
     public void deleteById(Integer idCandidato) throws RegraDeNegocioException {
         findById(idCandidato);

@@ -3,6 +3,7 @@ package com.dbc.vemvemser.controller;
 import com.dbc.vemvemser.dto.GestorCreateDto;
 import com.dbc.vemvemser.dto.GestorDto;
 import com.dbc.vemvemser.dto.LoginCreateDto;
+import com.dbc.vemvemser.dto.PageDto;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.service.GestorService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,8 +39,11 @@ public class GestorController {
             }
     )
     @GetMapping
-    public ResponseEntity<List<GestorDto>> listar() {
-        return new ResponseEntity<>(gestorService.listar(), HttpStatus.OK);
+    public ResponseEntity<PageDto<GestorDto>> listar(@RequestParam(defaultValue = "0", required = false)Integer pagina,
+                                                     @RequestParam(defaultValue = "10", required = false)Integer tamanho,
+                                                     @RequestParam(defaultValue = "idGestor", required = false)String sort,
+                                                     @RequestParam(defaultValue = "0", required = false)int order) {
+        return new ResponseEntity<>(gestorService.listar(pagina,tamanho,sort,order), HttpStatus.OK);
     }
 
     @Operation(summary = "Listar Gestores por ID", description = "Retorna um Gestor por ID do banco de dados")

@@ -21,7 +21,6 @@ public class AvaliacaoEntity {
     @Column(name = "ID_AVALIACAO")
     private Integer idAvaliacao;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_GESTOR", referencedColumnName = "ID_GESTOR")
     private GestorEntity login;

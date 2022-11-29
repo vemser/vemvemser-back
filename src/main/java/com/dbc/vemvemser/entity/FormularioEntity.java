@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -98,8 +99,11 @@ public class FormularioEntity {
     private CandidatoEntity candidato;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_trilha")
-    private TrilhaEntity trilha;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "TRILHA_FORM",
+            joinColumns = @JoinColumn(name = "id_formulario"),
+            inverseJoinColumns = @JoinColumn(name = "id_trilha")
+    )
+    private Set<TrilhaEntity> trilhaEntitySet;
 
 }

@@ -2,6 +2,7 @@ package com.dbc.vemvemser.controller;
 
 import com.dbc.vemvemser.dto.InscricaoCreateDto;
 import com.dbc.vemvemser.dto.InscricaoDto;
+import com.dbc.vemvemser.dto.PageDto;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.service.InscricaoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -51,8 +52,8 @@ public class InscricaoController {
             }
     )
     @GetMapping("/{id}")
-    public ResponseEntity<InscricaoDto> listById(@RequestParam ("id") Integer id) throws RegraDeNegocioException {
-        InscricaoDto inscricaoDto=inscricaoService.listById(id);
+    public ResponseEntity<InscricaoDto> findById(@RequestParam ("id") Integer id) throws RegraDeNegocioException {
+        InscricaoDto inscricaoDto=inscricaoService.findDtoByid(id);
         return new ResponseEntity<>(inscricaoDto, HttpStatus.OK);
     }
     @Operation(summary = "Busca toda lista de inscrições", description = "Retonar uma lista com todas inscrições do Banco de dados.")
@@ -64,8 +65,11 @@ public class InscricaoController {
             }
     )
     @GetMapping
-    public ResponseEntity<List<InscricaoDto>> list() {
-        return new ResponseEntity<>(inscricaoService.list(), HttpStatus.OK);
+    public ResponseEntity<PageDto<InscricaoDto>> listar(@RequestParam(defaultValue = "0", required = false)Integer pagina,
+                                                        @RequestParam(defaultValue = "10", required = false)Integer tamanho,
+                                                        @RequestParam(defaultValue = "idInscricao", required = false)String sort,
+                                                        @RequestParam(defaultValue = "0", required = false)int order) {
+        return new ResponseEntity<>(inscricaoService.listar(pagina,tamanho,sort,order), HttpStatus.OK);
     }
 
 //    @Operation(summary = "Atualizar inscrição", description = "Atualiza uma inscrição por iID")

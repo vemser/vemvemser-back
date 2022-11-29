@@ -37,7 +37,7 @@ public class TrilhaEntity {
     private TipoMarcacao qualityAssurance;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "trilha",fetch = FetchType.LAZY)
-    private Set<FormularioEntity> form;
+    @ManyToMany(mappedBy = "trilhaEntitySet",fetch = FetchType.LAZY)
+    private Set<FormularioEntity> formularios;
 
 }

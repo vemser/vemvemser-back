@@ -1,12 +1,18 @@
 package com.dbc.vemvemser.service;
 
+import com.dbc.vemvemser.dto.GestorDto;
 import com.dbc.vemvemser.dto.InscricaoCreateDto;
 import com.dbc.vemvemser.dto.InscricaoDto;
+import com.dbc.vemvemser.dto.PageDto;
+import com.dbc.vemvemser.entity.GestorEntity;
 import com.dbc.vemvemser.entity.InscricaoEntity;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.InscricaoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -16,6 +22,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InscricaoService {
 
+    private static final int ASCENDING = 0;
+    private static final int DESCENDING = 1;
     private final InscricaoRepository inscricaoRepository;
     private final ObjectMapper objectMapper;
 
@@ -43,13 +51,25 @@ public class InscricaoService {
 //        return inscricaoDto;
 //    }
 
-    public List<InscricaoDto> list(){
-        return inscricaoRepository.findAll().stream()
-                .map(inscricaoEntity -> objectMapper.convertValue(inscricaoEntity,InscricaoDto.class))
-                .toList();
+    public PageDto<InscricaoDto> listar(Integer pagina, Integer tamanho, String sort, int order){
+        Sort ordenacao = Sort.by(sort).ascending();
+        if (order == DESCENDING) {
+            ordenacao = Sort.by(sort).descending();
+        }
+        PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
+        Page<InscricaoEntity> paginaInscricaoEntities = inscricaoRepository.findAll(pageRequest);
+
+        List<InscricaoDto> inscricaoDtos = paginaInscricaoEntities.getContent().stream()
+                .map(inscricaoEntity -> objectMapper.convertValue(inscricaoEntity, InscricaoDto.class)).toList();
+
+        return new PageDto<>(paginaInscricaoEntities.getTotalElements(),
+                paginaInscricaoEntities.getTotalPages(),
+                pagina,
+                tamanho,
+                inscricaoDtos);
     }
 
-    public InscricaoDto listById(Integer idInscricao) throws RegraDeNegocioException {
+    public InscricaoDto findDtoByid(Integer idInscricao) throws RegraDeNegocioException {
         InscricaoEntity inscricaoEntity = findById(idInscricao);
 
         InscricaoDto inscricaoDto = converterParaDTO(inscricaoEntity);
