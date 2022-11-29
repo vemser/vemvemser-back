@@ -47,11 +47,11 @@ public class CandidatoController {
             }
     )
     @GetMapping("/listar")
-    public ResponseEntity<PageDto<CandidatoDto>> listarCandidatos(@RequestParam(defaultValue = "0", required = false)Integer pagina,
-                                                                  @RequestParam(defaultValue = "10", required = false)Integer tamanho,
-                                                                  @RequestParam(defaultValue = "idCandidato", required = false)String sort,
-                                                                  @RequestParam(defaultValue = "0", required = false)int order) {
-        return new ResponseEntity<>(candidatoService.listaAllPaginado(pagina,tamanho,sort,order), HttpStatus.OK);
+    public ResponseEntity<PageDto<CandidatoDto>> listarCandidatos(@RequestParam(defaultValue = "0", required = false) Integer pagina,
+                                                                  @RequestParam(defaultValue = "10", required = false) Integer tamanho,
+                                                                  @RequestParam(defaultValue = "idCandidato", required = false) String sort,
+                                                                  @RequestParam(defaultValue = "0", required = false) int order) {
+        return new ResponseEntity<>(candidatoService.listaAllPaginado(pagina, tamanho, sort, order), HttpStatus.OK);
     }
 
     @Operation(summary = "Deletar Candidato", description = "deleta o candidato")
@@ -65,7 +65,7 @@ public class CandidatoController {
     @DeleteMapping("/deletar")
     public void deletarCandidato(@RequestParam Integer idCandidato) throws RegraDeNegocioException {
         candidatoService.deleteById(idCandidato);
-        new ResponseEntity<>(null,HttpStatus.OK);
+        new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     @Operation(summary = "Atualizar Candidato", description = "Atualiza o candidato")
@@ -77,12 +77,11 @@ public class CandidatoController {
             }
     )
     @PutMapping("/update")
-    public ResponseEntity<CandidatoDto> atualizarCandidato(@RequestParam Integer idCandidato,@RequestBody @Valid CandidatoCreateDto candidatoCreateDto) throws RegraDeNegocioException{
-        CandidatoDto candidatoDto = candidatoService.update(idCandidato,candidatoCreateDto);
-        return new ResponseEntity<>(candidatoDto,HttpStatus.OK);
+    public ResponseEntity<CandidatoDto> atualizarCandidato(@RequestParam Integer idCandidato,
+                                                           @RequestBody @Valid CandidatoCreateDto candidatoCreateDto) throws RegraDeNegocioException {
+        CandidatoDto candidatoDto = candidatoService.update(idCandidato, candidatoCreateDto);
+        return new ResponseEntity<>(candidatoDto, HttpStatus.OK);
     }
-
-
 
 
 }

@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
+import java.util.List;
+import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -53,4 +56,7 @@ public class FormularioDto {
     private TipoMarcacao efetivacao;
 
     private TipoMarcacao disponibilidade;
+
+    private Set<TrilhaDto> trilhas;
+
 }

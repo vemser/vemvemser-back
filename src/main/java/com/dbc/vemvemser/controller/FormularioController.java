@@ -43,13 +43,11 @@ public class FormularioController {
             }
     )
     @PostMapping
-    public ResponseEntity<FormularioDto> create(FormularioCreateDto formularioCreateDto) {
-
-        FormularioDto formularioDto=formularioService.create(formularioCreateDto);
+    public ResponseEntity<FormularioDto> create(FormularioCreateDto formularioCreateDto) throws RegraDeNegocioException {
+        FormularioDto formularioDto = formularioService.create(formularioCreateDto);
         log.info("Criando Formulario ID:" + formularioDto.getIdFormulario());
         return new ResponseEntity<>(formularioDto, HttpStatus.OK);
     }
-
 
 
     @Operation(summary = "Update curriculo", description = "Update curriculo por ID Formulario.")
@@ -60,15 +58,13 @@ public class FormularioController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @PutMapping(value = "/update-curriculo-by-id-formulario",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<String> updateCurriculo(@RequestParam Integer idFormulario,@RequestPart MultipartFile curriculo) throws RegraDeNegocioException, IOException {
-
-        String pdfBase64 = formularioService.updateCurriculo(curriculo,idFormulario);
-
-        log.info("Atualizando Formulario ID: "+ idFormulario);
-        return new ResponseEntity<>(pdfBase64,HttpStatus.OK);
+    @PutMapping(value = "/update-curriculo-by-id-formulario", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<String> updateCurriculo(@RequestParam Integer idFormulario,
+                                                  @RequestPart MultipartFile curriculo) throws RegraDeNegocioException, IOException {
+        String pdfBase64 = formularioService.updateCurriculo(curriculo, idFormulario);
+        log.info("Atualizando Formulario ID: " + idFormulario);
+        return new ResponseEntity<>(pdfBase64, HttpStatus.OK);
     }
-
 
 
     @Operation(summary = "Retorna curriculo em Base64", description = "Retorna curriculo em Base64 por ID de formulario")
@@ -94,12 +90,12 @@ public class FormularioController {
             }
     )
     @GetMapping("/listar")
-    public ResponseEntity<PageDto<FormularioDto>> listAll(@RequestParam(defaultValue = "0", required = false)Integer pagina,
-                                                          @RequestParam(defaultValue = "10", required = false)Integer tamanho,
-                                                          @RequestParam(defaultValue = "idFormulario", required = false)String sort,
-                                                          @RequestParam(defaultValue = "0", required = false)int order){
+    public ResponseEntity<PageDto<FormularioDto>> listAll(@RequestParam(defaultValue = "0", required = false) Integer pagina,
+                                                          @RequestParam(defaultValue = "10", required = false) Integer tamanho,
+                                                          @RequestParam(defaultValue = "idFormulario", required = false) String sort,
+                                                          @RequestParam(defaultValue = "0", required = false) int order) {
         log.info("Listando todos os formulários");
-        return new ResponseEntity<>(formularioService.listAllPaginado(pagina,tamanho,sort,order), HttpStatus.OK);
+        return new ResponseEntity<>(formularioService.listAllPaginado(pagina, tamanho, sort, order), HttpStatus.OK);
     }
 
     @Operation(summary = "Atualizar Formulario", description = "Atualizar formulario por ID")
@@ -112,10 +108,10 @@ public class FormularioController {
     )
     @PutMapping
     public ResponseEntity<FormularioDto> updateFormulario(@RequestParam Integer idFormulario,
-                                                          @RequestBody @Valid FormularioCreateDto formularioCreateDto) throws RegraDeNegocioException{
-        FormularioDto formularioDto = formularioService.update(idFormulario,formularioCreateDto);
-        log.info("Atualizando Formulario ID: "+ idFormulario);
-        return new ResponseEntity<>(formularioDto,HttpStatus.OK);
+                                                          @RequestBody @Valid FormularioCreateDto formularioCreateDto) throws RegraDeNegocioException {
+        FormularioDto formularioDto = formularioService.update(idFormulario, formularioCreateDto);
+        log.info("Atualizando Formulario ID: " + idFormulario);
+        return new ResponseEntity<>(formularioDto, HttpStatus.OK);
     }
 
     @Operation(summary = "Deletar Formulario", description = "Deletar formulario por ID")
@@ -130,6 +126,6 @@ public class FormularioController {
     public void deletarFormulario(@RequestParam Integer idFormulario) throws RegraDeNegocioException {
         formularioService.deleteById(idFormulario);
         log.info("Deletando Formulario ID: " + idFormulario);
-        new ResponseEntity<>(null,HttpStatus.OK);
+        new ResponseEntity<>(null, HttpStatus.OK);
     }
 }

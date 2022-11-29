@@ -22,7 +22,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InscricaoService {
 
-    private static final int ASCENDING = 0;
     private static final int DESCENDING = 1;
     private final InscricaoRepository inscricaoRepository;
     private final ObjectMapper objectMapper;
@@ -51,7 +50,7 @@ public class InscricaoService {
 //        return inscricaoDto;
 //    }
 
-    public PageDto<InscricaoDto> listar(Integer pagina, Integer tamanho, String sort, int order){
+    public PageDto<InscricaoDto> listar(Integer pagina, Integer tamanho, String sort, int order) {
         Sort ordenacao = Sort.by(sort).ascending();
         if (order == DESCENDING) {
             ordenacao = Sort.by(sort).descending();

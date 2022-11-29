@@ -1,12 +1,10 @@
 package com.dbc.vemvemser.service;
 
 
-import com.dbc.vemvemser.dto.CandidatoDto;
-import com.dbc.vemvemser.dto.FormularioCreateDto;
-import com.dbc.vemvemser.dto.FormularioDto;
-import com.dbc.vemvemser.dto.PageDto;
+import com.dbc.vemvemser.dto.*;
 import com.dbc.vemvemser.entity.CandidatoEntity;
 import com.dbc.vemvemser.entity.FormularioEntity;
+import com.dbc.vemvemser.entity.TrilhaEntity;
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.FormularioRepository;
@@ -22,19 +20,21 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class FormularioService {
 
-
-    private static final int ASCENDING = 0;
     private static final int DESCENDING = 1;
     private final FormularioRepository formularioRepository;
+
+    private final TrilhaService trilhaService;
     private final ObjectMapper objectMapper;
 
 
-    public FormularioDto create(FormularioCreateDto formularioCreateDto) {
+    public FormularioDto create(FormularioCreateDto formularioCreateDto) throws RegraDeNegocioException{
         FormularioEntity formulario = objectMapper.convertValue(formularioCreateDto, FormularioEntity.class);
         formulario.setMatriculado(convertToEnum(formularioCreateDto.isMatriculadoBoolean()));
         formulario.setDesafios(convertToEnum(formularioCreateDto.isDesafiosBoolean()));
@@ -45,9 +45,14 @@ public class FormularioService {
         formulario.setProva(convertToEnum(formularioCreateDto.isProvaBoolean()));
         formulario.setEfetivacao(convertToEnum(formularioCreateDto.isEfetivacaoBoolean()));
         formulario.setDisponibilidade(convertToEnum(formularioCreateDto.isDisponibilidadeBoolean()));
+        Set<TrilhaEntity> trilhas = trilhaService.findListaTrilhas(formularioCreateDto.getTrilhas());
+        formulario.setTrilhaEntitySet(trilhas);
         FormularioEntity formularioRetornoBanco = formularioRepository.save(formulario);
 
         FormularioDto formularioDto = objectMapper.convertValue(formularioRetornoBanco, FormularioDto.class);
+        formularioDto.setTrilhas(formularioRetornoBanco.getTrilhaEntitySet().stream()
+                .map(trilhaEntity -> objectMapper.convertValue(trilhaEntity,TrilhaDto.class))
+                .collect(Collectors.toSet()));
 
         return formularioDto;
     }

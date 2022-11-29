@@ -20,7 +20,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GestorService {
 
-    private static final int ASCENDING = 0;
     private static final int DESCENDING = 1;
     private final GestorRepository gestorRepository;
 

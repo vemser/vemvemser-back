@@ -24,17 +24,9 @@ public class TrilhaEntity {
     @Column(name = "id_trilha")
     private Integer idTrilha;
 
-    @Column(name = "FRONTEND")
-    @Enumerated(EnumType.STRING)
-    private TipoMarcacao front;
+    @Column(name = "nome")
+    private String nome;
 
-    @Column(name = "BACKEND")
-    @Enumerated(EnumType.STRING)
-    private TipoMarcacao backend;
-
-    @Column(name = "QA")
-    @Enumerated(EnumType.STRING)
-    private TipoMarcacao qualityAssurance;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "trilhaEntitySet",fetch = FetchType.LAZY)

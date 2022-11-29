@@ -56,9 +56,7 @@ public class GestorController {
     )
     @GetMapping("/id-gestor")
     public ResponseEntity<GestorDto> findById(@RequestParam Integer idGestor) throws RegraDeNegocioException {
-
         GestorDto gestorDto = gestorService.findByIdDTO(idGestor);
-
         return new ResponseEntity<>(gestorDto, HttpStatus.OK);
     }
 
@@ -97,7 +95,8 @@ public class GestorController {
             }
     )
     @PutMapping("/{idUsuario}")
-    public ResponseEntity<GestorDto> editar(@PathVariable(name = "idUsuario") Integer idGestor, @Valid @RequestBody GestorCreateDto gestor) throws RegraDeNegocioException {
+    public ResponseEntity<GestorDto> editar(@PathVariable(name = "idUsuario") Integer idGestor,
+                                            @Valid @RequestBody GestorCreateDto gestor) throws RegraDeNegocioException {
         log.info("Editando o Usuário...");
         GestorDto gestorEditado = gestorService.editar(idGestor, gestor);
         log.info("Usuário editado com sucesso!");
