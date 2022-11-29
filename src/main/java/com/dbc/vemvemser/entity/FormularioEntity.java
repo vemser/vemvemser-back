@@ -2,6 +2,7 @@ package com.dbc.vemvemser.entity;
 
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.enums.TipoTurno;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -69,7 +70,36 @@ public class FormularioEntity {
     @Enumerated(EnumType.STRING)
     private TipoMarcacao lgpd;
 
+    @Column(name = "PROVA")
+    @Enumerated(EnumType.STRING)
+    private TipoMarcacao prova;
+
+    @Column(name = "INGLES")
+    private String ingles;
+
+    @Column(name = "ESPANHOL")
+    private String espanhol;
+
+    @Column(name = "NEURODIVERSIDADE")
+    private String neurodiversidade;
+
+    @Column(name = "CONFIG_PC")
+    private String configurações;
+
+    @Column(name = "EFETIVACAO")
+    @Enumerated(EnumType.STRING)
+    private TipoMarcacao efetivacao;
+
+    @Column(name = "DISPONIBILIDADE")
+    @Enumerated(EnumType.STRING)
+    private TipoMarcacao disponibilidade;
+
     @OneToOne(mappedBy ="formulario" ,fetch = FetchType.LAZY)
     private CandidatoEntity candidato;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_trilha")
+    private TrilhaEntity trilha;
 
 }
