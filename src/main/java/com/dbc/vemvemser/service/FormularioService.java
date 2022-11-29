@@ -4,8 +4,6 @@ package com.dbc.vemvemser.service;
 import com.dbc.vemvemser.dto.FormularioCreateDto;
 import com.dbc.vemvemser.dto.FormularioDto;
 import com.dbc.vemvemser.entity.FormularioEntity;
-import com.dbc.vemvemser.enums.TipoMarcacao;
-import com.dbc.vemvemser.enums.TipoTurno;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.FormularioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,34 +24,7 @@ public class FormularioService {
     private final ObjectMapper objectMapper;
 
 
-    public FormularioDto create(TipoMarcacao matriculado,
-                                String curso,
-                                TipoTurno turno,
-                                String instituicao,
-                                String github,
-                                String linkedin,
-                                TipoMarcacao desafios,
-                                TipoMarcacao problemas,
-                                TipoMarcacao reconhecimento,
-                                TipoMarcacao altruismo,
-                                String resposta,
-                                MultipartFile curriculo,
-                                TipoMarcacao lgpd) throws IOException {
-
-        FormularioCreateDto formularioCreateDto = new FormularioCreateDto();
-        formularioCreateDto.setMatriculado(matriculado);
-        formularioCreateDto.setCurso(curso);
-        formularioCreateDto.setTurno(turno);
-        formularioCreateDto.setInstituicao(instituicao);
-        formularioCreateDto.setGithub(github);
-        formularioCreateDto.setLinkedin(linkedin);
-        formularioCreateDto.setDesafios(desafios);
-        formularioCreateDto.setProblema(problemas);
-        formularioCreateDto.setReconhecimento(reconhecimento);
-        formularioCreateDto.setAltruismo(altruismo);
-        formularioCreateDto.setResposta(resposta);
-        formularioCreateDto.setCurriculo(curriculo.getBytes());
-        formularioCreateDto.setLgpd(lgpd);
+    public FormularioDto create(FormularioCreateDto formularioCreateDto) {
 
         FormularioEntity formulario = objectMapper.convertValue(formularioCreateDto, FormularioEntity.class);
 

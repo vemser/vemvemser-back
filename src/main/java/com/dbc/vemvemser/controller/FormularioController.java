@@ -41,42 +41,44 @@ public class FormularioController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<FormularioDto> create(
-                                                @RequestParam TipoMarcacao matriculado,
-                                                @RequestParam String curso,
-                                                @RequestParam TipoTurno turno,
-                                                @RequestParam String instituicao,
-                                                @RequestParam (required = false, name = "github") String github,
-                                                @RequestParam (required = false, name = "linkedin") String linkedin,
-                                                @RequestParam TipoMarcacao desafios,
-                                                @RequestParam TipoMarcacao problemas,
-                                                @RequestParam TipoMarcacao reconhecimento,
-                                                @RequestParam TipoMarcacao altruismo,
-                                                @RequestParam String resposta,
-                                                @RequestParam TipoMarcacao lgpd,
-                                                @RequestPart (required = false, name = "curriculo") MultipartFile curriculo) throws IOException {
+    @PostMapping
+    public ResponseEntity<FormularioDto> create(FormularioCreateDto formularioCreateDto) {
 
-        FormularioDto formularioDto=formularioService.create(matriculado,
-                curso,
-                turno,
-                instituicao,
-                github,
-                linkedin,
-                desafios,
-                problemas,
-                reconhecimento,
-                altruismo,
-                resposta,
-                curriculo,
-                lgpd);
+        FormularioDto formularioDto=formularioService.create(formularioCreateDto);
         log.info("Criando Formulario ID:" + formularioDto.getIdFormulario());
         return new ResponseEntity<>(formularioDto, HttpStatus.OK);
     }
 
 
 
-    @GetMapping("/get-curriculo/id-formulario")
+    @Operation(summary = "Update curriculo", description = "Update curriculo por ID Formulario.")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Atualizou curriculo com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @PutMapping(value = "/update-curriculo-by-id-formulario",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<String> updateCurriculo(@RequestParam Integer idFormulario,@RequestPart MultipartFile curriculo) throws RegraDeNegocioException, IOException {
+
+        String pdfBase64 = formularioService.updateCurriculo(curriculo,idFormulario);
+
+        log.info("Atualizando Formulario ID: "+ idFormulario);
+        return new ResponseEntity<>(pdfBase64,HttpStatus.OK);
+    }
+
+
+
+    @Operation(summary = "Retorna curriculo em Base64", description = "Retorna curriculo em Base64 por ID de formulario")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retornou curriculo em Base64 com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @GetMapping("/get-curriculo-by-id-formulario")
     public ResponseEntity<String> retornarCurriculoPDF(@RequestParam Integer idFormulario) throws RegraDeNegocioException {
         log.info("Recuperando Curriculo referente ao Formulario ID: " + idFormulario);
         return new ResponseEntity<>(formularioService.retornarCurriculoDoCandidatoDecode(idFormulario), HttpStatus.OK);
@@ -96,13 +98,30 @@ public class FormularioController {
         return new ResponseEntity<>(formularioService.list(), HttpStatus.OK);
     }
 
+    @Operation(summary = "Atualizar Formulario", description = "Atualizar formulario por ID")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Atualizado com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
     @PutMapping
-    public ResponseEntity<FormularioDto> updateFormulario(@RequestParam Integer idFormulario, @RequestBody @Valid FormularioCreateDto formularioCreateDto) throws RegraDeNegocioException{
+    public ResponseEntity<FormularioDto> updateFormulario(@RequestParam Integer idFormulario,
+                                                          @RequestBody @Valid FormularioCreateDto formularioCreateDto) throws RegraDeNegocioException{
         FormularioDto formularioDto = formularioService.update(idFormulario,formularioCreateDto);
         log.info("Atualizando Formulario ID: "+ idFormulario);
         return new ResponseEntity<>(formularioDto,HttpStatus.OK);
     }
 
+    @Operation(summary = "Deletar Formulario", description = "Deletar formulario por ID")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Atualizado com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
     @DeleteMapping
     public void deletarFormulario(@RequestParam Integer idFormulario) throws RegraDeNegocioException {
         formularioService.deleteById(idFormulario);
