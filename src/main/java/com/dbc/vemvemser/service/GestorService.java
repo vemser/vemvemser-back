@@ -106,7 +106,9 @@ public class GestorService {
 //    }
 
     public GestorDto convertToDto(GestorEntity gestorEntity) {
-        return objectMapper.convertValue(gestorEntity, GestorDto.class);
+        GestorDto gestorDto = objectMapper.convertValue(gestorEntity, GestorDto.class);
+        gestorDto.setCargoDto(cargoService.convertToDto(gestorEntity.getCargoEntity()));
+        return gestorDto;
     }
 
     private GestorEntity convertToEntity(GestorCreateDto gestorCreateDto) throws RegraDeNegocioException {
