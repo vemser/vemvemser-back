@@ -42,6 +42,9 @@ public class FormularioService {
         formulario.setReconhecimento(convertToEnum(formularioCreateDto.isReconhecimentoBoolean()));
         formulario.setAltruismo(convertToEnum(formularioCreateDto.isAltruismoBoolean()));
         formulario.setLgpd(convertToEnum((formularioCreateDto.isLgpdBoolean())));
+        formulario.setProva(convertToEnum(formularioCreateDto.isProvaBoolean()));
+        formulario.setEfetivacao(convertToEnum(formularioCreateDto.isEfetivacaoBoolean()));
+        formulario.setDisponibilidade(convertToEnum(formularioCreateDto.isDisponibilidadeBoolean()));
         FormularioEntity formularioRetornoBanco = formularioRepository.save(formulario);
 
         FormularioDto formularioDto = objectMapper.convertValue(formularioRetornoBanco, FormularioDto.class);

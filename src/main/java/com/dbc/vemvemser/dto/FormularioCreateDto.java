@@ -1,6 +1,5 @@
 package com.dbc.vemvemser.dto;
 
-import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.enums.TipoTurno;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -39,7 +38,6 @@ public class FormularioCreateDto {
     @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
     private boolean reconhecimentoBoolean;
 
-
     @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
     private boolean altruismoBoolean;
 
@@ -51,5 +49,26 @@ public class FormularioCreateDto {
 
     @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
     private boolean lgpdBoolean;
+
+    @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
+    private boolean provaBoolean;
+
+    @Schema(example = "Não possuo", description = "Selecione seu nivel de inglês")
+    private String ingles;
+
+    @Schema(example = "Não possuo", description = "Selecione seu nivel de espanhol")
+    private String espanhol;
+
+    @Schema(example = "TDAH", description = "Digite sua neurodiversidade")
+    private String neurodiversidade;
+
+    @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
+    private String configurações;
+
+    @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
+    private boolean efetivacaoBoolean;
+
+    @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
+    private boolean disponibilidadeBoolean;
 
 }

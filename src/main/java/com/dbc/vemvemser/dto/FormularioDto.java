@@ -3,6 +3,7 @@ package com.dbc.vemvemser.dto;
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.enums.TipoTurno;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 @Getter
@@ -38,4 +39,18 @@ public class FormularioDto {
     private String curriculo;
 
     private TipoMarcacao lgpd;
+
+    private TipoMarcacao prova;
+
+    private String ingles;
+
+    private String espanhol;
+
+    private String neurodiversidade;
+
+    private String configurações;
+
+    private TipoMarcacao efetivacao;
+
+    private TipoMarcacao disponibilidade;
 }
