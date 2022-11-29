@@ -12,4 +12,5 @@ public class GestorDto {
 
     private String nome;
 
+//    private String ativo;
 }

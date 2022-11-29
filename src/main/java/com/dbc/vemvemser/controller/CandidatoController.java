@@ -2,6 +2,7 @@ package com.dbc.vemvemser.controller;
 
 import com.dbc.vemvemser.dto.CandidatoCreateDto;
 import com.dbc.vemvemser.dto.CandidatoDto;
+import com.dbc.vemvemser.dto.PageDto;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.service.CandidatoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -77,9 +78,18 @@ public class CandidatoController {
         CandidatoDto candidatoDto = candidatoService.update(idCandidato,candidatoCreateDto);
         return new ResponseEntity<>(candidatoDto,HttpStatus.OK);
     }
-
-
-
+    @Operation(summary = "Pega a lista paginada de indicações", description = "Resgata a lista paginada do banco de dados")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Foi resgatado com sucesso"),
+                    @ApiResponse(responseCode = "404", description = "Não encontrado"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @GetMapping("/candidato-paginado")
+    public ResponseEntity<PageDto<CandidatoDto>> listIndicacaoPaginada(Integer pagina, Integer tamanho) {
+        return new ResponseEntity<>(candidatoService.listPessoaIndicacaoPaginada(pagina,tamanho),HttpStatus.OK);
+    }
 
 
 

@@ -3,11 +3,14 @@ package com.dbc.vemvemser.service;
 import com.dbc.vemvemser.dto.CandidatoCreateDto;
 import com.dbc.vemvemser.dto.CandidatoDto;
 import com.dbc.vemvemser.dto.FormularioDto;
+import com.dbc.vemvemser.dto.PageDto;
 import com.dbc.vemvemser.entity.CandidatoEntity;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.CandidatoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,6 +58,24 @@ public class CandidatoService {
     private CandidatoEntity findById(Integer idCandidato) throws RegraDeNegocioException {
         return candidatoRepository.findById(idCandidato)
                 .orElseThrow(() -> new RegraDeNegocioException("Erro ao buscar candidato!"));
+    }
+
+    public PageDto<CandidatoDto> listPessoaIndicacaoPaginada(Integer pagina, Integer tamanho) {
+        PageRequest pageRequest = PageRequest.of(pagina, tamanho);
+        Page<CandidatoEntity> paginaCandidatoEntity = candidatoRepository.findAll(pageRequest);
+
+        List<CandidatoDto> candidatoDtos = paginaCandidatoEntity.getContent().stream()
+                .map(candidatoEntity -> {
+                    CandidatoDto candidatoDto = objectMapper.convertValue(candidatoEntity, CandidatoDto.class);
+                    candidatoDto.setNome(candidatoEntity.getNome());
+                    return candidatoDto;
+                }).toList();
+
+        return new PageDto<>(paginaCandidatoEntity.getTotalElements(),
+                paginaCandidatoEntity.getTotalPages(),
+                pagina,
+                tamanho,
+                candidatoDtos);
     }
 
 }

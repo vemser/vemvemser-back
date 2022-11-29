@@ -58,7 +58,7 @@ public class GestorController {
     @Operation(summary = "Cadastrar um novo colaborador/administrador", description = "Cadastro de colaborador/administrador")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "201", description = "Cadastro realizado com sucesso"),
+                    @ApiResponse(responseCode = "200", description = "Cadastro realizado com sucesso"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
@@ -100,4 +100,43 @@ public class GestorController {
         return ResponseEntity.noContent().build();
     }
 
+//    @Operation(summary = "Desativar conta", description = "Desativar sua conta do gestor")
+//    @ApiResponses(
+//            value = {
+//                    @ApiResponse(responseCode = "201", description = "Conta desativada com sucesso"),
+//                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+//                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+//            }
+//    )
+//    @PutMapping("/desativacao-conta/{idGestor}")
+//    public ResponseEntity<GestorDto> desativar(@PathVariable(name = "idGestor") Integer idGestor) throws RegraDeNegocioException {
+//        return new ResponseEntity<>(gestorService.desativarConta(idGestor), HttpStatus.OK);
+//
+//    }
+//
+//    @Operation(summary = "Listar contas inativas", description = "Listar todas as contas inativas")
+//    @ApiResponses(
+//            value = {
+//                    @ApiResponse(responseCode = "200", description = "Retorna a lista de gestores inativos"),
+//                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+//                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+//            }
+//    )
+//    @GetMapping("/contas-inativas")
+//    public ResponseEntity<List<GestorDto>> listarContaInativas() {
+//        return new ResponseEntity<>(gestorService.contasInativas(), HttpStatus.OK);
+//    }
+
+//    @Operation(summary = "Pegar conta logada", description = "Pegar sua conta logado no sistema")
+//    @ApiResponses(
+//            value = {
+//                    @ApiResponse(responseCode = "201", description = "Gestor pego com sucesso"),
+//                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+//                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+//            }
+//    )
+//    @GetMapping("/gestor-logado")
+//    public ResponseEntity<GestorDto> pegarUserLogado() throws RegraDeNegocioException {
+//        return new ResponseEntity<>(gestorService.getLoggedUser(), HttpStatus.OK);
+//    }
 }

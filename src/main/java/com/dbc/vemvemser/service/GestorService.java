@@ -25,6 +25,10 @@ public class GestorService {
 
     private final ObjectMapper objectMapper;
 
+    private static final int USUARIO_ATIVO = 1;
+
+    private static final int USUARIO_INATIVO = 0;
+
 
     public GestorDto autenticarUsuario(LoginCreateDto loginCreateDto) throws RegraDeNegocioException {
         GestorEntity gestorEntity = gestorRepository.findGestorEntityByEmailAndAndSenha(loginCreateDto.getEmail(),loginCreateDto.getSenha())
@@ -76,4 +80,28 @@ public class GestorService {
         gestorRepository.delete(gestorEntity);
 
     }
+
+//    public Integer getIdLoggedUser() {
+//        return Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+//    }
+//
+//    public GestorDto getLoggedUser() throws RegraDeNegocioException {
+//        return objectMapper.convertValue(findById(getIdLoggedUser()), GestorDto.class);
+//    }
+
+
+//    public GestorDto desativarConta(Integer idUsuario) throws RegraDeNegocioException {
+//        GestorEntity usuarioEncontrado = findById(idUsuario);
+//        usuarioEncontrado.setAtivo(USUARIO_INATIVO);
+//        gestorRepository.save(usuarioEncontrado);
+//
+//        return objectMapper.convertValue(usuarioEncontrado, GestorDto.class);
+//    }
+//    public List<GestorDto> contasInativas(){
+//        return gestorRepository.findByAtivo(USUARIO_INATIVO).stream()
+//                .map(gestorEntity -> objectMapper.convertValue(gestorEntity, GestorDto.class))
+//                .toList();
+//    }
+
+
 }
