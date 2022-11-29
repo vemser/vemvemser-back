@@ -6,6 +6,7 @@ import com.dbc.vemvemser.dto.FormularioDto;
 import com.dbc.vemvemser.dto.PageDto;
 import com.dbc.vemvemser.entity.CandidatoEntity;
 import com.dbc.vemvemser.entity.FormularioEntity;
+import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.CandidatoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,6 +32,7 @@ public class CandidatoService {
 
     public CandidatoDto cadastro(CandidatoCreateDto candidatoCreateDto) throws RegraDeNegocioException {
         CandidatoEntity candidatoEntity = objectMapper.convertValue(candidatoCreateDto, CandidatoEntity.class);
+        candidatoEntity.setPcd((convertToEnum(candidatoCreateDto.isPcdboolean())));
         candidatoEntity.setFormulario(formularioService.findById(candidatoCreateDto.getIdFormulario()));
         CandidatoDto candidatoDto = objectMapper.convertValue(candidatoRepository.save(candidatoEntity), CandidatoDto.class);
         candidatoDto.setFormulario(objectMapper.convertValue(candidatoEntity.getFormulario(), FormularioDto.class));
@@ -76,6 +78,14 @@ public class CandidatoService {
                 pagina,
                 tamanho,
                 candidatoDtos);
+    }
+
+    private TipoMarcacao convertToEnum(boolean opcao) {
+        if (opcao) {
+            return TipoMarcacao.T;
+        } else {
+            return TipoMarcacao.F;
+        }
     }
 
 }

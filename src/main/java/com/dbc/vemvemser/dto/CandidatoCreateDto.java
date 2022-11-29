@@ -48,6 +48,9 @@ public class CandidatoCreateDto {
     @Schema(description = "Cidade em que habita o candidato", example = "Porto Alegre")
     private String cidade;
 
+    @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
+    private boolean pcdboolean;
+
     @NotNull
     private Integer idFormulario;
 }
