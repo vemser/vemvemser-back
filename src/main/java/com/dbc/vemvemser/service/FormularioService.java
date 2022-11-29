@@ -1,14 +1,20 @@
 package com.dbc.vemvemser.service;
 
 
+import com.dbc.vemvemser.dto.CandidatoDto;
 import com.dbc.vemvemser.dto.FormularioCreateDto;
 import com.dbc.vemvemser.dto.FormularioDto;
+import com.dbc.vemvemser.dto.PageDto;
+import com.dbc.vemvemser.entity.CandidatoEntity;
 import com.dbc.vemvemser.entity.FormularioEntity;
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.FormularioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +27,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class FormularioService {
 
+
+    private static final int ASCENDING = 0;
+    private static final int DESCENDING = 1;
     private final FormularioRepository formularioRepository;
     private final ObjectMapper objectMapper;
 
@@ -52,9 +61,22 @@ public class FormularioService {
         return Base64Utils.encodeToString(formularioComCurriculo.getCurriculo());
     }
 
-    public List<FormularioDto> list() {
-        return formularioRepository.findAll().stream()
-                .map(formularioEntity -> objectMapper.convertValue(formularioEntity, FormularioDto.class)).toList();
+    public PageDto<FormularioDto> listAllPaginado(Integer pagina, Integer tamanho, String sort, int order) {
+        Sort ordenacao = Sort.by(sort).ascending();
+        if (order == DESCENDING) {
+            ordenacao = Sort.by(sort).descending();
+        }
+        PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
+        Page<FormularioEntity> paginaFormularioEntity = formularioRepository.findAll(pageRequest);
+
+        List<FormularioDto> formularioDtos = paginaFormularioEntity.getContent().stream()
+                .map(candidatoEntity -> objectMapper.convertValue(candidatoEntity, FormularioDto.class)).toList();
+
+        return new PageDto<>(paginaFormularioEntity.getTotalElements(),
+                paginaFormularioEntity.getTotalPages(),
+                pagina,
+                tamanho,
+                formularioDtos);
     }
 
     public FormularioEntity findById(Integer idFormulario) throws RegraDeNegocioException {

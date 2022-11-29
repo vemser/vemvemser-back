@@ -47,8 +47,11 @@ public class CandidatoController {
             }
     )
     @GetMapping("/listar")
-    public ResponseEntity<PageDto<CandidatoDto>> listarCandidatos(Integer pagina, Integer tamanho) {
-        return new ResponseEntity<>(candidatoService.listAllPaginado(pagina,tamanho), HttpStatus.OK);
+    public ResponseEntity<PageDto<CandidatoDto>> listarCandidatos(@RequestParam(defaultValue = "0", required = false)Integer pagina,
+                                                                  @RequestParam(defaultValue = "10", required = false)Integer tamanho,
+                                                                  @RequestParam(defaultValue = "idCandidato", required = false)String sort,
+                                                                  @RequestParam(defaultValue = "0", required = false)int order) {
+        return new ResponseEntity<>(candidatoService.listaAllPaginado(pagina,tamanho,sort,order), HttpStatus.OK);
     }
 
     @Operation(summary = "Deletar Candidato", description = "deleta o candidato")
@@ -77,18 +80,6 @@ public class CandidatoController {
     public ResponseEntity<CandidatoDto> atualizarCandidato(@RequestParam Integer idCandidato,@RequestBody @Valid CandidatoCreateDto candidatoCreateDto) throws RegraDeNegocioException{
         CandidatoDto candidatoDto = candidatoService.update(idCandidato,candidatoCreateDto);
         return new ResponseEntity<>(candidatoDto,HttpStatus.OK);
-    }
-    @Operation(summary = "Pega a lista paginada de indicações", description = "Resgata a lista paginada do banco de dados")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "Foi resgatado com sucesso"),
-                    @ApiResponse(responseCode = "404", description = "Não encontrado"),
-                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
-            }
-    )
-    @GetMapping("/candidato-paginado")
-    public ResponseEntity<PageDto<CandidatoDto>> listIndicacaoPaginada(Integer pagina, Integer tamanho) {
-        return new ResponseEntity<>(candidatoService.listPessoaIndicacaoPaginada(pagina,tamanho),HttpStatus.OK);
     }
 
 

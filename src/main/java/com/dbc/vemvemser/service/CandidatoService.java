@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CandidatoService {
 
+    private static final int ASCENDING = 0;
+    private static final int DESCENDING = 1;
     private final CandidatoRepository candidatoRepository;
 
     private final FormularioService formularioService;
@@ -32,7 +35,7 @@ public class CandidatoService {
         return objectMapper.convertValue(candidatoRepository.save(candidatoEntity), CandidatoDto.class);
     }
 
-    public PageDto<CandidatoDto> listAllPaginado(Integer pagina, Integer tamanho) {
+    public PageDto<CandidatoDto> listaAllPaginado(Integer pagina, Integer tamanho) {
         PageRequest pageRequest = PageRequest.of(pagina, tamanho);
         Page<CandidatoEntity> paginaDoRepositorio = candidatoRepository.findAll(pageRequest);
         List<CandidatoDto> candidatosPorPagina = paginaDoRepositorio.getContent().stream()
@@ -64,8 +67,12 @@ public class CandidatoService {
                 .orElseThrow(() -> new RegraDeNegocioException("Erro ao buscar candidato!"));
     }
 
-    public PageDto<CandidatoDto> listPessoaIndicacaoPaginada(Integer pagina, Integer tamanho) {
-        PageRequest pageRequest = PageRequest.of(pagina, tamanho);
+    public PageDto<CandidatoDto> listaAllPaginado(Integer pagina, Integer tamanho, String sort, int order) {
+        Sort ordenacao = Sort.by(sort).ascending();
+        if (order == DESCENDING) {
+            ordenacao = Sort.by(sort).descending();
+        }
+        PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
         Page<CandidatoEntity> paginaCandidatoEntity = candidatoRepository.findAll(pageRequest);
 
         List<CandidatoDto> candidatoDtos = paginaCandidatoEntity.getContent().stream()

@@ -3,6 +3,7 @@ package com.dbc.vemvemser.controller;
 
 import com.dbc.vemvemser.dto.FormularioCreateDto;
 import com.dbc.vemvemser.dto.FormularioDto;
+import com.dbc.vemvemser.dto.PageDto;
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.enums.TipoTurno;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
@@ -92,10 +93,13 @@ public class FormularioController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @GetMapping
-    public ResponseEntity<List<FormularioDto>> listAll() {
+    @GetMapping("/listar")
+    public ResponseEntity<PageDto<FormularioDto>> listAll(@RequestParam(defaultValue = "0", required = false)Integer pagina,
+                                                          @RequestParam(defaultValue = "10", required = false)Integer tamanho,
+                                                          @RequestParam(defaultValue = "idFormulario", required = false)String sort,
+                                                          @RequestParam(defaultValue = "0", required = false)int order){
         log.info("Listando todos os formulários");
-        return new ResponseEntity<>(formularioService.list(), HttpStatus.OK);
+        return new ResponseEntity<>(formularioService.listAllPaginado(pagina,tamanho,sort,order), HttpStatus.OK);
     }
 
     @Operation(summary = "Atualizar Formulario", description = "Atualizar formulario por ID")
