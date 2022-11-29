@@ -2,7 +2,9 @@ package com.dbc.vemvemser.service;
 
 import com.dbc.vemvemser.dto.AvaliacaoCreateDto;
 import com.dbc.vemvemser.dto.AvaliacaoDto;
+import com.dbc.vemvemser.dto.InscricaoDto;
 import com.dbc.vemvemser.entity.AvaliacaoEntity;
+import com.dbc.vemvemser.entity.InscricaoEntity;
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.AvaliacaoRepository;
@@ -27,7 +29,8 @@ public class AvaliacaoService {
     public AvaliacaoDto create(AvaliacaoCreateDto avaliacaoCreateDto) throws RegraDeNegocioException {
 
         AvaliacaoEntity avaliacaoEntity = objectMapper.convertValue(avaliacaoCreateDto, AvaliacaoEntity.class);
-        avaliacaoEntity.setInscricao(inscricaoService.findById(avaliacaoCreateDto.getIdInscricao()));
+        InscricaoEntity inscricaoRetorno = objectMapper.convertValue(inscricaoService.findDtoByid(avaliacaoCreateDto.getIdInscricao()),InscricaoEntity.class);
+        avaliacaoEntity.setInscricao(inscricaoRetorno);
 
         AvaliacaoDto avaliacaoDto = objectMapper.convertValue(avaliacaoRepository.save(avaliacaoEntity), AvaliacaoDto.class);
 

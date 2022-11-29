@@ -22,5 +22,5 @@ public class AvaliacaoCreateDto {
     private boolean aprovadoBoolean;
 
     @NotNull
-    private Integer IdInscricao;
+    private Integer idInscricao;
 }
