@@ -5,6 +5,7 @@ import com.dbc.vemvemser.dto.CandidatoDto;
 import com.dbc.vemvemser.dto.FormularioDto;
 import com.dbc.vemvemser.dto.PageDto;
 import com.dbc.vemvemser.entity.CandidatoEntity;
+import com.dbc.vemvemser.entity.FormularioEntity;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.CandidatoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,7 +32,9 @@ public class CandidatoService {
     public CandidatoDto cadastro(CandidatoCreateDto candidatoCreateDto) throws RegraDeNegocioException {
         CandidatoEntity candidatoEntity = objectMapper.convertValue(candidatoCreateDto, CandidatoEntity.class);
         candidatoEntity.setFormulario(formularioService.findById(candidatoCreateDto.getIdFormulario()));
-        return objectMapper.convertValue(candidatoRepository.save(candidatoEntity), CandidatoDto.class);
+        CandidatoDto candidatoDto = objectMapper.convertValue(candidatoRepository.save(candidatoEntity), CandidatoDto.class);
+        candidatoDto.setFormulario(objectMapper.convertValue(candidatoEntity.getFormulario(), FormularioDto.class));
+        return candidatoDto;
     }
 
 

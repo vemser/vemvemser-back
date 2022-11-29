@@ -16,9 +16,6 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class AvaliacaoCreateDto {
 
-    @JsonIgnore
-    private GestorEntity login;
-
     private boolean aprovadoBoolean;
 
     @NotNull

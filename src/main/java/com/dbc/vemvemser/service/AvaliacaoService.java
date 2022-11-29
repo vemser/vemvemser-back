@@ -8,6 +8,7 @@ import com.dbc.vemvemser.entity.InscricaoEntity;
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.AvaliacaoRepository;
+import com.dbc.vemvemser.repository.GestorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,9 @@ public class AvaliacaoService {
     private static final int DESCENDING = 1;
     private final ObjectMapper objectMapper;
     private final AvaliacaoRepository avaliacaoRepository;
-
     private final InscricaoService inscricaoService;
+
+    private final GestorRepository gestorRepository;
 
 
     public AvaliacaoDto create(AvaliacaoCreateDto avaliacaoCreateDto) throws RegraDeNegocioException {
@@ -31,6 +33,8 @@ public class AvaliacaoService {
         AvaliacaoEntity avaliacaoEntity = objectMapper.convertValue(avaliacaoCreateDto, AvaliacaoEntity.class);
         InscricaoEntity inscricaoRetorno = objectMapper.convertValue(inscricaoService.findDtoByid(avaliacaoCreateDto.getIdInscricao()),InscricaoEntity.class);
         avaliacaoEntity.setInscricao(inscricaoRetorno);
+        avaliacaoEntity.setAprovado(convertToEnum(avaliacaoCreateDto.isAprovadoBoolean()));
+        avaliacaoEntity.setAvaliador(gestorRepository.getById(1));
 
         AvaliacaoDto avaliacaoDto = objectMapper.convertValue(avaliacaoRepository.save(avaliacaoEntity), AvaliacaoDto.class);
 

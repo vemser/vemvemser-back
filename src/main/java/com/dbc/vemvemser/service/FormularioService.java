@@ -34,7 +34,7 @@ public class FormularioService {
     private final ObjectMapper objectMapper;
 
 
-    public FormularioDto create(FormularioCreateDto formularioCreateDto) throws RegraDeNegocioException{
+    public FormularioDto create(FormularioCreateDto formularioCreateDto) throws RegraDeNegocioException {
         FormularioEntity formulario = objectMapper.convertValue(formularioCreateDto, FormularioEntity.class);
         formulario.setMatriculado(convertToEnum(formularioCreateDto.isMatriculadoBoolean()));
         formulario.setDesafios(convertToEnum(formularioCreateDto.isDesafiosBoolean()));
@@ -51,7 +51,7 @@ public class FormularioService {
 
         FormularioDto formularioDto = objectMapper.convertValue(formularioRetornoBanco, FormularioDto.class);
         formularioDto.setTrilhas(formularioRetornoBanco.getTrilhaEntitySet().stream()
-                .map(trilhaEntity -> objectMapper.convertValue(trilhaEntity,TrilhaDto.class))
+                .map(trilhaEntity -> objectMapper.convertValue(trilhaEntity, TrilhaDto.class))
                 .collect(Collectors.toSet()));
 
         return formularioDto;
@@ -78,8 +78,14 @@ public class FormularioService {
         Page<FormularioEntity> paginaFormularioEntity = formularioRepository.findAll(pageRequest);
 
         List<FormularioDto> formularioDtos = paginaFormularioEntity.getContent().stream()
-                .map(candidatoEntity -> objectMapper.convertValue(candidatoEntity, FormularioDto.class)).toList();
-
+                .map(formularioEntity -> {
+                    FormularioDto formulario = objectMapper.convertValue(formularioEntity, FormularioDto.class);
+                    Set<TrilhaDto> trilhas = formularioEntity.getTrilhaEntitySet().stream()
+                            .map(trilhaEntity -> objectMapper.convertValue(trilhaEntity, TrilhaDto.class))
+                            .collect(Collectors.toSet());
+                    formulario.setTrilhas(trilhas);
+                    return formulario;
+                }).toList();
         return new PageDto<>(paginaFormularioEntity.getTotalElements(),
                 paginaFormularioEntity.getTotalPages(),
                 pagina,
@@ -90,6 +96,12 @@ public class FormularioService {
     public FormularioEntity findById(Integer idFormulario) throws RegraDeNegocioException {
         return formularioRepository.findById(idFormulario)
                 .orElseThrow(() -> new RegraDeNegocioException("Erro ao buscar Formulario"));
+    }
+
+    public FormularioDto findDtoById(Integer idFormulario) throws RegraDeNegocioException {
+        Optional formulario= formularioRepository.findById(idFormulario);
+        FormularioDto formularioDto = objectMapper.convertValue(formulario,FormularioDto.class);
+        return formularioDto;
     }
 
     public void deleteById(Integer idFormulario) throws RegraDeNegocioException {
@@ -117,10 +129,10 @@ public class FormularioService {
         return Base64Utils.encodeToString(formulario.getCurriculo());
     }
 
-    private TipoMarcacao convertToEnum(boolean opcao){
-        if(opcao){
+    private TipoMarcacao convertToEnum(boolean opcao) {
+        if (opcao) {
             return TipoMarcacao.T;
-        }else{
+        } else {
             return TipoMarcacao.F;
         }
     }

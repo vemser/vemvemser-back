@@ -23,7 +23,7 @@ public class AvaliacaoEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_GESTOR", referencedColumnName = "ID_GESTOR")
-    private GestorEntity login;
+    private GestorEntity avaliador;
 
     @Column(name="APROVADO")
     private TipoMarcacao aprovado;
