@@ -1,9 +1,10 @@
 package com.dbc.vemvemser.service;
 
 
-import com.dbc.vemvemser.dto.*;
-import com.dbc.vemvemser.entity.CargoEntity;
-import com.dbc.vemvemser.entity.FormularioEntity;
+import com.dbc.vemvemser.dto.GestorCreateDto;
+import com.dbc.vemvemser.dto.GestorDto;
+import com.dbc.vemvemser.dto.LoginCreateDto;
+import com.dbc.vemvemser.dto.PageDto;
 import com.dbc.vemvemser.entity.GestorEntity;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.GestorRepository;
@@ -22,9 +23,7 @@ public class GestorService {
 
     private static final int DESCENDING = 1;
     private final GestorRepository gestorRepository;
-
     private final CargoService cargoService;
-
     private final ObjectMapper objectMapper;
 
     private static final int USUARIO_ATIVO = 1;
@@ -33,21 +32,14 @@ public class GestorService {
 
 
     public GestorDto autenticarUsuario(LoginCreateDto loginCreateDto) throws RegraDeNegocioException {
-        GestorEntity gestorEntity = gestorRepository.findGestorEntityByEmailAndAndSenha(loginCreateDto.getEmail(),loginCreateDto.getSenha())
-                .orElseThrow(()-> new RegraDeNegocioException("Usuario ou senha invalido!"));
-        return objectMapper.convertValue(gestorEntity, GestorDto.class);
+        GestorEntity gestorEntity = gestorRepository.findGestorEntityByEmailAndAndSenha(loginCreateDto.getEmail(), loginCreateDto.getSenha())
+                .orElseThrow(() -> new RegraDeNegocioException("Usuario ou senha invalido!"));
+        return convertToDto(gestorEntity);
     }
 
     public GestorDto cadastrar(GestorCreateDto gestorCreateDto) throws RegraDeNegocioException {
-        CargoEntity cargo = cargoService.findById(gestorCreateDto.getTipoCargo());
-        GestorEntity gestorEntity = new GestorEntity();
-        gestorEntity.setNome(gestorCreateDto.getNome());
-        gestorEntity.setCargoEntity(cargo);
-        gestorEntity.setEmail(gestorCreateDto.getEmail());
-        gestorEntity.setSenha(gestorCreateDto.getSenha());
-
-
-        return objectMapper.convertValue(gestorRepository.save(gestorEntity), GestorDto.class);
+        GestorEntity gestorEntity = convertToEntity(gestorCreateDto);
+        return convertToDto(gestorRepository.save(gestorEntity));
     }
 
     public PageDto<GestorDto> listar(Integer pagina, Integer tamanho, String sort, int order) {
@@ -57,10 +49,8 @@ public class GestorService {
         }
         PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
         Page<GestorEntity> paginaGestorEntities = gestorRepository.findAll(pageRequest);
-
         List<GestorDto> gestorDtos = paginaGestorEntities.getContent().stream()
-                .map(gestorEntity -> objectMapper.convertValue(gestorEntity, GestorDto.class)).toList();
-
+                .map(gestorEntity -> convertToDto(gestorEntity)).toList();
         return new PageDto<>(paginaGestorEntities.getTotalElements(),
                 paginaGestorEntities.getTotalPages(),
                 pagina,
@@ -68,9 +58,9 @@ public class GestorService {
                 gestorDtos);
     }
 
-    public GestorDto findByIdDTO(Integer idGestor) throws RegraDeNegocioException {
-       GestorDto gestorDto= objectMapper.convertValue(findById(idGestor),GestorDto.class);
-       return gestorDto;
+    public GestorDto findDtoById(Integer idGestor) throws RegraDeNegocioException {
+        GestorDto gestorDto = convertToDto(findById(idGestor));
+        return gestorDto;
     }
 
     private GestorEntity findById(Integer id) throws RegraDeNegocioException {
@@ -79,24 +69,17 @@ public class GestorService {
     }
 
     public GestorDto editar(Integer id, GestorCreateDto gestorAtualizar) throws RegraDeNegocioException {
-        GestorEntity gestorEncontrado = findById(id);
-        gestorEncontrado.setNome(gestorAtualizar.getNome());
-        gestorEncontrado.setEmail(gestorAtualizar.getEmail());
-        gestorEncontrado.setSenha(gestorAtualizar.getSenha());
-        gestorEncontrado.setCargoEntity(cargoService.findById(gestorAtualizar.getTipoCargo()));
-
-        gestorRepository.save(gestorEncontrado);
-
-        GestorDto usuarioDto = objectMapper.convertValue(gestorEncontrado, GestorDto.class);
-
-        return usuarioDto;
+        GestorEntity gestorEntity = convertToEntity(gestorAtualizar);
+        gestorEntity.setIdGestor(id);
+        gestorRepository.save(gestorEntity);
+        GestorDto gestorDto = convertToDto(gestorEntity);
+        return gestorDto;
 
     }
 
     public void remover(Integer id) throws RegraDeNegocioException {
-        GestorEntity gestorEntity = findById(id);
-        GestorDto gestorDto = objectMapper.convertValue(gestorEntity, GestorDto.class);
-        gestorRepository.delete(gestorEntity);
+        findById(id);
+        gestorRepository.deleteById(id);
 
     }
 
@@ -121,6 +104,21 @@ public class GestorService {
 //                .map(gestorEntity -> objectMapper.convertValue(gestorEntity, GestorDto.class))
 //                .toList();
 //    }
+
+    public GestorDto convertToDto(GestorEntity gestorEntity) {
+        return objectMapper.convertValue(gestorEntity, GestorDto.class);
+    }
+
+    private GestorEntity convertToEntity(GestorCreateDto gestorCreateDto) throws RegraDeNegocioException {
+        GestorEntity gestorEntity = objectMapper.convertValue(gestorCreateDto, GestorEntity.class);
+        gestorEntity.setCargoEntity(cargoService.findById(gestorCreateDto.getTipoCargo()));
+        return gestorEntity;
+    }
+    public GestorEntity convertToEntity(GestorDto gestorDto) throws RegraDeNegocioException {
+        GestorEntity gestorEntity = objectMapper.convertValue(gestorDto, GestorEntity.class);
+        return gestorEntity;
+    }
+
 
 
 }

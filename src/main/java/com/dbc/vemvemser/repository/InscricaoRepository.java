@@ -5,6 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface InscricaoRepository  extends JpaRepository<InscricaoEntity, Integer> {
 
-    InscricaoEntity findByIdInscricao(Integer idInscricao);
-
 }

@@ -31,11 +31,9 @@ public class CandidatoService {
 
 
     public CandidatoDto cadastro(CandidatoCreateDto candidatoCreateDto) throws RegraDeNegocioException {
-        CandidatoEntity candidatoEntity = objectMapper.convertValue(candidatoCreateDto, CandidatoEntity.class);
-        candidatoEntity.setPcd((convertToEnum(candidatoCreateDto.isPcdboolean())));
-        candidatoEntity.setFormulario(formularioService.findById(candidatoCreateDto.getIdFormulario()));
-        CandidatoDto candidatoDto = objectMapper.convertValue(candidatoRepository.save(candidatoEntity), CandidatoDto.class);
-        candidatoDto.setFormulario(objectMapper.convertValue(candidatoEntity.getFormulario(), FormularioDto.class));
+        CandidatoEntity candidatoEntity = convertToEntity(candidatoCreateDto);
+        CandidatoDto candidatoDto = convertToDto(candidatoRepository.save(candidatoEntity));
+        candidatoDto.setFormulario(formularioService.convertToDto(candidatoEntity.getFormulario()));
         return candidatoDto;
     }
 
@@ -47,15 +45,19 @@ public class CandidatoService {
 
     public CandidatoDto update(Integer idCandidato, CandidatoCreateDto candidatoCreateDto) throws RegraDeNegocioException {
         findById(idCandidato);
-        CandidatoEntity candidatoEntity = objectMapper.convertValue(candidatoCreateDto, CandidatoEntity.class);
+        CandidatoEntity candidatoEntity = convertToEntity(candidatoCreateDto);
         candidatoEntity.setIdCandidato(idCandidato);
         CandidatoEntity candidatoEntity1 = candidatoRepository.save(candidatoEntity);
-        return objectMapper.convertValue(candidatoEntity1, CandidatoDto.class);
+        return convertToDto(candidatoEntity1);
     }
 
     private CandidatoEntity findById(Integer idCandidato) throws RegraDeNegocioException {
         return candidatoRepository.findById(idCandidato)
                 .orElseThrow(() -> new RegraDeNegocioException("Erro ao buscar candidato!"));
+    }
+
+    public CandidatoDto findDtoById(Integer idCandidato) throws RegraDeNegocioException {
+        return convertToDto(findById(idCandidato));
     }
 
     public PageDto<CandidatoDto> listaAllPaginado(Integer pagina, Integer tamanho, String sort, int order) {
@@ -68,8 +70,8 @@ public class CandidatoService {
 
         List<CandidatoDto> candidatoDtos = paginaCandidatoEntity.getContent().stream()
                 .map(candidatoEntity -> {
-                    CandidatoDto candidatoDto = objectMapper.convertValue(candidatoEntity, CandidatoDto.class);
-                    candidatoDto.setNome(candidatoEntity.getNome());
+                    CandidatoDto candidatoDto = convertToDto(candidatoEntity);
+                    candidatoDto.setFormulario(formularioService.convertToDto(candidatoEntity.getFormulario()));
                     return candidatoDto;
                 }).toList();
 
@@ -80,13 +82,26 @@ public class CandidatoService {
                 candidatoDtos);
     }
 
-    private TipoMarcacao convertToEnum(boolean opcao) {
-        if (opcao) {
-            return TipoMarcacao.T;
-        } else {
-            return TipoMarcacao.F;
-        }
+
+    public CandidatoDto convertToDto(CandidatoEntity candidatoEntity) {
+        CandidatoDto candidatoDto = objectMapper.convertValue(candidatoEntity, CandidatoDto.class);
+        candidatoDto.setFormulario(formularioService.convertToDto(candidatoEntity.getFormulario()));
+        return candidatoDto;
     }
+
+    private CandidatoEntity convertToEntity(CandidatoCreateDto candidatoCreateDto) throws RegraDeNegocioException {
+        CandidatoEntity candidatoEntity = objectMapper.convertValue(candidatoCreateDto, CandidatoEntity.class);
+        candidatoEntity.setPcd(candidatoCreateDto.isPcdboolean() ? TipoMarcacao.T : TipoMarcacao.F);
+        candidatoEntity.setFormulario(formularioService.findById(candidatoCreateDto.getIdFormulario()));
+        return candidatoEntity;
+    }
+
+    public CandidatoEntity convertToEntity(CandidatoDto candidatoDto) {
+        CandidatoEntity candidatoEntity = objectMapper.convertValue(candidatoDto, CandidatoEntity.class);
+        candidatoEntity.setFormulario(formularioService.convertToEntity(candidatoDto.getFormulario()));
+        return candidatoEntity;
+    }
+
 
 }
 

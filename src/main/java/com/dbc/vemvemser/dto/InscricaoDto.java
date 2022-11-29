@@ -1,6 +1,8 @@
 package com.dbc.vemvemser.dto;
 
 
+import com.dbc.vemvemser.entity.CandidatoEntity;
+import com.dbc.vemvemser.enums.TipoMarcacao;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -10,11 +12,9 @@ public class InscricaoDto {
 
     private Integer idInscricao;
 
-    private Integer idFormulario;
-
-    private Integer idCandidato;
+    private CandidatoDto candidato;
 
     private LocalDate dataInscricao;
 
-    private String avaliacao;
+    private TipoMarcacao avaliado;
 }

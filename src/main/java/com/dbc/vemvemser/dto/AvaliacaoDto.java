@@ -17,10 +17,9 @@ public class AvaliacaoDto {
 
     private Integer idAvaliacao;
 
-    @JsonIgnore
-    private GestorEntity avaliador;
+    private GestorDto avaliador;
 
     private TipoMarcacao aprovado;
 
-    private InscricaoEntity inscricao;
+    private InscricaoDto inscricao;
 }

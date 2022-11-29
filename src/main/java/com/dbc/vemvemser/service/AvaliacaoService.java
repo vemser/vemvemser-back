@@ -2,19 +2,16 @@ package com.dbc.vemvemser.service;
 
 import com.dbc.vemvemser.dto.AvaliacaoCreateDto;
 import com.dbc.vemvemser.dto.AvaliacaoDto;
-import com.dbc.vemvemser.dto.InscricaoDto;
 import com.dbc.vemvemser.entity.AvaliacaoEntity;
 import com.dbc.vemvemser.entity.InscricaoEntity;
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.AvaliacaoRepository;
-import com.dbc.vemvemser.repository.GestorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,37 +21,26 @@ public class AvaliacaoService {
     private final ObjectMapper objectMapper;
     private final AvaliacaoRepository avaliacaoRepository;
     private final InscricaoService inscricaoService;
-
-    private final GestorRepository gestorRepository;
+    private final GestorService gestorService;
 
 
     public AvaliacaoDto create(AvaliacaoCreateDto avaliacaoCreateDto) throws RegraDeNegocioException {
-
-        AvaliacaoEntity avaliacaoEntity = objectMapper.convertValue(avaliacaoCreateDto, AvaliacaoEntity.class);
-        InscricaoEntity inscricaoRetorno = objectMapper.convertValue(inscricaoService.findDtoByid(avaliacaoCreateDto.getIdInscricao()),InscricaoEntity.class);
-        avaliacaoEntity.setInscricao(inscricaoRetorno);
-        avaliacaoEntity.setAprovado(convertToEnum(avaliacaoCreateDto.isAprovadoBoolean()));
-        avaliacaoEntity.setAvaliador(gestorRepository.getById(1));
-
-        AvaliacaoDto avaliacaoDto = objectMapper.convertValue(avaliacaoRepository.save(avaliacaoEntity), AvaliacaoDto.class);
-
+        AvaliacaoEntity avaliacaoEntity = convertToEntity(avaliacaoCreateDto);
+        AvaliacaoDto avaliacaoDto = convertToDto(avaliacaoRepository.save(avaliacaoEntity));
         return avaliacaoDto;
     }
 
 
     public List<AvaliacaoDto> list() {
         return avaliacaoRepository.findAll().stream()
-                .map(avaliacaoEntity -> objectMapper.convertValue(avaliacaoEntity, AvaliacaoDto.class))
+                .map(avaliacaoEntity -> convertToDto(avaliacaoEntity))
                 .toList();
     }
 
     public AvaliacaoDto update(Integer idAvaliacao, AvaliacaoCreateDto avaliacaoCreateDto) throws RegraDeNegocioException {
         AvaliacaoEntity avaliacaoEntity = findById(idAvaliacao);
-
-        avaliacaoEntity.setAprovado(convertToEnum(avaliacaoCreateDto.isAprovadoBoolean()));
-
-        AvaliacaoDto avaliacaoRetorno = objectMapper.convertValue(avaliacaoRepository.save(avaliacaoEntity), AvaliacaoDto.class);
-
+        avaliacaoEntity.setAprovado(avaliacaoCreateDto.isAprovadoBoolean() ? TipoMarcacao.T : TipoMarcacao.F);
+        AvaliacaoDto avaliacaoRetorno = convertToDto(avaliacaoRepository.save(avaliacaoEntity));
         return avaliacaoRetorno;
     }
 
@@ -65,21 +51,25 @@ public class AvaliacaoService {
     }
 
     private AvaliacaoEntity findById(Integer idAvaliacao) throws RegraDeNegocioException {
-        Optional avaliacao = avaliacaoRepository.findById(idAvaliacao);
-        if (avaliacao == null) {
-            throw new RegraDeNegocioException("Avaliação não encontrada!");
-        }
-        AvaliacaoEntity avaliacaoEntity = objectMapper.convertValue(avaliacao, AvaliacaoEntity.class);
-
-        return avaliacaoEntity;
+        return avaliacaoRepository.findById(idAvaliacao)
+                .orElseThrow(() -> new RegraDeNegocioException("Avaliação não encontrada!"));
     }
 
-    private TipoMarcacao convertToEnum(boolean opcao) {
-        if (opcao) {
-            return TipoMarcacao.T;
-        } else {
-            return TipoMarcacao.F;
-        }
+
+    public AvaliacaoDto convertToDto(AvaliacaoEntity avaliacaoEntity) {
+        AvaliacaoDto avaliacaoDto = objectMapper.convertValue(avaliacaoEntity, AvaliacaoDto.class);
+        avaliacaoDto.setAvaliador(gestorService.convertToDto(avaliacaoEntity.getAvaliador()));
+        avaliacaoDto.setInscricao(inscricaoService.converterParaDTO(avaliacaoEntity.getInscricao()));
+        return avaliacaoDto;
+    }
+
+    private AvaliacaoEntity convertToEntity(AvaliacaoCreateDto avaliacaoCreateDto) throws RegraDeNegocioException {
+        AvaliacaoEntity avaliacaoEntity = objectMapper.convertValue(avaliacaoCreateDto, AvaliacaoEntity.class);
+        InscricaoEntity inscricaoEntity = inscricaoService.convertToEntity(inscricaoService.findDtoByid(avaliacaoCreateDto.getIdInscricao()));
+        avaliacaoEntity.setInscricao(inscricaoEntity);
+        avaliacaoEntity.setAprovado(avaliacaoCreateDto.isAprovadoBoolean()? TipoMarcacao.T : TipoMarcacao.F);
+        avaliacaoEntity.setAvaliador(gestorService.convertToEntity(gestorService.findDtoById(1)));
+        return avaliacaoEntity;
     }
 
 }

@@ -6,6 +6,7 @@ import com.dbc.vemvemser.dto.InscricaoDto;
 import com.dbc.vemvemser.dto.PageDto;
 import com.dbc.vemvemser.entity.GestorEntity;
 import com.dbc.vemvemser.entity.InscricaoEntity;
+import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.InscricaoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,31 +25,26 @@ public class InscricaoService {
 
     private static final int DESCENDING = 1;
     private final InscricaoRepository inscricaoRepository;
+
+    private final CandidatoService candidatoService;
     private final ObjectMapper objectMapper;
 
-    public InscricaoDto create(InscricaoCreateDto inscricaoCreateDto) {
-
-        InscricaoEntity inscricaoEntity = objectMapper.convertValue(inscricaoCreateDto, InscricaoEntity.class);
+    public InscricaoDto create(InscricaoCreateDto inscricaoCreateDto) throws RegraDeNegocioException {
+        InscricaoEntity inscricaoEntity = convertToEntity(inscricaoCreateDto);
+        inscricaoEntity.setCandidato(candidatoService.convertToEntity(candidatoService.findDtoById(inscricaoCreateDto.getIdCandidato())));
         inscricaoEntity.setDataInscricao(LocalDate.now());
+        inscricaoEntity.setAvaliado(TipoMarcacao.F);
         inscricaoRepository.save(inscricaoEntity);
-
         InscricaoDto inscricaoDto = converterParaDTO(inscricaoEntity);
-
         return inscricaoDto;
     }
 
-//    public InscricaoDto update(Integer idInscricao, InscricaoCreateDto inscricaoCreateDto) throws RegraDeNegocioException {
-//
-//        InscricaoEntity inscricaoEntity = findById(idInscricao);
-//        if (inscricaoEntity == null) {
-//            throw new RegraDeNegocioException("");
-//        }
-//        inscricaoEntity.setAvaliado(inscricaoCreateDto.getAvaliacao());
-//
-//        InscricaoDto inscricaoDto = converterParaDTO(inscricaoEntity);
-//
-//        return inscricaoDto;
-//    }
+    public InscricaoDto setAvaliado(Integer idInscricao) throws RegraDeNegocioException {
+        InscricaoEntity inscricaoEntity = findById(idInscricao);
+        inscricaoEntity.setAvaliado(TipoMarcacao.T);
+        InscricaoDto inscricaoDto = converterParaDTO(inscricaoRepository.save(inscricaoEntity));
+        return inscricaoDto;
+    }
 
     public PageDto<InscricaoDto> listar(Integer pagina, Integer tamanho, String sort, int order) {
         Sort ordenacao = Sort.by(sort).ascending();
@@ -59,7 +55,7 @@ public class InscricaoService {
         Page<InscricaoEntity> paginaInscricaoEntities = inscricaoRepository.findAll(pageRequest);
 
         List<InscricaoDto> inscricaoDtos = paginaInscricaoEntities.getContent().stream()
-                .map(inscricaoEntity -> objectMapper.convertValue(inscricaoEntity, InscricaoDto.class)).toList();
+                .map(inscricaoEntity -> converterParaDTO(inscricaoEntity)).toList();
 
         return new PageDto<>(paginaInscricaoEntities.getTotalElements(),
                 paginaInscricaoEntities.getTotalPages(),
@@ -69,32 +65,36 @@ public class InscricaoService {
     }
 
     public InscricaoDto findDtoByid(Integer idInscricao) throws RegraDeNegocioException {
-        InscricaoEntity inscricaoEntity = findById(idInscricao);
-
-        InscricaoDto inscricaoDto = converterParaDTO(inscricaoEntity);
-
+        InscricaoDto inscricaoDto = converterParaDTO(findById(idInscricao));
         return inscricaoDto;
     }
 
     public void delete(Integer id) throws RegraDeNegocioException {
-        InscricaoEntity inscricaoEntity = findById(id);
+        findById(id);
         inscricaoRepository.deleteById(id);
     }
 
 
     private InscricaoEntity findById(Integer idInscricao) throws RegraDeNegocioException {
-        InscricaoEntity inscricaoEntity = inscricaoRepository.findByIdInscricao(idInscricao);
+        return inscricaoRepository.findById(idInscricao)
+                .orElseThrow(() -> new RegraDeNegocioException("ID_Inscrição inválido"));
 
-        if (inscricaoEntity == null) {
-            throw new RegraDeNegocioException("ID_Inscrição inválido");
-        }
+    }
 
+    public InscricaoDto converterParaDTO(InscricaoEntity inscricaoEntity) {
+        InscricaoDto inscricaoDto = objectMapper.convertValue(inscricaoEntity, InscricaoDto.class);
+        inscricaoDto.setCandidato(candidatoService.convertToDto(inscricaoEntity.getCandidato()));
+        return inscricaoDto;
+    }
+
+    private InscricaoEntity convertToEntity(InscricaoCreateDto inscricaoCreateDto) {
+        InscricaoEntity inscricaoEntity = objectMapper.convertValue(inscricaoCreateDto, InscricaoEntity.class);
         return inscricaoEntity;
     }
 
-    private InscricaoDto converterParaDTO(InscricaoEntity inscricaoEntity) {
-        InscricaoDto inscricaoDto = objectMapper.convertValue(inscricaoEntity, InscricaoDto.class);
-        return inscricaoDto;
+    public InscricaoEntity convertToEntity(InscricaoDto inscricaoDto) {
+        InscricaoEntity inscricaoEntity = objectMapper.convertValue(inscricaoDto, InscricaoEntity.class);
+        return inscricaoEntity;
     }
 
 }
