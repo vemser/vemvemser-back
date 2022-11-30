@@ -26,7 +26,6 @@ public class GestorService {
     private final GestorRepository gestorRepository;
     private final CargoService cargoService;
     private final ObjectMapper objectMapper;
-
     private final PasswordEncoder passwordEncoder;
 
     private static final TipoMarcacao USUARIO_ATIVO = TipoMarcacao.T;
