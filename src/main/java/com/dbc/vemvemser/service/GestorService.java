@@ -34,13 +34,11 @@ public class GestorService {
     private static final TipoMarcacao USUARIO_INATIVO = TipoMarcacao.F;
 
 
-    public GestorDto autenticarUsuario(LoginCreateDto loginCreateDto) throws RegraDeNegocioException {
-        GestorEntity gestorEntity = gestorRepository.findGestorEntityByEmailAndAndSenha(loginCreateDto.getEmail(), loginCreateDto.getSenha())
-                .orElseThrow(() -> new RegraDeNegocioException("Usuario ou senha invalido!"));
-        return convertToDto(gestorEntity);
-    }
 
     public GestorDto cadastrar(GestorCreateDto gestorCreateDto) throws RegraDeNegocioException {
+        if(!gestorCreateDto.getEmail().contains("@dbccompany.com.br")){
+            throw new RegraDeNegocioException("Email não valido!");
+        }
         GestorEntity gestorEntity = convertToEntity(gestorCreateDto);
         gestorEntity.setSenha(passwordEncoder.encode(gestorCreateDto.getSenha()));
         return convertToDto(gestorRepository.save(gestorEntity));

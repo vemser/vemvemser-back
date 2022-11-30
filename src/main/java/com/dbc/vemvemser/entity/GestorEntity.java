@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.*;
 
 
@@ -27,6 +28,7 @@ public class GestorEntity implements UserDetails {
     @Column(name = "nome")
     private String nome;
 
+    @Email
     @Column(name = "email")
     private String email;
 
