@@ -8,6 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 
 @Data
 public class CandidatoCreateDto {
@@ -19,6 +20,8 @@ public class CandidatoCreateDto {
     @Schema(description = "Nome do candidato", example = "José da Silva da Silva")
     @Pattern(regexp = "^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{0,}", message = "Não permitido números e caracteres especiais.")
     private String nome;
+
+    private LocalDate dataNascimento;
 
     @Email
     @Schema(description = "email do candidato", example = "Jose@dbccompany.com.br")

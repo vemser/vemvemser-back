@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -21,6 +22,8 @@ public class CandidatoEntity {
 
     @Column(name = "nome")
     private String nome;
+
+    private LocalDate dataNascimento;
 
     @Column(name = "email")
     private String email;

@@ -24,9 +24,7 @@ public class CandidatoService {
 
     private static final int DESCENDING = 1;
     private final CandidatoRepository candidatoRepository;
-
     private final FormularioService formularioService;
-
     private final ObjectMapper objectMapper;
 
 
