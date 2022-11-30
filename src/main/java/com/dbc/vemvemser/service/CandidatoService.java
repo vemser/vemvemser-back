@@ -2,10 +2,8 @@ package com.dbc.vemvemser.service;
 
 import com.dbc.vemvemser.dto.CandidatoCreateDto;
 import com.dbc.vemvemser.dto.CandidatoDto;
-import com.dbc.vemvemser.dto.FormularioDto;
 import com.dbc.vemvemser.dto.PageDto;
 import com.dbc.vemvemser.entity.CandidatoEntity;
-import com.dbc.vemvemser.entity.FormularioEntity;
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.CandidatoRepository;
@@ -37,6 +35,7 @@ public class CandidatoService {
         CandidatoDto candidatoDto = convertToDto(candidatoRepository.save(candidatoEntity));
         candidatoDto.setFormulario(formularioService.convertToDto(candidatoEntity.getFormulario()));
         return candidatoDto;
+
     }
 
 

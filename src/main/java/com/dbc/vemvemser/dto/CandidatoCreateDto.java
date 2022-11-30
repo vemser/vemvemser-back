@@ -21,6 +21,8 @@ public class CandidatoCreateDto {
     @Pattern(regexp = "^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{0,}", message = "Não permitido números e caracteres especiais.")
     private String nome;
 
+    @NotNull
+    @Schema(description = "data de nascimento do candidato", example = "20/10/2000")
     private LocalDate dataNascimento;
 
     @Email

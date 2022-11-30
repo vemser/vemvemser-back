@@ -23,6 +23,7 @@ public class CandidatoEntity {
     @Column(name = "nome")
     private String nome;
 
+    @Column(name = "data_nascimento")
     private LocalDate dataNascimento;
 
     @Column(name = "email")
