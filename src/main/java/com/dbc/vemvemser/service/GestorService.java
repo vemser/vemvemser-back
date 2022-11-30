@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -98,6 +99,10 @@ public class GestorService {
         GestorDto gestorDto = objectMapper.convertValue(gestorEntity, GestorDto.class);
         gestorRepository.delete(gestorEntity);
 
+    }
+
+    public Optional<GestorEntity> findByEmail(String email) {
+        return gestorRepository.findByEmail(email);
     }
 
 //    public Integer getIdLoggedUser() {

@@ -3,6 +3,7 @@ package com.dbc.vemvemser.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -10,7 +11,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity(name = "CARGO")
-public class CargoEntity {
+public class CargoEntity implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CARGO_SEQUENCIA")
@@ -24,4 +25,9 @@ public class CargoEntity {
     @JsonIgnore
     @OneToMany(mappedBy = "cargoEntity",fetch = FetchType.LAZY)
     private Set<GestorEntity> pessoa;
+
+    @Override
+    public String getAuthority() {
+        return nome;
+    }
 }
