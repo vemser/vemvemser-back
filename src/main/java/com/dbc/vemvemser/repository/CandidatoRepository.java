@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface CandidatoRepository extends JpaRepository<CandidatoEntity, Integer> {
 
     Optional<CandidatoEntity> findCandidatoEntitiesByFormulario_IdFormulario(Integer idFormulario);
+
+    Optional<CandidatoEntity> findCandidatoEntitiesByEmail(String email);
 }

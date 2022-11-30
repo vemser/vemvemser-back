@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -61,6 +62,17 @@ public class CandidatoService {
 
     public CandidatoDto findDtoById(Integer idCandidato) throws RegraDeNegocioException {
         return convertToDto(findById(idCandidato));
+    }
+
+    public CandidatoDto findCandidatoDtoByEmail(String email) throws RegraDeNegocioException {
+       Optional candidato= candidatoRepository.findCandidatoEntitiesByEmail(email);
+       if(candidato.isEmpty()) {
+        throw new RegraDeNegocioException("Candidato não encontrado!");
+       }
+        CandidatoDto candidatoDto = objectMapper.convertValue(candidato, CandidatoDto.class);
+        CandidatoDto candidatoDtoRetorno = findDtoById(candidatoDto.getIdCandidato());
+
+        return candidatoDtoRetorno;
     }
 
     public PageDto<CandidatoDto> listaAllPaginado(Integer pagina, Integer tamanho, String sort, int order) {

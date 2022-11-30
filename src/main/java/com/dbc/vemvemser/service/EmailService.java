@@ -74,7 +74,15 @@ public class EmailService {
                 "Gostaríamos de informar que foste aprovado(a) para a primeira <br>" +
                 "etapa de seleção do Vem Ser DBC. <br>";
 
+        final String MESSAGE_REPROVADO = "Olá, tudo bem? <br>" +
+                "Obrigado por ter participado do processo de seleção do Vem Ser DBC!" +
+                "Neste momento, selecionamos apenas algumas pessoas dos milhares inscritos." +
+                "Queremos que você continue tentando, pois este é apenas o começo, " +
+                "então separamos algumas dicas e links para que você siga evoluindo na área e venha trabalhar conosco numa próxima oportunidade.";
+
         final String MESSAGE_DUVIDA= "Em caso de dúvidas, nos contate através do e-mail <br> VemSer@dbccompany.com.br";
+
+        final String MESSAGE_SPAM_EMAIL = "Fique atento a sua Caixa de Entrada e Spam, receberá um email referente ao agendamento de sua entrevista!";
 
         Map<String, Object> dados = new HashMap<>();
         dados.put("nome", candidatoDto.getNome());
@@ -87,12 +95,12 @@ public class EmailService {
         }else if (tipoEmail ==TipoEmail.APROVADO){
             dados.put("nome", candidatoDto.getNome());
             dados.put("msg1", MESSAGE_APROVADO);
-            dados.put("msg2", "Fique atento a sua Caixa de Entrada e Spam, receberá um email referente ao agendamento de sua entrevista!");
+            dados.put("msg2",MESSAGE_SPAM_EMAIL);
             dados.put("msg3",MESSAGE_DUVIDA);
         } else {
             dados.put("nome", candidatoDto.getNome());
-            dados.put("msg1", MESSAGE_APROVADO);
-            dados.put("msg2", "Fique atento a sua Caixa de Entrada e Spam, receberá um email referente ao agendamento de sua entrevista!");
+            dados.put("msg1", MESSAGE_REPROVADO);
+            dados.put("msg2", " ");
             dados.put("msg3",MESSAGE_DUVIDA);
         }
         Template template = fmConfiguration.getTemplate("email-template-universal.ftl");
