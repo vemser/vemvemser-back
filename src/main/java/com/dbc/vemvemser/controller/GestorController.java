@@ -5,6 +5,7 @@ import com.dbc.vemvemser.dto.GestorDto;
 import com.dbc.vemvemser.dto.LoginCreateDto;
 import com.dbc.vemvemser.dto.PageDto;
 import com.dbc.vemvemser.entity.GestorEntity;
+import com.dbc.vemvemser.enums.TipoCargo;
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.dto.*;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
@@ -140,7 +141,7 @@ public class GestorController {
         return new ResponseEntity<>(gestorService.contasInativas(), HttpStatus.OK);
     }
 
-    @Operation(summary = "Pegar gestor pelo email e nome", description = "Pegar o gestor pelo nome e o email informado")
+    @Operation(summary = "Pegar gestor pelo email,nome e cargo", description = "Pegar o gestor pelo nome,email e cargo informado")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Gestor pego com sucesso"),
@@ -149,8 +150,8 @@ public class GestorController {
             }
     )
     @PostMapping("/gestor-by-nome-email")
-    public ResponseEntity<GestorDto> pegarGestorPorEmailNome(@Valid @RequestBody GestorEmailNomeDto gestorEmailNomeDto) throws RegraDeNegocioException {
-        return new ResponseEntity<>(gestorService.findGestorEntitiesByEmailAndNome(gestorEmailNomeDto), HttpStatus.OK);
+    public ResponseEntity<List<GestorDto>> pegarGestorPorEmailNomeCargo(@RequestBody GestorEmailNomeCargoDto gestorEmailNomeCargoDto) throws RegraDeNegocioException {
+        return new ResponseEntity<>(gestorService.findGestorbyNomeOrEmail(gestorEmailNomeCargoDto), HttpStatus.OK);
     }
 
     @Operation(summary = "Pegar conta logada", description = "Pegar sua conta logado no sistema")
