@@ -1,16 +1,9 @@
 package com.dbc.vemvemser.dto;
 
 
-import com.dbc.vemvemser.entity.CargoEntity;
 import com.dbc.vemvemser.enums.TipoMarcacao;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
-import java.util.Set;
 
 @Data
 public class GestorDto {
