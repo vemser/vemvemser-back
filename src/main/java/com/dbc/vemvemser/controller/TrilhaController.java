@@ -36,7 +36,7 @@ public class TrilhaController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    public ResponseEntity<TrilhaDto> create(TrilhaCreateDto trilhaCreateDto) {
+    public ResponseEntity<TrilhaDto> create(@RequestBody TrilhaCreateDto trilhaCreateDto) {
         TrilhaDto trilhaDto = trilhaService.create(trilhaCreateDto);
         log.info("Criando Formulario ID:" + trilhaDto.getIdTrilha());
         return new ResponseEntity<>(trilhaDto, HttpStatus.OK);
