@@ -120,12 +120,12 @@ public class GestorController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @PutMapping("/{idUsuario}")
-    public ResponseEntity<GestorDto> editar(@PathVariable(name = "idUsuario") Integer idGestor,
+    @PutMapping("/{idGestor}")
+    public ResponseEntity<GestorDto> editar(@PathVariable(name = "idGestor") Integer idGestor,
                                             @Valid @RequestBody GestorUpdateDto gestor) throws RegraDeNegocioException {
-        log.info("Editando o Usuário...");
+        log.info("Editando o Gestor...");
         GestorDto gestorEditado = gestorService.editar(idGestor, gestor);
-        log.info("Usuário editado com sucesso!");
+        log.info("Gestor editado com sucesso!");
         return new ResponseEntity<>(gestorEditado, HttpStatus.OK);
     }
 
