@@ -105,7 +105,7 @@ public class GestorService {
         GestorEntity usuarioEncontrado = findById(idUsuario);
         usuarioEncontrado.setAtivo(USUARIO_INATIVO);
         gestorRepository.save(usuarioEncontrado);
-        return objectMapper.convertValue(usuarioEncontrado, GestorDto.class);
+        return convertToDto(usuarioEncontrado);
     }
     public List<GestorDto> contasInativas(){
         return gestorRepository.findByAtivo(USUARIO_INATIVO).stream()
