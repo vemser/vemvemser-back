@@ -39,17 +39,10 @@ public class TrilhaService {
                 .toList();
     }
 
-    public TrilhaDto findDtoByid(Integer idTrilha) throws RegraDeNegocioException {
-        TrilhaEntity trilhaEntity = findById(idTrilha);
-        TrilhaDto trilhaDto = convertToDTo(trilhaEntity);
-        return trilhaDto;
-    }
-
 
     private TrilhaEntity findById(Integer idTrilha) throws RegraDeNegocioException {
         return trilhaRepository.findById(idTrilha)
                 .orElseThrow(() -> new RegraDeNegocioException("ID_Inscrição inválido"));
-
     }
 
     public Set<TrilhaEntity> findListaTrilhas(List<Integer> idTrilhas) throws RegraDeNegocioException {
@@ -66,11 +59,6 @@ public class TrilhaService {
         return trilhaDto;
     }
 
-    public Set<TrilhaDto> convertToDto(Set<TrilhaEntity> trilhas) {
-        Set<TrilhaDto> trilhaDtos = trilhas.stream().map(trilhaEntity -> objectMapper.convertValue(trilhaEntity, TrilhaDto.class))
-                .collect(Collectors.toSet());
-        return trilhaDtos;
-    }
 
     public Set<TrilhaEntity> convertToEntity(Set<TrilhaDto> trilhas) {
         Set<TrilhaEntity> trilhaEntities = trilhas.stream().map(trilhaDtos -> objectMapper.convertValue(trilhaDtos, TrilhaEntity.class))
