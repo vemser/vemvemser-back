@@ -94,6 +94,7 @@ public class InscricaoService {
 
     public InscricaoEntity convertToEntity(InscricaoDto inscricaoDto) {
         InscricaoEntity inscricaoEntity = objectMapper.convertValue(inscricaoDto, InscricaoEntity.class);
+        inscricaoEntity.setCandidato(candidatoService.convertToEntity(inscricaoDto.getCandidato()));
         return inscricaoEntity;
     }
 

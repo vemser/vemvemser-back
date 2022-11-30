@@ -24,7 +24,10 @@ public class CargoService {
 
     public CargoDto convertToDto(CargoEntity cargo) {
         return objectMapper.convertValue(cargo, CargoDto.class);
+    }
 
+    public CargoEntity convertToEntity(CargoDto cargo) {
+        return objectMapper.convertValue(cargo, CargoEntity.class);
     }
 
 }

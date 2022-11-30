@@ -1,9 +1,6 @@
 package com.dbc.vemvemser.controller;
 
-import com.dbc.vemvemser.dto.GestorCreateDto;
-import com.dbc.vemvemser.dto.GestorDto;
-import com.dbc.vemvemser.dto.LoginCreateDto;
-import com.dbc.vemvemser.dto.PageDto;
+import com.dbc.vemvemser.dto.*;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.service.GestorService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -95,7 +92,7 @@ public class GestorController {
     )
     @PutMapping("/{idUsuario}")
     public ResponseEntity<GestorDto> editar(@PathVariable(name = "idUsuario") Integer idGestor,
-                                            @Valid @RequestBody GestorCreateDto gestor) throws RegraDeNegocioException {
+                                            @Valid @RequestBody GestorUpdateDto gestor) throws RegraDeNegocioException {
         log.info("Editando o Usuário...");
         GestorDto gestorEditado = gestorService.editar(idGestor, gestor);
         log.info("Usuário editado com sucesso!");
