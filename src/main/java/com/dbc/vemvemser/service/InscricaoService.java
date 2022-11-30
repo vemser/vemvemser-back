@@ -34,6 +34,9 @@ public class InscricaoService {
         inscricaoEntity.setCandidato(candidatoService.convertToEntity(candidatoService.findDtoById(inscricaoCreateDto.getIdCandidato())));
         inscricaoEntity.setDataInscricao(LocalDate.now());
         inscricaoEntity.setAvaliado(TipoMarcacao.F);
+        if(!inscricaoRepository.findInscricaoEntitiesByCandidato(inscricaoEntity.getCandidato()).isEmpty()){
+            throw new RegraDeNegocioException("Formulario cadastrado para outro candidato");
+        }
         inscricaoRepository.save(inscricaoEntity);
         InscricaoDto inscricaoDto = converterParaDTO(inscricaoEntity);
         return inscricaoDto;

@@ -26,6 +26,9 @@ public class AvaliacaoService {
 
     public AvaliacaoDto create(AvaliacaoCreateDto avaliacaoCreateDto) throws RegraDeNegocioException {
         AvaliacaoEntity avaliacaoEntity = convertToEntity(avaliacaoCreateDto);
+        if(!avaliacaoRepository.findAvaliacaoEntitiesByInscricao(avaliacaoEntity.getInscricao()).isEmpty()){
+            throw new RegraDeNegocioException("Formulario cadastrado para outro candidato");
+        }
         AvaliacaoDto avaliacaoDto = convertToDto(avaliacaoRepository.save(avaliacaoEntity));
         avaliacaoDto.setAvaliador(gestorService.convertToDto(avaliacaoEntity.getAvaliador()));
         return avaliacaoDto;

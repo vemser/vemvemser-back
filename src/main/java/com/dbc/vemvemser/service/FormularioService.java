@@ -75,7 +75,7 @@ public class FormularioService {
                 formularioDtos);
     }
 
-    public FormularioEntity findById(Integer idFormulario) throws RegraDeNegocioException {
+    private FormularioEntity findById(Integer idFormulario) throws RegraDeNegocioException {
         return formularioRepository.findById(idFormulario)
                 .orElseThrow(() -> new RegraDeNegocioException("Erro ao buscar Formulario"));
     }

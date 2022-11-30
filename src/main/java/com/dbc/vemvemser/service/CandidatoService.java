@@ -32,6 +32,9 @@ public class CandidatoService {
 
     public CandidatoDto cadastro(CandidatoCreateDto candidatoCreateDto) throws RegraDeNegocioException {
         CandidatoEntity candidatoEntity = convertToEntity(candidatoCreateDto);
+        if(!candidatoRepository.findCandidatoEntitiesByFormulario(candidatoEntity.getFormulario()).isEmpty()){
+            throw new RegraDeNegocioException("Formulario cadastrado para outro candidato");
+        }
         CandidatoDto candidatoDto = convertToDto(candidatoRepository.save(candidatoEntity));
         candidatoDto.setFormulario(formularioService.convertToDto(candidatoEntity.getFormulario()));
         return candidatoDto;
@@ -92,7 +95,7 @@ public class CandidatoService {
     private CandidatoEntity convertToEntity(CandidatoCreateDto candidatoCreateDto) throws RegraDeNegocioException {
         CandidatoEntity candidatoEntity = objectMapper.convertValue(candidatoCreateDto, CandidatoEntity.class);
         candidatoEntity.setPcd(candidatoCreateDto.isPcdboolean() ? TipoMarcacao.T : TipoMarcacao.F);
-        candidatoEntity.setFormulario(formularioService.findById(candidatoCreateDto.getIdFormulario()));
+        candidatoEntity.setFormulario(formularioService.convertToEntity(formularioService.findDtoById(candidatoCreateDto.getIdFormulario())));
         return candidatoEntity;
     }
 
