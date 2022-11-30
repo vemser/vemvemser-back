@@ -39,6 +39,7 @@ public class FormularioDto {
 
     private String resposta;
 
+    @JsonIgnore
     private String curriculo;
 
     private TipoMarcacao lgpd;

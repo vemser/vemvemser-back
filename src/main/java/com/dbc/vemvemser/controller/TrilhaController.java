@@ -28,12 +28,28 @@ public class TrilhaController {
 
     private final TrilhaService trilhaService;
 
+    @Operation(summary = "Cadastrar nova Trilha", description = "Cadastro de nova Trilha")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Trilha cadastrada com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
     public ResponseEntity<TrilhaDto> create(TrilhaCreateDto trilhaCreateDto) {
         TrilhaDto trilhaDto = trilhaService.create(trilhaCreateDto);
         log.info("Criando Formulario ID:" + trilhaDto.getIdTrilha());
         return new ResponseEntity<>(trilhaDto, HttpStatus.OK);
     }
 
+    @Operation(summary = "Listar Trilhas", description = "Lista todas Trilhas do banco de dados")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Trilha cadastrada com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
     @GetMapping("/listar")
     public ResponseEntity<List<TrilhaDto>> listAll() {
         log.info("Listando todos os formulários");
@@ -41,6 +57,14 @@ public class TrilhaController {
     }
 
 
+    @Operation(summary = "Deletar Trilha", description = "Deletar Trilha por ID")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Trilha excluída com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
     @DeleteMapping
     public void delete(@RequestParam Integer idTrilha) throws RegraDeNegocioException {
         trilhaService.delete(idTrilha);

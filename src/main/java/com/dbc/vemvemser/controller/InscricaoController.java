@@ -36,7 +36,7 @@ public class InscricaoController {
             }
     )
     @PostMapping
-    public ResponseEntity<InscricaoDto> create(@RequestBody @Valid InscricaoCreateDto inscricaoCreateDto) {
+    public ResponseEntity<InscricaoDto> create(@RequestBody @Valid InscricaoCreateDto inscricaoCreateDto) throws RegraDeNegocioException {
         log.info("ENTROU NO CHAMADO DO CREATE");
         InscricaoDto inscricaoDto=inscricaoService.create(inscricaoCreateDto);
         return new ResponseEntity<>(inscricaoDto, HttpStatus.OK);

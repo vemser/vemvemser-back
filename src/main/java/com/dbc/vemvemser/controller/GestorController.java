@@ -17,7 +17,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -56,7 +55,7 @@ public class GestorController {
     )
     @GetMapping("/id-gestor")
     public ResponseEntity<GestorDto> findById(@RequestParam Integer idGestor) throws RegraDeNegocioException {
-        GestorDto gestorDto = gestorService.findByIdDTO(idGestor);
+        GestorDto gestorDto = gestorService.findDtoById(idGestor);
         return new ResponseEntity<>(gestorDto, HttpStatus.OK);
     }
 

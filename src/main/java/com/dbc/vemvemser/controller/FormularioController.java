@@ -59,11 +59,11 @@ public class FormularioController {
             }
     )
     @PutMapping(value = "/update-curriculo-by-id-formulario", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<String> updateCurriculo(@RequestParam Integer idFormulario,
-                                                  @RequestPart MultipartFile curriculo) throws RegraDeNegocioException, IOException {
-        String pdfBase64 = formularioService.updateCurriculo(curriculo, idFormulario);
+    public void updateCurriculo(@RequestParam Integer idFormulario,
+                                @RequestPart MultipartFile curriculo) throws RegraDeNegocioException {
+        formularioService.updateCurriculo(curriculo, idFormulario);
         log.info("Atualizando Formulario ID: " + idFormulario);
-        return new ResponseEntity<>(pdfBase64, HttpStatus.OK);
+        new ResponseEntity<>(null, HttpStatus.OK);
     }
 
 

@@ -26,6 +26,7 @@ public class AvaliacaoEntity {
     private GestorEntity avaliador;
 
     @Column(name="APROVADO")
+    @Enumerated(EnumType.STRING)
     private TipoMarcacao aprovado;
 
     @JsonIgnore

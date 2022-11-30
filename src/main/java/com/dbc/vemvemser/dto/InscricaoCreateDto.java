@@ -10,11 +10,6 @@ import java.time.LocalDate;
 public class InscricaoCreateDto {
 
     @NotNull
-    private Integer idFormulario;
-
-    @NotNull
     private Integer idCandidato;
 
-    @NotNull
-    private TipoMarcacao avaliacao;
 }
