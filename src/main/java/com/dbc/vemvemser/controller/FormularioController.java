@@ -42,7 +42,7 @@ public class FormularioController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @PostMapping
+    @PostMapping("/cadastro")
     public ResponseEntity<FormularioDto> create(FormularioCreateDto formularioCreateDto) throws RegraDeNegocioException {
         FormularioDto formularioDto = formularioService.create(formularioCreateDto);
         log.info("Criando Formulario ID:" + formularioDto.getIdFormulario());

@@ -35,7 +35,7 @@ public class InscricaoController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @PostMapping
+    @PostMapping("/cadastro")
     public ResponseEntity<InscricaoDto> create(@RequestBody @Valid InscricaoCreateDto inscricaoCreateDto) throws RegraDeNegocioException {
         log.info("ENTROU NO CHAMADO DO CREATE");
         InscricaoDto inscricaoDto=inscricaoService.create(inscricaoCreateDto);

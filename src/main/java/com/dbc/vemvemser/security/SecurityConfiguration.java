@@ -30,15 +30,14 @@ public class SecurityConfiguration {
                 .cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests((authz) ->
-                        authz.antMatchers("/**").permitAll()
-//                                .antMatchers(HttpMethod.GET, "/item", "/item/itens-paginados", "/item/filtro").hasAnyRole("CLIENTE", "ADMIN")
-//                                .antMatchers(HttpMethod.GET, "/avaliacao/{idUsuario}/user", "/avaliacao/ids").hasRole("ADMIN")
-//                                .antMatchers("/lancamentos/**").hasAnyRole("CLIENTE","ADMIN")
-//                                .antMatchers("/assistidos/**").hasAnyRole("CLIENTE","ADMIN")
-//                                .antMatchers("/avaliacao/**").hasAnyRole("CLIENTE","ADMIN")
-//                                .antMatchers("/indicacao/**").hasAnyRole("CLIENTE","ADMIN")
-//                                .antMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
-//                                .antMatchers( "/**").hasRole("ADMIN")
+                        authz.antMatchers("/auth/login", "/formulario/cadastro", "/candidato/cadastro",
+                                        "/inscricao/cadastro", "/formulario/update-curriculo-by-id-formulario").permitAll()
+                                .antMatchers("/trilha/**").hasRole("ADMINISTRADOR")
+                                .antMatchers(HttpMethod.PUT, "/gestor").hasRole("ADMINISTRADOR")
+                                .antMatchers(HttpMethod.GET, "/gestor").hasRole("ADMINISTRADOR")
+                                .antMatchers(HttpMethod.DELETE, "/**").hasRole("ADMINISTRADOR")
+
+
 
                                 .anyRequest().authenticated()
                 );

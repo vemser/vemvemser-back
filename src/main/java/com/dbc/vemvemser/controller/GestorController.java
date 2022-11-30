@@ -28,16 +28,12 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@RequestMapping("/Gestor")
+@RequestMapping("/gestor")
 @Validated
 @RequiredArgsConstructor
 public class GestorController {
 
     private final GestorService gestorService;
-
-    private final TokenService tokenService;
-
-    private final AuthenticationManager authenticationManager;
 
 
 
@@ -71,33 +67,6 @@ public class GestorController {
         return new ResponseEntity<>(gestorDto, HttpStatus.OK);
     }
 
-    @Operation(summary = "Logar com um registro de funcionário.", description = "Loga no sistema com um login de funcionário.")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "Loga no sistema com um login de funcionário."),
-                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
-            }
-    )
-    @PostMapping
-    public ResponseEntity<String> auth(@RequestBody @Valid LoginCreateDto loginCreateDto) throws RegraDeNegocioException {
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(
-                        loginCreateDto.getEmail(),
-                        loginCreateDto.getSenha()
-                );
-
-        Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-
-        // UsuarioEntity
-        Object principal = authenticate.getPrincipal();
-        GestorEntity gestorEntity = (GestorEntity) principal;
-        if (gestorEntity.getAtivo() != TipoMarcacao.F) {
-            String token = tokenService.getToken(gestorEntity);
-            return new ResponseEntity<>(token, HttpStatus.OK);
-        }
-        return new ResponseEntity<>("Conta desativada!", HttpStatus.FORBIDDEN);
-    }
 
     @Operation(summary = "Cadastrar um novo colaborador/administrador", description = "Cadastro de colaborador/administrador")
     @ApiResponses(
