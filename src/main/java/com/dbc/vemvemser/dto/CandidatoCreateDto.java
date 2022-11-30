@@ -7,22 +7,25 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Data
 public class CandidatoCreateDto {
 
 
+
     @NotNull
     @Size(min = 3, max= 255, message = "O nome deve ter de 3 a 255 caracteres")
     @Schema(description = "Nome do candidato", example = "José da Silva da Silva")
+    @Pattern(regexp = "^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{0,}", message = "Não permitido números e caracteres especiais.")
     private String nome;
 
     @NotNull
     private TipoGenero genero;
 
     @Email
-    @Schema(description = "email do candidato", example = "Jose@gmail.com")
+    @Schema(description = "email do candidato", example = "Jose@dbccompany.com.br")
     private String email;
 
     @NotNull
