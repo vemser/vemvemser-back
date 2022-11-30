@@ -73,9 +73,10 @@ public class GestorService {
     }
 
     public GestorDto editar(Integer id, GestorUpdateDto gestorAtualizar) throws RegraDeNegocioException {
-        GestorEntity gestorEntity = objectMapper.convertValue(gestorAtualizar, GestorEntity.class);
+        GestorEntity gestorEntity = findById(id);
         gestorEntity.setCargoEntity(cargoService.findById(gestorAtualizar.getTipoCargo()));
-        gestorEntity.setIdGestor(id);
+        gestorEntity.setNome(gestorAtualizar.getNome());
+        gestorEntity.setEmail(gestorAtualizar.getEmail());
         gestorRepository.save(gestorEntity);
         GestorDto gestorDto = convertToDto(gestorEntity);
         return gestorDto;
@@ -96,7 +97,7 @@ public class GestorService {
     }
 
     public GestorDto getLoggedUser() throws RegraDeNegocioException {
-        return objectMapper.convertValue(findById(getIdLoggedUser()), GestorDto.class);
+        return convertToDto(findById(getIdLoggedUser()));
     }
 
 
