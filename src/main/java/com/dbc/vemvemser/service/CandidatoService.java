@@ -31,10 +31,10 @@ public class CandidatoService {
 
 
     public CandidatoDto cadastro(CandidatoCreateDto candidatoCreateDto) throws RegraDeNegocioException {
-        CandidatoEntity candidatoEntity = convertToEntity(candidatoCreateDto);
-        if(!candidatoRepository.findCandidatoEntitiesByFormulario(candidatoEntity.getFormulario()).isEmpty()){
+        if(!candidatoRepository.findCandidatoEntitiesByFormulario_IdFormulario(candidatoCreateDto.getIdFormulario()).isEmpty()){
             throw new RegraDeNegocioException("Formulario cadastrado para outro candidato");
         }
+        CandidatoEntity candidatoEntity = convertToEntity(candidatoCreateDto);
         CandidatoDto candidatoDto = convertToDto(candidatoRepository.save(candidatoEntity));
         candidatoDto.setFormulario(formularioService.convertToDto(candidatoEntity.getFormulario()));
         return candidatoDto;
@@ -54,7 +54,7 @@ public class CandidatoService {
         return convertToDto(candidatoEntity1);
     }
 
-    private CandidatoEntity findById(Integer idCandidato) throws RegraDeNegocioException {
+    public CandidatoEntity findById(Integer idCandidato) throws RegraDeNegocioException {
         return candidatoRepository.findById(idCandidato)
                 .orElseThrow(() -> new RegraDeNegocioException("Erro ao buscar candidato!"));
     }

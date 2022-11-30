@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface InscricaoRepository  extends JpaRepository<InscricaoEntity, Integer> {
 
-    Optional<InscricaoEntity> findInscricaoEntitiesByCandidato(CandidatoEntity candidatoEntity);
+    Optional<InscricaoEntity> findInscricaoEntitiesByCandidato_IdCandidato(Integer idCandidato);
 
 }

@@ -25,18 +25,17 @@ public class InscricaoService {
 
     private static final int DESCENDING = 1;
     private final InscricaoRepository inscricaoRepository;
-
     private final CandidatoService candidatoService;
     private final ObjectMapper objectMapper;
 
     public InscricaoDto create(InscricaoCreateDto inscricaoCreateDto) throws RegraDeNegocioException {
+        if(!inscricaoRepository.findInscricaoEntitiesByCandidato_IdCandidato(inscricaoCreateDto.getIdCandidato()).isEmpty()){
+            throw new RegraDeNegocioException("Formulario cadastrado para outro candidato");
+        }
         InscricaoEntity inscricaoEntity = convertToEntity(inscricaoCreateDto);
         inscricaoEntity.setCandidato(candidatoService.convertToEntity(candidatoService.findDtoById(inscricaoCreateDto.getIdCandidato())));
         inscricaoEntity.setDataInscricao(LocalDate.now());
         inscricaoEntity.setAvaliado(TipoMarcacao.F);
-        if(!inscricaoRepository.findInscricaoEntitiesByCandidato(inscricaoEntity.getCandidato()).isEmpty()){
-            throw new RegraDeNegocioException("Formulario cadastrado para outro candidato");
-        }
         inscricaoRepository.save(inscricaoEntity);
         InscricaoDto inscricaoDto = converterParaDTO(inscricaoEntity);
         return inscricaoDto;

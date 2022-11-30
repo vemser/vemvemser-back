@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface AvaliacaoRepository extends JpaRepository<AvaliacaoEntity, Integer> {
 
-    Optional<AvaliacaoEntity> findAvaliacaoEntitiesByInscricao(InscricaoEntity inscricaoEntity);
+    Optional<AvaliacaoEntity> findAvaliacaoEntitiesByInscricao_IdInscricao(Integer idInscricao);
 }

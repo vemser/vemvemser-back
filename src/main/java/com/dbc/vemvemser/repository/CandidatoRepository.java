@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface CandidatoRepository extends JpaRepository<CandidatoEntity, Integer> {
 
-    Optional<CandidatoEntity> findCandidatoEntitiesByFormulario(FormularioEntity formulario);
+    Optional<CandidatoEntity> findCandidatoEntitiesByFormulario_IdFormulario(Integer idFormulario);
 }

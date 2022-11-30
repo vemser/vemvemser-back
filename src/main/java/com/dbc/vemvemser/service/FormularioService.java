@@ -75,14 +75,14 @@ public class FormularioService {
                 formularioDtos);
     }
 
-    private FormularioEntity findById(Integer idFormulario) throws RegraDeNegocioException {
+    public FormularioEntity findById(Integer idFormulario) throws RegraDeNegocioException {
         return formularioRepository.findById(idFormulario)
                 .orElseThrow(() -> new RegraDeNegocioException("Erro ao buscar Formulario"));
     }
 
     public FormularioDto findDtoById(Integer idFormulario) throws RegraDeNegocioException {
-        Optional formulario = formularioRepository.findById(idFormulario);
-        FormularioDto formularioDto = objectMapper.convertValue(formulario, FormularioDto.class);
+        FormularioEntity formulario = findById(idFormulario);
+        FormularioDto formularioDto = convertToDto(formulario);
         return formularioDto;
     }
 

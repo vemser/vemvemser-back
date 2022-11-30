@@ -25,10 +25,10 @@ public class AvaliacaoService {
 
 
     public AvaliacaoDto create(AvaliacaoCreateDto avaliacaoCreateDto) throws RegraDeNegocioException {
-        AvaliacaoEntity avaliacaoEntity = convertToEntity(avaliacaoCreateDto);
-        if(!avaliacaoRepository.findAvaliacaoEntitiesByInscricao(avaliacaoEntity.getInscricao()).isEmpty()){
+        if (!avaliacaoRepository.findAvaliacaoEntitiesByInscricao_IdInscricao(avaliacaoCreateDto.getIdInscricao()).isEmpty()) {
             throw new RegraDeNegocioException("Formulario cadastrado para outro candidato");
         }
+        AvaliacaoEntity avaliacaoEntity = convertToEntity(avaliacaoCreateDto);
         AvaliacaoDto avaliacaoDto = convertToDto(avaliacaoRepository.save(avaliacaoEntity));
         avaliacaoDto.setAvaliador(gestorService.convertToDto(avaliacaoEntity.getAvaliador()));
         return avaliacaoDto;
@@ -71,7 +71,7 @@ public class AvaliacaoService {
         AvaliacaoEntity avaliacaoEntity = objectMapper.convertValue(avaliacaoCreateDto, AvaliacaoEntity.class);
         InscricaoEntity inscricaoEntity = inscricaoService.convertToEntity(inscricaoService.findDtoByid(avaliacaoCreateDto.getIdInscricao()));
         avaliacaoEntity.setInscricao(inscricaoEntity);
-        avaliacaoEntity.setAprovado(avaliacaoCreateDto.isAprovadoBoolean()? TipoMarcacao.T : TipoMarcacao.F);
+        avaliacaoEntity.setAprovado(avaliacaoCreateDto.isAprovadoBoolean() ? TipoMarcacao.T : TipoMarcacao.F);
         avaliacaoEntity.setAvaliador(gestorService.convertToEntity(gestorService.findDtoById(1)));
         return avaliacaoEntity;
     }
