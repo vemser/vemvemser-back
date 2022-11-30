@@ -36,7 +36,6 @@ public class GestorController {
     private final GestorService gestorService;
 
 
-
     @Operation(summary = "Listar Gestores", description = "Lista todos os gestores do banco de dados")
     @ApiResponses(
             value = {
@@ -46,11 +45,11 @@ public class GestorController {
             }
     )
     @GetMapping
-    public ResponseEntity<PageDto<GestorDto>> listar(@RequestParam(defaultValue = "0", required = false)Integer pagina,
-                                                     @RequestParam(defaultValue = "10", required = false)Integer tamanho,
-                                                     @RequestParam(defaultValue = "idGestor", required = false)String sort,
-                                                     @RequestParam(defaultValue = "0", required = false)int order) {
-        return new ResponseEntity<>(gestorService.listar(pagina,tamanho,sort,order), HttpStatus.OK);
+    public ResponseEntity<PageDto<GestorDto>> listar(@RequestParam(defaultValue = "0", required = false) Integer pagina,
+                                                     @RequestParam(defaultValue = "10", required = false) Integer tamanho,
+                                                     @RequestParam(defaultValue = "idGestor", required = false) String sort,
+                                                     @RequestParam(defaultValue = "0", required = false) int order) {
+        return new ResponseEntity<>(gestorService.listar(pagina, tamanho, sort, order), HttpStatus.OK);
     }
 
     @Operation(summary = "Listar Gestores por ID", description = "Retorna um Gestor por ID do banco de dados")
@@ -117,7 +116,7 @@ public class GestorController {
     @Operation(summary = "Desativar conta", description = "Desativar sua conta do gestor")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "201", description = "Conta desativada com sucesso"),
+                    @ApiResponse(responseCode = "200", description = "Conta desativada com sucesso"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
@@ -141,10 +140,23 @@ public class GestorController {
         return new ResponseEntity<>(gestorService.contasInativas(), HttpStatus.OK);
     }
 
+    @Operation(summary = "Pegar gestor pelo email e nome", description = "Pegar o gestor pelo nome e o email informado")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Gestor pego com sucesso"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @PostMapping("/gestor-by-nome-email")
+    public ResponseEntity<GestorDto> pegarGestorPorEmailNome(@Valid @RequestBody GestorEmailNomeDto gestorEmailNomeDto) throws RegraDeNegocioException {
+        return new ResponseEntity<>(gestorService.findGestorEntitiesByEmailAndNome(gestorEmailNomeDto), HttpStatus.OK);
+    }
+
     @Operation(summary = "Pegar conta logada", description = "Pegar sua conta logado no sistema")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "201", description = "Gestor pego com sucesso"),
+                    @ApiResponse(responseCode = "200", description = "Gestor pego com sucesso"),
                     @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }

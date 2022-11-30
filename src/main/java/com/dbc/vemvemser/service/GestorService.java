@@ -34,9 +34,8 @@ public class GestorService {
     private static final TipoMarcacao USUARIO_INATIVO = TipoMarcacao.F;
 
 
-
     public GestorDto cadastrar(GestorCreateDto gestorCreateDto) throws RegraDeNegocioException {
-        if(!gestorCreateDto.getEmail().endsWith("@dbccompany.com.br")){
+        if (!gestorCreateDto.getEmail().endsWith("@dbccompany.com.br")) {
             throw new RegraDeNegocioException("Email não valido!");
         }
         GestorEntity gestorEntity = convertToEntity(gestorCreateDto);
@@ -83,6 +82,15 @@ public class GestorService {
 
     }
 
+    public GestorDto findGestorEntitiesByEmailAndNome(GestorEmailNomeDto gestorEmailNomeDto) throws RegraDeNegocioException {
+        GestorEntity gestorEntity = gestorRepository.findGestorEntityByNomeEqualsIgnoreCaseAndEmailEqualsIgnoreCase(gestorEmailNomeDto.getNome(), gestorEmailNomeDto.getEmail());
+        if (gestorEntity == null) {
+            throw new RegraDeNegocioException("Gestor não encontrado");
+        }
+        return convertToDto(gestorEntity);
+
+    }
+
     public void remover(Integer id) throws RegraDeNegocioException {
         findById(id);
         gestorRepository.deleteById(id);
@@ -107,7 +115,8 @@ public class GestorService {
         gestorRepository.save(usuarioEncontrado);
         return convertToDto(usuarioEncontrado);
     }
-    public List<GestorDto> contasInativas(){
+
+    public List<GestorDto> contasInativas() {
         return gestorRepository.findByAtivo(USUARIO_INATIVO).stream()
                 .map(gestorEntity -> objectMapper.convertValue(gestorEntity, GestorDto.class))
                 .toList();

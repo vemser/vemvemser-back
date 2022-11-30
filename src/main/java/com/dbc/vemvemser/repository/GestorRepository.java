@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface GestorRepository extends JpaRepository<GestorEntity, Integer> {
 
-    Optional<GestorEntity> findGestorEntityByEmailAndAndSenha(String email, String senha);
+    GestorEntity findGestorEntityByNomeEqualsIgnoreCaseAndEmailEqualsIgnoreCase(String nome, String email);
 
     List<GestorEntity> findByAtivo (TipoMarcacao ativo);
 
