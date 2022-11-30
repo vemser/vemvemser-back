@@ -44,7 +44,7 @@ public class TokenService {
                 .toList();
 
         return Jwts.builder()
-                .setIssuer("vemser-api")
+                .setIssuer("vemvemser")
                 .claim(Claims.ID, gestorEntity.getIdGestor().toString())
                 .claim(CHAVE_CARGOS,cargosDoGestor)
                 .setIssuedAt(date)
