@@ -36,7 +36,7 @@ public class GestorService {
 
 
     public GestorDto cadastrar(GestorCreateDto gestorCreateDto) throws RegraDeNegocioException {
-        if(!gestorCreateDto.getEmail().contains("@dbccompany.com.br")){
+        if(!gestorCreateDto.getEmail().endsWith("@dbccompany.com.br")){
             throw new RegraDeNegocioException("Email não valido!");
         }
         GestorEntity gestorEntity = convertToEntity(gestorCreateDto);
