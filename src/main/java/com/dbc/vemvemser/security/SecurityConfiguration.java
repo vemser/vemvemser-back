@@ -30,7 +30,7 @@ public class SecurityConfiguration {
                 .cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests((authz) ->
-                        authz.antMatchers("/auth/login", "/formulario/cadastro", "/candidato/cadastro",
+                        authz.antMatchers("/auth","/auth/**", "/formulario/cadastro", "/candidato/cadastro",
                                         "/inscricao/cadastro", "/formulario/update-curriculo-by-id-formulario").permitAll()
                                 .antMatchers("/trilha/**").hasRole("ADMINISTRADOR")
                                 .antMatchers(HttpMethod.PUT, "/gestor").hasRole("ADMINISTRADOR")
