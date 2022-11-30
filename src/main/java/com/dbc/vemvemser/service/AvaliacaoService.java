@@ -27,6 +27,7 @@ public class AvaliacaoService {
     public AvaliacaoDto create(AvaliacaoCreateDto avaliacaoCreateDto) throws RegraDeNegocioException {
         AvaliacaoEntity avaliacaoEntity = convertToEntity(avaliacaoCreateDto);
         AvaliacaoDto avaliacaoDto = convertToDto(avaliacaoRepository.save(avaliacaoEntity));
+        avaliacaoDto.setAvaliador(gestorService.convertToDto(avaliacaoEntity.getAvaliador()));
         return avaliacaoDto;
     }
 

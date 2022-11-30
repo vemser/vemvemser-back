@@ -1,10 +1,7 @@
 package com.dbc.vemvemser.service;
 
 
-import com.dbc.vemvemser.dto.GestorCreateDto;
-import com.dbc.vemvemser.dto.GestorDto;
-import com.dbc.vemvemser.dto.LoginCreateDto;
-import com.dbc.vemvemser.dto.PageDto;
+import com.dbc.vemvemser.dto.*;
 import com.dbc.vemvemser.entity.GestorEntity;
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
@@ -66,7 +63,8 @@ public class GestorService {
     }
 
     public GestorDto findDtoById(Integer idGestor) throws RegraDeNegocioException {
-        GestorDto gestorDto = convertToDto(findById(idGestor));
+        GestorEntity gestorEntity = findById(idGestor);
+        GestorDto gestorDto = convertToDto(gestorEntity);
         return gestorDto;
     }
 
@@ -75,8 +73,9 @@ public class GestorService {
                 .orElseThrow(() -> new RegraDeNegocioException("Usuario não encontrado!"));
     }
 
-    public GestorDto editar(Integer id, GestorCreateDto gestorAtualizar) throws RegraDeNegocioException {
-        GestorEntity gestorEntity = convertToEntity(gestorAtualizar);
+    public GestorDto editar(Integer id, GestorUpdateDto gestorAtualizar) throws RegraDeNegocioException {
+        GestorEntity gestorEntity = objectMapper.convertValue(gestorAtualizar, GestorEntity.class);
+        gestorEntity.setCargoEntity(cargoService.findById(gestorAtualizar.getTipoCargo()));
         gestorEntity.setIdGestor(id);
         gestorRepository.save(gestorEntity);
         GestorDto gestorDto = convertToDto(gestorEntity);
@@ -87,7 +86,6 @@ public class GestorService {
     public void remover(Integer id) throws RegraDeNegocioException {
         findById(id);
         gestorRepository.deleteById(id);
-
     }
 
     public Optional<GestorEntity> findByEmail(String email) {
@@ -127,11 +125,12 @@ public class GestorService {
         gestorEntity.setCargoEntity(cargoService.findById(gestorCreateDto.getTipoCargo()));
         return gestorEntity;
     }
-    public GestorEntity convertToEntity(GestorDto gestorDto) throws RegraDeNegocioException {
+
+    public GestorEntity convertToEntity(GestorDto gestorDto) {
         GestorEntity gestorEntity = objectMapper.convertValue(gestorDto, GestorEntity.class);
+        gestorEntity.setCargoEntity(cargoService.convertToEntity(gestorDto.getCargoDto()));
         return gestorEntity;
     }
-
 
 
 }

@@ -34,6 +34,9 @@ public class FormularioService {
 
 
     public FormularioDto create(FormularioCreateDto formularioCreateDto) throws RegraDeNegocioException {
+        if(!formularioCreateDto.isMatriculadoBoolean()){
+            throw new RegraDeNegocioException("Precisa estar matriculado!");
+        }
         FormularioEntity formulario = convertToEntity(formularioCreateDto);
         FormularioEntity formularioRetornoBanco = formularioRepository.save(formulario);
         FormularioDto formularioDto = convertToDto(formularioRetornoBanco);

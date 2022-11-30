@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.AssertTrue;
 import java.util.List;
 
 @Getter
@@ -16,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class FormularioCreateDto {
 
-    @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
+    @Schema(example = "true", description = "T(true) or F(false)")
     private boolean matriculadoBoolean;
 
     @Schema(example = "Analise e Desenvolvimento de Software", description = "Nome do curso")
@@ -34,16 +35,16 @@ public class FormularioCreateDto {
     @Schema(example = "https://linkedin.com/", description = "Link referente ao seu Linkedin")
     private String Linkedin;
 
-    @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
+    @Schema(example = "true", description = "T(TRUE) or F(FALSE)")
     private boolean desafiosBoolean;
 
-    @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
+    @Schema(example = "true", description = "T(TRUE) or F(FALSE)")
     private boolean problemaBoolean;
 
-    @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
+    @Schema(example = "true", description = "T(TRUE) or F(FALSE)")
     private boolean reconhecimentoBoolean;
 
-    @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
+    @Schema(example = "true", description = "T(TRUE) or F(FALSE)")
     private boolean altruismoBoolean;
 
     @Schema(example = "Outro", description = "Motivo pelo qual se interessou pela área de Tecnologia")
@@ -52,10 +53,10 @@ public class FormularioCreateDto {
     @JsonIgnore
     private byte[] curriculo;
 
-    @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
+    @Schema(example = "true", description = "T(TRUE) or F(FALSE)")
     private boolean lgpdBoolean;
 
-    @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
+    @Schema(example = "true", description = "T(TRUE) or F(FALSE)")
     private boolean provaBoolean;
 
     @Schema(example = "Não possuo", description = "Selecione seu nivel de inglês")
@@ -67,13 +68,13 @@ public class FormularioCreateDto {
     @Schema(example = "TDAH", description = "Digite sua neurodiversidade")
     private String neurodiversidade;
 
-    @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
+    @Schema(example = "16 Gb de RAM", description = "Configurações do computador")
     private String configurações;
 
-    @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
+    @Schema(example = "true", description = "T(TRUE) or F(FALSE)")
     private boolean efetivacaoBoolean;
 
-    @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
+    @Schema(example = "true", description = "T(TRUE) or F(FALSE)")
     private boolean disponibilidadeBoolean;
 
     @Schema(example = "[ 1 ]" , description = "Escolha sua(s) trilha(s) entre Frontend (1), Backend (2) e QA (3)")
