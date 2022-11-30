@@ -6,6 +6,7 @@ import com.dbc.vemvemser.dto.InscricaoDto;
 import com.dbc.vemvemser.dto.PageDto;
 import com.dbc.vemvemser.entity.GestorEntity;
 import com.dbc.vemvemser.entity.InscricaoEntity;
+import com.dbc.vemvemser.enums.TipoEmail;
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.InscricaoRepository;
@@ -26,6 +27,8 @@ public class InscricaoService {
     private static final int DESCENDING = 1;
     private final InscricaoRepository inscricaoRepository;
     private final CandidatoService candidatoService;
+
+    private final EmailService emailService;
     private final ObjectMapper objectMapper;
 
     public InscricaoDto create(InscricaoCreateDto inscricaoCreateDto) throws RegraDeNegocioException {
@@ -38,6 +41,8 @@ public class InscricaoService {
         inscricaoEntity.setAvaliado(TipoMarcacao.F);
         inscricaoRepository.save(inscricaoEntity);
         InscricaoDto inscricaoDto = converterParaDTO(inscricaoEntity);
+
+        emailService.sendEmail(inscricaoDto.getCandidato(), TipoEmail.INSCRICAO);
         return inscricaoDto;
     }
 

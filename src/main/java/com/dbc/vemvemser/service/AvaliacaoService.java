@@ -4,6 +4,7 @@ import com.dbc.vemvemser.dto.AvaliacaoCreateDto;
 import com.dbc.vemvemser.dto.AvaliacaoDto;
 import com.dbc.vemvemser.entity.AvaliacaoEntity;
 import com.dbc.vemvemser.entity.InscricaoEntity;
+import com.dbc.vemvemser.enums.TipoEmail;
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.AvaliacaoRepository;
@@ -23,6 +24,8 @@ public class AvaliacaoService {
     private final InscricaoService inscricaoService;
     private final GestorService gestorService;
 
+    private final EmailService emailService;
+
 
     public AvaliacaoDto create(AvaliacaoCreateDto avaliacaoCreateDto) throws RegraDeNegocioException {
         if (!avaliacaoRepository.findAvaliacaoEntitiesByInscricao_IdInscricao(avaliacaoCreateDto.getIdInscricao()).isEmpty()) {
@@ -31,6 +34,12 @@ public class AvaliacaoService {
         AvaliacaoEntity avaliacaoEntity = convertToEntity(avaliacaoCreateDto);
         AvaliacaoDto avaliacaoDto = convertToDto(avaliacaoRepository.save(avaliacaoEntity));
         avaliacaoDto.setAvaliador(gestorService.convertToDto(avaliacaoEntity.getAvaliador()));
+        if(avaliacaoDto.getAprovado() == TipoMarcacao.T){
+            emailService.sendEmail(avaliacaoDto.getInscricao().getCandidato(), TipoEmail.APROVADO);
+        } else {
+            emailService.sendEmail(avaliacaoDto.getInscricao().getCandidato(), TipoEmail.REPROVADO);
+        }
+
         return avaliacaoDto;
     }
 

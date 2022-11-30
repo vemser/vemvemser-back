@@ -54,6 +54,19 @@ public class CandidatoController {
         return new ResponseEntity<>(candidatoService.listaAllPaginado(pagina, tamanho, sort, order), HttpStatus.OK);
     }
 
+    @Operation(summary = "Busca candidato por ID", description = "Busca Candidato por ID")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna um Candidato."),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @GetMapping("/buscar-by-id")
+    public ResponseEntity<CandidatoDto> findById(@RequestParam Integer idCandidato) throws RegraDeNegocioException {
+        return new ResponseEntity<>(candidatoService.findDtoById(idCandidato), HttpStatus.OK);
+    }
+
     @Operation(summary = "Deletar Candidato", description = "deleta o candidato")
     @ApiResponses(
             value = {
