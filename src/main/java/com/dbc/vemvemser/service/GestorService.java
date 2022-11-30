@@ -6,6 +6,7 @@ import com.dbc.vemvemser.dto.GestorDto;
 import com.dbc.vemvemser.dto.LoginCreateDto;
 import com.dbc.vemvemser.dto.PageDto;
 import com.dbc.vemvemser.entity.GestorEntity;
+import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.GestorRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,9 +30,11 @@ public class GestorService {
     private final CargoService cargoService;
     private final ObjectMapper objectMapper;
 
-    private static final int USUARIO_ATIVO = 1;
+    private final PasswordEncoder passwordEncoder;
 
-    private static final int USUARIO_INATIVO = 0;
+    private static final TipoMarcacao USUARIO_ATIVO = TipoMarcacao.T;
+
+    private static final TipoMarcacao USUARIO_INATIVO = TipoMarcacao.F;
 
 
     public GestorDto autenticarUsuario(LoginCreateDto loginCreateDto) throws RegraDeNegocioException {
@@ -40,6 +45,7 @@ public class GestorService {
 
     public GestorDto cadastrar(GestorCreateDto gestorCreateDto) throws RegraDeNegocioException {
         GestorEntity gestorEntity = convertToEntity(gestorCreateDto);
+        gestorEntity.setSenha(passwordEncoder.encode(gestorCreateDto.getSenha()));
         return convertToDto(gestorRepository.save(gestorEntity));
     }
 
@@ -88,31 +94,31 @@ public class GestorService {
         return gestorRepository.findByEmail(email);
     }
 
-//    public Integer getIdLoggedUser() {
-//        return Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-//    }
-//
-//    public GestorDto getLoggedUser() throws RegraDeNegocioException {
-//        return objectMapper.convertValue(findById(getIdLoggedUser()), GestorDto.class);
-//    }
+    public Integer getIdLoggedUser() {
+        return Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+    }
+
+    public GestorDto getLoggedUser() throws RegraDeNegocioException {
+        return objectMapper.convertValue(findById(getIdLoggedUser()), GestorDto.class);
+    }
 
 
-//    public GestorDto desativarConta(Integer idUsuario) throws RegraDeNegocioException {
-//        GestorEntity usuarioEncontrado = findById(idUsuario);
-//        usuarioEncontrado.setAtivo(USUARIO_INATIVO);
-//        gestorRepository.save(usuarioEncontrado);
-//
-//        return objectMapper.convertValue(usuarioEncontrado, GestorDto.class);
-//    }
-//    public List<GestorDto> contasInativas(){
-//        return gestorRepository.findByAtivo(USUARIO_INATIVO).stream()
-//                .map(gestorEntity -> objectMapper.convertValue(gestorEntity, GestorDto.class))
-//                .toList();
-//    }
+    public GestorDto desativarConta(Integer idUsuario) throws RegraDeNegocioException {
+        GestorEntity usuarioEncontrado = findById(idUsuario);
+        usuarioEncontrado.setAtivo(USUARIO_INATIVO);
+        gestorRepository.save(usuarioEncontrado);
+        return objectMapper.convertValue(usuarioEncontrado, GestorDto.class);
+    }
+    public List<GestorDto> contasInativas(){
+        return gestorRepository.findByAtivo(USUARIO_INATIVO).stream()
+                .map(gestorEntity -> objectMapper.convertValue(gestorEntity, GestorDto.class))
+                .toList();
+    }
 
     public GestorDto convertToDto(GestorEntity gestorEntity) {
         GestorDto gestorDto = objectMapper.convertValue(gestorEntity, GestorDto.class);
         gestorDto.setCargoDto(cargoService.convertToDto(gestorEntity.getCargoEntity()));
+
         return gestorDto;
     }
 

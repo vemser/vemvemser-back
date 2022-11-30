@@ -31,20 +31,13 @@ public class TokenService {
     @Value("${jwt.secret}")
     private String secret;
 
-    public String getToken(GestorEntity gestorEntity, Boolean recuperacao) {
+    public String getToken(GestorEntity gestorEntity) {
 
         LocalDateTime dataLocalDateTime = LocalDateTime.now();
         Date date = Date.from(dataLocalDateTime.atZone(ZoneId.systemDefault()).toInstant());
 
         Date dateExperition;
 
-        if(recuperacao) {
-            LocalDateTime localDateExperation = dataLocalDateTime.plusMinutes(VALIDADE_TOKEN_CINCO_MINUTOS);
-            dateExperition = Date.from(localDateExperation.atZone(ZoneId.systemDefault()).toInstant());
-        }else {
-            LocalDateTime localDateExperation = dataLocalDateTime.plusDays(VALIDADE_TOKEN_UM_DIA);
-            dateExperition = Date.from(localDateExperation.atZone(ZoneId.systemDefault()).toInstant());
-        }
 
         List<String> cargosDoGestor = gestorEntity.getAuthorities().stream()
                 .map(gestorEntity1 -> gestorEntity1.getAuthority())
@@ -55,7 +48,6 @@ public class TokenService {
                 .claim(Claims.ID, gestorEntity.getIdGestor().toString())
                 .claim(CHAVE_CARGOS,cargosDoGestor)
                 .setIssuedAt(date)
-                .setExpiration(dateExperition)
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }

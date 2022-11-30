@@ -20,9 +20,13 @@ public class GestorCreateDto {
 
     @NotNull
     private String email;
+
     @NotNull
     private String senha;
 
     private Integer tipoCargo;
+
+    @NotNull
+    private boolean ativoBoolean;
 
 }

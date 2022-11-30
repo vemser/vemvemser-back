@@ -1,5 +1,6 @@
 package com.dbc.vemvemser.entity;
 
+import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,7 +34,8 @@ public class GestorEntity implements UserDetails {
     private String senha;
 
     @Column(name = "ativo")
-    private Integer ativo;
+    @Enumerated(EnumType.STRING)
+    private TipoMarcacao ativo;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -74,7 +76,7 @@ public class GestorEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return ativo == 1;
+        return getAtivo() == TipoMarcacao.T;
     }
 
 }
