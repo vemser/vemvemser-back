@@ -15,6 +15,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,12 +83,17 @@ public class GestorService {
 
     }
 
-    public GestorDto findGestorEntitiesByEmailAndNome(GestorEmailNomeDto gestorEmailNomeDto) throws RegraDeNegocioException {
-        GestorEntity gestorEntity = gestorRepository.findGestorEntityByNomeEqualsIgnoreCaseAndEmailEqualsIgnoreCase(gestorEmailNomeDto.getNome(), gestorEmailNomeDto.getEmail());
-        if (gestorEntity == null) {
-            throw new RegraDeNegocioException("Gestor não encontrado");
+    public List<GestorDto> findGestorbyNomeOrEmail(GestorEmailNomeCargoDto gestorEmailNomeCargoDto) throws RegraDeNegocioException {
+        if (gestorEmailNomeCargoDto.getNome().isBlank() && gestorEmailNomeCargoDto.getEmail().isBlank()) {
+            return Collections.emptyList();
         }
-        return convertToDto(gestorEntity);
+
+        List<GestorEntity> lista = gestorRepository.findGestorEntitiesByNomeEqualsIgnoreCaseOrEmailEqualsIgnoreCaseAndCargoEntity(gestorEmailNomeCargoDto.getNome(),
+                gestorEmailNomeCargoDto.getEmail(),
+                cargoService.findById(gestorEmailNomeCargoDto.getCargo().getCargo()));
+        return lista.stream()
+                .map(gestorEntity -> convertToDto(gestorEntity))
+                .toList();
 
     }
 

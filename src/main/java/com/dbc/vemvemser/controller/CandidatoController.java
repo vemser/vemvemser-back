@@ -62,9 +62,9 @@ public class CandidatoController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @GetMapping("/buscar-by-id")
-    public ResponseEntity<CandidatoDto> findById(@RequestParam Integer idCandidato) throws RegraDeNegocioException {
-        return new ResponseEntity<>(candidatoService.findDtoById(idCandidato), HttpStatus.OK);
+    @GetMapping("/buscar-by-email")
+    public ResponseEntity<CandidatoDto> findCandidatoDtoByEmail(@RequestParam String email) throws RegraDeNegocioException {
+        return new ResponseEntity<>(candidatoService.findCandidatoDtoByEmail(email), HttpStatus.OK);
     }
 
     @Operation(summary = "Deletar Candidato", description = "deleta o candidato")
