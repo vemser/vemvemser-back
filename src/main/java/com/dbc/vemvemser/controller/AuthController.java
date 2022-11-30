@@ -1,6 +1,7 @@
 package com.dbc.vemvemser.controller;
 
 import com.dbc.vemvemser.dto.LoginCreateDto;
+import com.dbc.vemvemser.dto.TokenDto;
 import com.dbc.vemvemser.entity.GestorEntity;
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
@@ -43,7 +44,7 @@ public class AuthController {
             }
     )
     @PostMapping("/login")
-    public ResponseEntity<String> auth(@RequestBody @Valid LoginCreateDto loginCreateDto) throws RegraDeNegocioException {
+    public ResponseEntity<TokenDto> auth(@RequestBody @Valid LoginCreateDto loginCreateDto) throws RegraDeNegocioException {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(
                         loginCreateDto.getEmail(),
@@ -56,9 +57,9 @@ public class AuthController {
         Object principal = authenticate.getPrincipal();
         GestorEntity gestorEntity = (GestorEntity) principal;
         if (gestorEntity.getAtivo() != TipoMarcacao.F) {
-            String token = tokenService.getToken(gestorEntity);
+            TokenDto token = tokenService.getToken(gestorEntity);
             return new ResponseEntity<>(token, HttpStatus.OK);
         }
-        return new ResponseEntity<>("Conta desativada!", HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
     }
 }

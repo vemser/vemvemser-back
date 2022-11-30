@@ -3,7 +3,11 @@ package com.dbc.vemvemser.security;
 
 
 
+import com.dbc.vemvemser.dto.CargoDto;
+import com.dbc.vemvemser.dto.TokenDto;
 import com.dbc.vemvemser.entity.GestorEntity;
+import com.dbc.vemvemser.service.CargoService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -25,31 +29,30 @@ import java.util.List;
 public class TokenService {
 
     private static final String CHAVE_CARGOS = "CARGOS";
-    private static final int VALIDADE_TOKEN_CINCO_MINUTOS = 5;
-    private static final int VALIDADE_TOKEN_UM_DIA = 1;
+    private final ObjectMapper objectMapper;
+
 
     @Value("${jwt.secret}")
     private String secret;
 
-    public String getToken(GestorEntity gestorEntity) {
+    public TokenDto getToken(GestorEntity gestorEntity) {
 
         LocalDateTime dataLocalDateTime = LocalDateTime.now();
         Date date = Date.from(dataLocalDateTime.atZone(ZoneId.systemDefault()).toInstant());
-
-        Date dateExperition;
-
 
         List<String> cargosDoGestor = gestorEntity.getAuthorities().stream()
                 .map(gestorEntity1 -> gestorEntity1.getAuthority())
                 .toList();
 
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .setIssuer("vemvemser")
                 .claim(Claims.ID, gestorEntity.getIdGestor().toString())
                 .claim(CHAVE_CARGOS,cargosDoGestor)
                 .setIssuedAt(date)
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
+
+        return new TokenDto(token,gestorEntity.getIdGestor(),objectMapper.convertValue(gestorEntity.getCargoEntity(), CargoDto.class));
     }
 
     public UsernamePasswordAuthenticationToken isValid(String token) {

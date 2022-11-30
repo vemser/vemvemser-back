@@ -30,15 +30,14 @@ public class SecurityConfiguration {
                 .cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests((authz) ->
-                        authz.antMatchers("/","/auth","/auth/**", "/formulario/cadastro", "/candidato/cadastro",
-                                        "/inscricao/cadastro", "/formulario/update-curriculo-by-id-formulario").permitAll()
-                                .antMatchers("/formulario/**").hasAnyRole("ADMINISTRADOR","COLABORADOR")
-                                .antMatchers("/candidato/**").hasAnyRole("ADMINISTRADOR","COLABORADOR")
-                                .antMatchers("/avaliacao/**").hasAnyRole("ADMINISTRADOR","COLABORADOR")
-                                .antMatchers("/trilha/**").hasRole("ADMINISTRADOR")
-                                .antMatchers(HttpMethod.GET,"/inscricao/**").hasAnyRole("ADMINISTRADOR","COLABORADOR")
+                        authz.antMatchers("/", "/auth", "/auth/**", "/formulario/cadastro", "/candidato/cadastro",
+                                        "/inscricao/cadastro", "/formulario/update-curriculo-by-id-formulario", "/trilha/listar").permitAll()
+                                .antMatchers("/formulario/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
+                                .antMatchers("/candidato/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
+                                .antMatchers("/avaliacao/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
+                                .antMatchers(HttpMethod.GET, "/inscricao/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
                                 .antMatchers(HttpMethod.PUT, "/gestor").hasRole("ADMINISTRADOR")
-                                .antMatchers(HttpMethod.GET, "/gestor").hasAnyRole("ADMINISTRADOR","COLABORADOR")
+                                .antMatchers(HttpMethod.GET, "/gestor").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
                                 .antMatchers(HttpMethod.POST, "/gestor").hasRole("ADMINISTRADOR")
                                 .antMatchers(HttpMethod.DELETE, "/**").hasRole("ADMINISTRADOR")
                                 .anyRequest().authenticated()

@@ -43,7 +43,7 @@ public class FormularioController {
             }
     )
     @PostMapping("/cadastro")
-    public ResponseEntity<FormularioDto> create(FormularioCreateDto formularioCreateDto) throws RegraDeNegocioException {
+    public ResponseEntity<FormularioDto> create(@RequestBody FormularioCreateDto formularioCreateDto) throws RegraDeNegocioException {
         FormularioDto formularioDto = formularioService.create(formularioCreateDto);
         log.info("Criando Formulario ID:" + formularioDto.getIdFormulario());
         return new ResponseEntity<>(formularioDto, HttpStatus.OK);
