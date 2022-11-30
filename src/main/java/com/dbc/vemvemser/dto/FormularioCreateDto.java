@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.validation.constraints.AssertTrue;
 import java.util.List;
 
@@ -69,13 +70,19 @@ public class FormularioCreateDto {
     private String neurodiversidade;
 
     @Schema(example = "16 Gb de RAM", description = "Configurações do computador")
-    private String configurações;
+    private String configuracoes;
 
     @Schema(example = "true", description = "T(TRUE) or F(FALSE)")
     private boolean efetivacaoBoolean;
 
     @Schema(example = "true", description = "T(TRUE) or F(FALSE)")
     private boolean disponibilidadeBoolean;
+
+    @Schema(example = "Mulher Cis")
+    private String genero;
+
+    @Schema(example = "Heterosexual")
+    private String orientacao;
 
     @Schema(example = "[ 1 ]" , description = "Escolha sua(s) trilha(s) entre Frontend (1), Backend (2) e QA (3)")
     private List<Integer> trilhas;

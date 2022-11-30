@@ -52,9 +52,13 @@ public class FormularioDto {
 
     private String neurodiversidade;
 
-    private String configurações;
+    private String configuracoes;
 
     private TipoMarcacao efetivacao;
+
+    private String genero;
+
+    private String orientacao;
 
     private TipoMarcacao disponibilidade;
 

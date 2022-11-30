@@ -85,7 +85,7 @@ public class FormularioEntity {
     private String neurodiversidade;
 
     @Column(name = "CONFIG_PC")
-    private String configurações;
+    private String configuracoes;
 
     @Column(name = "EFETIVACAO")
     @Enumerated(EnumType.STRING)
@@ -94,6 +94,12 @@ public class FormularioEntity {
     @Column(name = "DISPONIBILIDADE")
     @Enumerated(EnumType.STRING)
     private TipoMarcacao disponibilidade;
+
+    @Column(name = "GENERO")
+    private String genero;
+
+    @Column(name = "ORIENTACAO")
+    private String orientacao;
 
     @OneToOne(mappedBy ="formulario" ,fetch = FetchType.LAZY)
     private CandidatoEntity candidato;

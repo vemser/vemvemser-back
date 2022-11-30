@@ -1,6 +1,5 @@
 package com.dbc.vemvemser.dto;
 
-import com.dbc.vemvemser.enums.TipoGenero;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.hibernate.validator.constraints.br.CPF;
@@ -20,9 +19,6 @@ public class CandidatoCreateDto {
     @Schema(description = "Nome do candidato", example = "José da Silva da Silva")
     @Pattern(regexp = "^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{0,}", message = "Não permitido números e caracteres especiais.")
     private String nome;
-
-    @NotNull
-    private TipoGenero genero;
 
     @Email
     @Schema(description = "email do candidato", example = "Jose@dbccompany.com.br")

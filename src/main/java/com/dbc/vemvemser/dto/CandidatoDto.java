@@ -1,6 +1,5 @@
 package com.dbc.vemvemser.dto;
 
-import com.dbc.vemvemser.enums.TipoGenero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,8 +13,6 @@ public class CandidatoDto{
     private Integer idCandidato;
 
     private String nome;
-
-    private TipoGenero genero;
 
     private String email;
 

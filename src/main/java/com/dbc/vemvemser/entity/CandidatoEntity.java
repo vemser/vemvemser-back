@@ -22,9 +22,6 @@ public class CandidatoEntity {
     @Column(name = "nome")
     private String nome;
 
-    @Column(name = "genero")
-    private String genero;
-
     @Column(name = "email")
     private String email;
 
