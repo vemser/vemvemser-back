@@ -40,6 +40,7 @@ public class GestorService {
             throw new RegraDeNegocioException("Email não valido!");
         }
         GestorEntity gestorEntity = convertToEntity(gestorCreateDto);
+        gestorEntity.setAtivo(TipoMarcacao.T);
         gestorEntity.setSenha(passwordEncoder.encode(gestorCreateDto.getSenha()));
         return convertToDto(gestorRepository.save(gestorEntity));
     }

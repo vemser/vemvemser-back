@@ -26,7 +26,4 @@ public class GestorCreateDto {
 
     private Integer tipoCargo;
 
-    @NotNull
-    private boolean ativoBoolean;
-
 }
