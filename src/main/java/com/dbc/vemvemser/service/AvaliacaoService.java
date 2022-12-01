@@ -39,9 +39,10 @@ public class AvaliacaoService {
         } else {
             emailService.sendEmail(avaliacaoDto.getInscricao().getCandidato(), TipoEmail.REPROVADO);
         }
-
+        inscricaoService.setAvaliado(avaliacaoCreateDto.getIdInscricao());
         return avaliacaoDto;
     }
+
 
 
     public List<AvaliacaoDto> list() {

@@ -8,6 +8,7 @@ import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.enums.TipoTurno;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.AvaliacaoRepository;
+import com.dbc.vemvemser.repository.InscricaoRepository;
 import com.dbc.vemvemser.service.*;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,6 +51,9 @@ public class AvaliacaoServiceTest {
     private FormularioService formularioService;
 
     @Mock
+    private InscricaoRepository inscricaoRepository;
+
+    @Mock
     private CargoService cargoService;
 
     @Mock
@@ -78,11 +82,13 @@ public class AvaliacaoServiceTest {
         when(gestorService.convertToDto(any())).thenReturn(GestorFactory.getGestorDto());
         when(avaliacaoRepository.save(any())).thenReturn(AvaliacaoFactory.getAvaliacaoEntityAprovado());
 
+
         AvaliacaoDto avaliacaoDtoRetorno = avaliacaoService.create(avaliacaoCreateDto);
 
         Assert.notNull(avaliacaoDtoRetorno);
         Assertions.assertEquals(avaliacaoDtoRetorno.getAprovado(), TipoMarcacao.T);
         verify(emailService, times(1)).sendEmail(any(), any());
+
 
     }
 
@@ -133,7 +139,6 @@ public class AvaliacaoServiceTest {
         when(avaliacaoRepository.save(any())).thenReturn(AvaliacaoFactory.getAvaliacaoEntityAprovado());
         when(gestorService.convertToDto(any())).thenReturn(GestorFactory.getGestorDto());
         when(inscricaoService.converterParaDTO(any())).thenReturn(InscricaoFactory.getInscricaoDto());
-
         AvaliacaoDto avaliacaoRetorno = avaliacaoService.update(1, AvaliacaoFactory.getAvaliacaoCreateDto());
 
         Assert.notNull(avaliacaoRetorno);

@@ -113,24 +113,22 @@ public class InscricaoServiceTest {
 
         FormularioDto formularioDto = FormularioFactory.getFormularioDto();
 
-        InscricaoEntity inscricaoEntity =InscricaoFactory.getInscricaoEntity();
+        InscricaoEntity inscricaoEntity = InscricaoFactory.getInscricaoEntity();
 
         when(inscricaoRepository.save(any()))
                 .thenReturn(inscricaoEntity);
         when(inscricaoRepository.findById(anyInt()))
                 .thenReturn(Optional.of(inscricaoEntity));
-        when(candidatoService.convertToDto(any()))
-                .thenReturn(candidatoDto);
 
-        InscricaoDto inscricaoDtoRetorno = inscricaoService.setAvaliado(1);
+        InscricaoEntity inscricao = inscricaoService.setAvaliado(1);
 
-        Assert.assertNotNull(inscricaoDtoRetorno);
+        Assert.assertNotNull(inscricao);
     }
 
     @Test
     public void deveTestarFindDtoByIdComSucesso() throws RegraDeNegocioException {
 
-        InscricaoEntity inscricaoEntity =InscricaoFactory.getInscricaoEntity();
+        InscricaoEntity inscricaoEntity = InscricaoFactory.getInscricaoEntity();
 
         CandidatoDto candidatoDto = CandidatoFactory.getCandidatoDto();
         FormularioDto formularioDto = FormularioFactory.getFormularioDto();
@@ -140,25 +138,25 @@ public class InscricaoServiceTest {
         when(candidatoService.convertToDto(any()))
                 .thenReturn(candidatoDto);
 
-       InscricaoDto inscricaoDtoRetorno= inscricaoService.findDtoByid(1);
+        InscricaoDto inscricaoDtoRetorno = inscricaoService.findDtoByid(1);
 
-       Assert.assertNotNull(inscricaoDtoRetorno);
+        Assert.assertNotNull(inscricaoDtoRetorno);
     }
 
     @Test
     public void deveTestarDeleteComSucesso() throws RegraDeNegocioException {
 
-        InscricaoEntity inscricaoEntity=InscricaoFactory.getInscricaoEntity();
+        InscricaoEntity inscricaoEntity = InscricaoFactory.getInscricaoEntity();
 
         when(inscricaoRepository.findById(anyInt())).thenReturn(Optional.of(inscricaoEntity));
 
         inscricaoService.delete(1);
 
-        verify(inscricaoRepository,times(1)).deleteById(anyInt());
+        verify(inscricaoRepository, times(1)).deleteById(anyInt());
     }
 
     @Test
-    public void deveTestarConvertToEntity(){
+    public void deveTestarConvertToEntity() {
 
         InscricaoDto inscricaoDto = InscricaoFactory.getInscricaoDto();
         CandidatoEntity candidatoEntity = CandidatoFactory.getCandidatoEntity();
@@ -170,9 +168,9 @@ public class InscricaoServiceTest {
         when(candidatoService.convertToEntity(any()))
                 .thenReturn(candidatoEntity);
 
-      InscricaoEntity inscricaoEntityRetorno = inscricaoService.convertToEntity(inscricaoDto);
+        InscricaoEntity inscricaoEntityRetorno = inscricaoService.convertToEntity(inscricaoDto);
 
-    Assert.assertNotNull(inscricaoEntityRetorno);
+        Assert.assertNotNull(inscricaoEntityRetorno);
     }
 
 

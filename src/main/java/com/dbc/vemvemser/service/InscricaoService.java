@@ -46,11 +46,11 @@ public class InscricaoService {
         return inscricaoDto;
     }
 
-    public InscricaoDto setAvaliado(Integer idInscricao) throws RegraDeNegocioException {
+    public InscricaoEntity setAvaliado(Integer idInscricao) throws RegraDeNegocioException {
         InscricaoEntity inscricaoEntity = findById(idInscricao);
         inscricaoEntity.setAvaliado(TipoMarcacao.T);
-        InscricaoDto inscricaoDto = converterParaDTO(inscricaoRepository.save(inscricaoEntity));
-        return inscricaoDto;
+        InscricaoEntity inscricao =inscricaoRepository.save(inscricaoEntity);
+        return inscricao;
     }
 
     public PageDto<InscricaoDto> listar(Integer pagina, Integer tamanho, String sort, int order) {
