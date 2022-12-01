@@ -2,6 +2,7 @@ package com.dbc.vemvemser.service;
 
 import com.dbc.vemvemser.dto.CandidatoDto;
 import com.dbc.vemvemser.enums.TipoEmail;
+import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class EmailService {
     private final JavaMailSender emailSender;
 
 
-    public void sendEmail(CandidatoDto candidatoDto, TipoEmail tipoEmail) {
+    public void sendEmail(CandidatoDto candidatoDto, TipoEmail tipoEmail) throws RegraDeNegocioException {
         final String SUBJECT=" Processo Seletivo Vem Ser DBC - Primeira Etapa";
 
         MimeMessage mimeMessage = emailSender.createMimeMessage();
@@ -44,7 +45,7 @@ public class EmailService {
 
             emailSender.send(mimeMessageHelper.getMimeMessage());
         } catch (MessagingException | IOException | TemplateException e) {
-            e.printStackTrace();
+            throw new RegraDeNegocioException("Erro ao enviar email");
         }
     }
 
