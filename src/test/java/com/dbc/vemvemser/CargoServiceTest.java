@@ -58,7 +58,7 @@ public class CargoServiceTest {
         when(cargoRepository.findById(anyInt())).thenReturn(cargo);
 
 
-       CargoEntity cargoRetorno = cargoService.findById(1);
+        CargoEntity cargoRetorno = cargoService.findById(1);
 
         Assert.assertNotNull(cargoRetorno);
 

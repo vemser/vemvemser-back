@@ -144,11 +144,19 @@ public class FormularioServiceTest {
         when(formularioRepository.findById(anyInt())).thenReturn(formulario);
         when(formularioRepository.save(any(FormularioEntity.class))).thenReturn(formularioEntityUpdate);
 
+<<<<<<< HEAD
         FormularioDto formularioDtoRetorno = formularioService.update(1, formularioCreateDto);
 
         assertNotNull(formularioDtoRetorno);
         assertEquals(formularioDtoRetorno.getIdFormulario(), formularioEntityUpdate.getIdFormulario());
         assertNotEquals(formularioEntity.getIngles(), formularioDtoRetorno.getIngles());
+=======
+        FormularioDto formularioDtoRetorno = formularioService.update(1,formularioCreateDto);
+
+        assertNotNull(formularioDtoRetorno);
+        assertEquals(formularioDtoRetorno.getIdFormulario(),formularioEntityUpdate.getIdFormulario());
+        assertNotEquals(formularioEntity.getIngles(),formularioDtoRetorno.getIngles());
+>>>>>>> b66bbb490c380c8fb917f77097d66941cda7e80b
 
     }
 

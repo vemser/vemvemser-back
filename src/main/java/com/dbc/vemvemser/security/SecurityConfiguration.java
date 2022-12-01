@@ -32,8 +32,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests((authz) ->
                         authz.antMatchers("/", "/auth", "/auth/**", "/formulario/cadastro", "/candidato/cadastro",
                                         "/inscricao/cadastro", "/formulario/update-curriculo-by-id-formulario", "/trilha/listar").permitAll()
-                                .antMatchers(HttpMethod.GET, "/formulario/listar","/formulario/get-curriculo-by-id-formulario").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
-                                .antMatchers(HttpMethod.PUT,"/formulario/").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
+                                .antMatchers("/formulario/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
                                 .antMatchers("/candidato/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
                                 .antMatchers("/avaliacao/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
                                 .antMatchers(HttpMethod.GET, "/inscricao/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")

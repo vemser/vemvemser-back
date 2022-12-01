@@ -73,7 +73,7 @@ public class EmailServiceTest {
         when(emailSender.createMimeMessage()).thenReturn(mimeMessage);
         doThrow(new IOException()).when(fmConfiguration).getTemplate(anyString());
 
-       emailService.sendEmail(candidatoDto, TipoEmail.INSCRICAO);
+        emailService.sendEmail(candidatoDto, TipoEmail.INSCRICAO);
     }
 
 
