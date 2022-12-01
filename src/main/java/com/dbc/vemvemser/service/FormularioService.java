@@ -100,10 +100,19 @@ public class FormularioService {
         return convertToDto(formularioEntity);
     }
 
-    public void updateCurriculo(String curriculo, Integer idFormulario) throws RegraDeNegocioException {
-        FormularioEntity formulario = findById(idFormulario);
-        formulario.setCurriculo(Base64.getDecoder().decode(curriculo.getBytes()));
-        formularioRepository.save(formulario);
+    public void updateCurriculo(MultipartFile curriculo, Integer idFormulario) throws RegraDeNegocioException {
+
+        try {
+            String arquivo = curriculo.getOriginalFilename();
+            if (!arquivo.contains(".pdf")) {
+                throw new RegraDeNegocioException("Formato de arquivo invalido!");
+            }
+            FormularioEntity formulario = findById(idFormulario);
+            formulario.setCurriculo(curriculo.getBytes());
+            formularioRepository.save(formulario);
+        } catch (IOException e) {
+            throw new RegraDeNegocioException("Arquivo invalido");
+        }
     }
 
 
