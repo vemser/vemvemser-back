@@ -45,7 +45,7 @@ public class FormularioService {
     }
 
 
-    public String retornarCurriculoDoCandidatoDecode(Integer idFormulario) throws RegraDeNegocioException {
+    public String retornarCurriculoDoCandidatoDecode(Integer idFormulario){
         Optional<FormularioEntity> formularioRetorno = formularioRepository.findById(idFormulario);
 
         if (formularioRetorno.get().getCurriculo() == null) {
