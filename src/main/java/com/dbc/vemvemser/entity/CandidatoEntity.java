@@ -52,7 +52,7 @@ public class CandidatoEntity {
     private InscricaoEntity inscricao;
 
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name="ID_FORMULARIO", referencedColumnName = "ID_FORMULARIO")
     private FormularioEntity formulario;
 
