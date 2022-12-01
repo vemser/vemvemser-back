@@ -18,6 +18,7 @@ import org.springframework.util.Base64Utils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -34,7 +35,7 @@ public class FormularioService {
 
 
     public FormularioDto create(FormularioCreateDto formularioCreateDto) throws RegraDeNegocioException {
-        if(!formularioCreateDto.isMatriculadoBoolean()){
+        if (!formularioCreateDto.isMatriculadoBoolean()) {
             throw new RegraDeNegocioException("Precisa estar matriculado!");
         }
         FormularioEntity formulario = convertToEntity(formularioCreateDto);
@@ -99,19 +100,10 @@ public class FormularioService {
         return convertToDto(formularioEntity);
     }
 
-    public void updateCurriculo(MultipartFile curriculo, Integer idFormulario) throws RegraDeNegocioException {
-
-        try {
-            String arquivo = curriculo.getOriginalFilename();
-            if (!arquivo.contains(".pdf")) {
-                throw new RegraDeNegocioException("Formato de arquivo invalido!");
-            }
-            FormularioEntity formulario = findById(idFormulario);
-            formulario.setCurriculo(curriculo.getBytes());
-            formularioRepository.save(formulario);
-        } catch (IOException e) {
-            throw new RegraDeNegocioException("Arquivo invalido");
-        }
+    public void updateCurriculo(String curriculo, Integer idFormulario) throws RegraDeNegocioException {
+        FormularioEntity formulario = findById(idFormulario);
+        formulario.setCurriculo(Base64.getDecoder().decode(curriculo.getBytes()));
+        formularioRepository.save(formulario);
     }
 
 
