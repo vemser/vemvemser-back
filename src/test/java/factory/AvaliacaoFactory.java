@@ -17,7 +17,7 @@ public class AvaliacaoFactory {
         return avaliacaoDto;
     }
 
-    public static AvaliacaoEntity getAvaliacaoEntity() {
+    public static AvaliacaoEntity getAvaliacaoEntityAprovado() {
 
         AvaliacaoEntity avaliacaoEntity = new AvaliacaoEntity();
         avaliacaoEntity.setInscricao(InscricaoFactory.getInscricaoEntity());
@@ -27,6 +27,18 @@ public class AvaliacaoFactory {
         avaliacaoEntity.setInscricao(InscricaoFactory.getInscricaoEntity());
         return avaliacaoEntity;
     }
+
+    public static AvaliacaoEntity getAvaliacaoEntityReprovado() {
+
+        AvaliacaoEntity avaliacaoEntity = new AvaliacaoEntity();
+        avaliacaoEntity.setInscricao(InscricaoFactory.getInscricaoEntity());
+        avaliacaoEntity.setAprovado(TipoMarcacao.F);
+        avaliacaoEntity.setIdAvaliacao(1);
+        avaliacaoEntity.setAvaliador(GestorFactory.getGestorEntity());
+        avaliacaoEntity.setInscricao(InscricaoFactory.getInscricaoEntity());
+        return avaliacaoEntity;
+    }
+
 
     public static AvaliacaoCreateDto getAvaliacaoCreateDto() {
         AvaliacaoCreateDto avaliacaoCreateDto = new AvaliacaoCreateDto();

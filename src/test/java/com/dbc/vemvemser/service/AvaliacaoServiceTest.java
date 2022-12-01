@@ -13,18 +13,18 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import factory.AvaliacaoFactory;
-import factory.GestorFactory;
-import factory.InscricaoFactory;
+import factory.*;
 import io.jsonwebtoken.lang.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import javax.validation.constraints.AssertTrue;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -67,7 +67,7 @@ public class AvaliacaoServiceTest {
     }
 
     @Test
-    public void deveTestarCreateComSucesso() throws RegraDeNegocioException {
+    public void deveTestarCreateComSucessoAprovado() throws RegraDeNegocioException {
         AvaliacaoCreateDto avaliacaoCreateDto = AvaliacaoFactory.getAvaliacaoCreateDto();
         when(avaliacaoRepository.findAvaliacaoEntitiesByInscricao_IdInscricao(anyInt())).thenReturn(Optional.empty());
         when(inscricaoService.findDtoByid(anyInt())).thenReturn(InscricaoFactory.getInscricaoDto());
@@ -76,28 +76,43 @@ public class AvaliacaoServiceTest {
         when(gestorService.findDtoById(anyInt())).thenReturn(GestorFactory.getGestorDto());
         when(gestorService.convertToEntity(any())).thenReturn(GestorFactory.getGestorEntity());
         when(gestorService.convertToDto(any())).thenReturn(GestorFactory.getGestorDto());
-        when(avaliacaoRepository.save(any())).thenReturn(AvaliacaoFactory.getAvaliacaoEntity());
+        when(avaliacaoRepository.save(any())).thenReturn(AvaliacaoFactory.getAvaliacaoEntityAprovado());
 
         AvaliacaoDto avaliacaoDtoRetorno = avaliacaoService.create(avaliacaoCreateDto);
 
         Assert.notNull(avaliacaoDtoRetorno);
+        Assertions.assertEquals(avaliacaoDtoRetorno.getAprovado(), TipoMarcacao.T);
+        verify(emailService, times(1)).sendEmail(any(), any());
+
+    }
+
+    @Test
+    public void deveTestarCreateComSucessoReprovado() throws RegraDeNegocioException {
+        AvaliacaoCreateDto avaliacaoCreateDto = AvaliacaoFactory.getAvaliacaoCreateDto();
+
+        when(avaliacaoRepository.findAvaliacaoEntitiesByInscricao_IdInscricao(anyInt())).thenReturn(Optional.empty());
+        when(inscricaoService.findDtoByid(anyInt())).thenReturn(InscricaoFactory.getInscricaoDto());
+        when(inscricaoService.convertToEntity(any())).thenReturn(InscricaoFactory.getInscricaoEntity());
+        when(inscricaoService.converterParaDTO((any()))).thenReturn(InscricaoFactory.getInscricaoDto());
+        when(gestorService.findDtoById(anyInt())).thenReturn(GestorFactory.getGestorDto());
+        when(gestorService.convertToEntity(any())).thenReturn(GestorFactory.getGestorEntity());
+        when(gestorService.convertToDto(any())).thenReturn(GestorFactory.getGestorDto());
+        when(avaliacaoRepository.save(any())).thenReturn(AvaliacaoFactory.getAvaliacaoEntityReprovado());
+
+        AvaliacaoDto avaliacaoDtoRetorno = avaliacaoService.create(avaliacaoCreateDto);
+
+        Assert.notNull(avaliacaoDtoRetorno);
+        Assertions.assertEquals(avaliacaoDtoRetorno.getAprovado(), TipoMarcacao.F);
         verify(emailService, times(1)).sendEmail(any(), any());
 
     }
 
     @Test(expected = RegraDeNegocioException.class)
-    public void deveTestarCreateComExcepetion() throws RegraDeNegocioException {
-        AvaliacaoCreateDto avaliacaoCreateDto = new AvaliacaoCreateDto();
-        avaliacaoCreateDto.setAprovadoBoolean(true);
-        avaliacaoCreateDto.setIdInscricao(1);
+    public void deveTestarCreateComException() throws RegraDeNegocioException {
+        AvaliacaoCreateDto avaliacaoCreateDto = AvaliacaoFactory.getAvaliacaoCreateDto();
+        AvaliacaoEntity avaliacaoEntity = AvaliacaoFactory.getAvaliacaoEntityAprovado();
 
-
-        AvaliacaoEntity avaliacaoEntity = new AvaliacaoEntity();
-        avaliacaoEntity.setAprovado(TipoMarcacao.T);
-
-        Optional avaliacao = Optional.of(avaliacaoEntity);
-
-        when(avaliacaoRepository.findAvaliacaoEntitiesByInscricao_IdInscricao(anyInt())).thenReturn(avaliacao);
+        when(avaliacaoRepository.findAvaliacaoEntitiesByInscricao_IdInscricao(anyInt())).thenReturn(Optional.of(avaliacaoEntity));
 
         avaliacaoService.create(avaliacaoCreateDto);
 
@@ -106,55 +121,29 @@ public class AvaliacaoServiceTest {
 
     @Test
     public void deveTestarListComSucesso() {
-        AvaliacaoEntity avaliacaoEntity = AvaliacaoFactory.getAvaliacaoEntity();
-
+        AvaliacaoEntity avaliacaoEntity = AvaliacaoFactory.getAvaliacaoEntityAprovado();
         when(avaliacaoRepository.findAll()).thenReturn(List.of(avaliacaoEntity));
-
         avaliacaoService.list();
-
         verify(avaliacaoRepository, times(1)).findAll();
     }
 
-//    @Test
-//    public void deveTestarUpdateComSucesso() throws RegraDeNegocioException {
-//        AvaliacaoEntity avaliacaoEntity = getAvaliacaoEntity();
-//        Optional<AvaliacaoEntity> avaliacao = Optional.of(avaliacaoEntity);
-//
-//        AvaliacaoDto avaliacaoDto = getAvaliacaoDto();
-//
-//        AvaliacaoCreateDto avaliacaoCreateDto = getAvaliacaoCreateDto();
-//
-//        GestorDto gestorDto = getGestorDto();
-//
-//        InscricaoDto inscricaoDto = getInscricaoDto();
-//
-//        CargoDto cargoDto =getCargoDto();
-//
-//        CandidatoDto candidatoDto = getCandidatoDto();
-//
-//        FormularioDto formularioDto = getFormularioDto();
-//
-//        when(avaliacaoRepository.findById(anyInt())).thenReturn(avaliacao);
-//        when(avaliacaoRepository.save(any())).thenReturn(avaliacaoEntity);
-//        when(cargoService.convertToDto(any())).thenReturn(cargoDto);
-//        when(formularioService.convertToDto(any())).thenReturn(formularioDto);
-//        when(candidatoService.convertToDto(any())).thenReturn(candidatoDto);
-//        when(inscricaoService.converterParaDTO(any())).thenReturn(inscricaoDto);
-//        when(gestorService.convertToDto(any())).thenReturn(gestorDto);
-//        when(avaliacaoService.convertToDto(any())).thenReturn(avaliacaoDto);
-//
-//
-//        AvaliacaoDto avaliacaoRetorno = avaliacaoService.update(1, avaliacaoCreateDto);
-//
-//        Assert.notNull(avaliacaoRetorno);
-//    }
+    @Test
+    public void deveTestarUpdateComSucesso() throws RegraDeNegocioException {
+        when(avaliacaoRepository.findById(anyInt())).thenReturn(Optional.of(AvaliacaoFactory.getAvaliacaoEntityAprovado()));
+        when(avaliacaoRepository.save(any())).thenReturn(AvaliacaoFactory.getAvaliacaoEntityAprovado());
+        when(gestorService.convertToDto(any())).thenReturn(GestorFactory.getGestorDto());
+        when(inscricaoService.converterParaDTO(any())).thenReturn(InscricaoFactory.getInscricaoDto());
 
+        AvaliacaoDto avaliacaoRetorno = avaliacaoService.update(1, AvaliacaoFactory.getAvaliacaoCreateDto());
+
+        Assert.notNull(avaliacaoRetorno);
+    }
 
 
     @Test
     public void deveTestarDeleteByIdComSucesso() throws RegraDeNegocioException {
 
-        AvaliacaoEntity avaliacaoEntity= AvaliacaoFactory.getAvaliacaoEntity();
+        AvaliacaoEntity avaliacaoEntity = AvaliacaoFactory.getAvaliacaoEntityAprovado();
 
         when(avaliacaoRepository.findById(anyInt())).thenReturn(Optional.of(avaliacaoEntity));
 

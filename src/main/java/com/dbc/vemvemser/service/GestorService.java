@@ -150,7 +150,6 @@ public class GestorService {
     public GestorDto convertToDto(GestorEntity gestorEntity) {
         GestorDto gestorDto = objectMapper.convertValue(gestorEntity, GestorDto.class);
         gestorDto.setCargoDto(cargoService.convertToDto(gestorEntity.getCargoEntity()));
-
         return gestorDto;
     }
 
