@@ -28,6 +28,7 @@ public class InscricaoEntity {
     private LocalDate dataInscricao;
 
     @Column(name = "AVALIADO")
+    @Enumerated(EnumType.STRING)
     private TipoMarcacao avaliado;
 
     @JsonIgnore
