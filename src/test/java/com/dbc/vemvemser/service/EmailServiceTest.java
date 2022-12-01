@@ -1,4 +1,4 @@
-package com.dbc.vemvemser;
+package com.dbc.vemvemser.service;
 
 import com.dbc.vemvemser.dto.CandidatoDto;
 import com.dbc.vemvemser.enums.TipoEmail;

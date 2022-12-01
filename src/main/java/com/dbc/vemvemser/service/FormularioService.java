@@ -45,7 +45,7 @@ public class FormularioService {
     }
 
 
-    public String retornarCurriculoDoCandidatoDecode(Integer idFormulario) throws RegraDeNegocioException {
+    public String retornarCurriculoDoCandidatoDecode(Integer idFormulario){
         Optional<FormularioEntity> formularioRetorno = formularioRepository.findById(idFormulario);
 
         if (formularioRetorno.get().getCurriculo() == null) {
@@ -55,6 +55,7 @@ public class FormularioService {
 
         return Base64Utils.encodeToString(formularioComCurriculo.getCurriculo());
     }
+
 
     public PageDto<FormularioDto> listAllPaginado(Integer pagina, Integer tamanho, String sort, int order) {
         Sort ordenacao = Sort.by(sort).ascending();
@@ -104,7 +105,7 @@ public class FormularioService {
 
         try {
             String arquivo = curriculo.getOriginalFilename();
-            if (!arquivo.contains(".pdf")) {
+            if (!arquivo.endsWith(".pdf")) {
                 throw new RegraDeNegocioException("Formato de arquivo invalido!");
             }
             FormularioEntity formulario = findById(idFormulario);

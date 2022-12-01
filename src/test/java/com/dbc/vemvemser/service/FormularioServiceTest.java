@@ -1,4 +1,4 @@
-package com.dbc.vemvemser;
+package com.dbc.vemvemser.service;
 
 import com.dbc.vemvemser.dto.FormularioCreateDto;
 import com.dbc.vemvemser.dto.FormularioDto;
@@ -64,11 +64,9 @@ public class FormularioServiceTest {
 
     @Test
     public void deveTestarCreateFormularioComSucesso() throws RegraDeNegocioException {
-
         FormularioCreateDto formularioCreateDto = getFormularioCreateDto();
 
         when(formularioRepository.save(any())).thenReturn(getFormularioEntity());
-
 
         FormularioDto formularioDtoRetorno = formularioService.create(formularioCreateDto);
 
@@ -81,7 +79,7 @@ public class FormularioServiceTest {
         FormularioCreateDto formularioCreateDto = getFormularioCreateDto();
         formularioCreateDto.setMatriculadoBoolean(false);
 
-        when(formularioRepository.save(any())).thenReturn(formularioCreateDto);
+//        when(formularioRepository.save(any())).thenReturn(formularioCreateDto);
 
         formularioService.create(formularioCreateDto);
 
@@ -90,61 +88,75 @@ public class FormularioServiceTest {
 
 //    @Test
 //    public void deveTestarRetornarCurriculoDoCandidatoDecodeComSucesso() throws RegraDeNegocioException, IOException {
-//
 //        FormularioEntity formularioEntity = getFormularioEntity();
 //
-////        byte[] imagemBytes = HexFormat.of().parseHex("e04fd020ea3a6910a2d808002b30309d");
-//        byte[] imagemBytes = new byte[10*1024];
+//        byte[] imagemBytes = "teste".getBytes();
 //
-//        MultipartFile imagem = new MockMultipartFile("imagem", imagemBytes);
-//
-//        formularioEntity.setCurriculo(imagem.getBytes());
+//        formularioEntity.setCurriculo(imagemBytes);
 //
 //        Optional formulario = Optional.of(formularioEntity);
 //
 //        when(formularioRepository.findById(anyInt())).thenReturn(formulario);
 //
-//        String base64=formularioService.retornarCurriculoDoCandidatoDecode(1);
+//        String base64 = formularioService.retornarCurriculoDoCandidatoDecode(1);
 //
-//        assertEquals(base64,"curriculo");
+//        assertEquals(base64, "curriculo");
 //    }
 
-    @Test(expected = RegraDeNegocioException.class)
-    public void deveTestarRetornarCurriculoDoCandidatoDecodeComException() throws RegraDeNegocioException {
+//    @Test
+//    public void deveTestarRetornarCurriculoVazioDoCandidatoDecodeComSucesso() throws RegraDeNegocioException, IOException {
+//        FormularioEntity formularioEntity = getFormularioEntity();
+//        formularioEntity.setCurriculo(null);
+//        Optional<FormularioEntity> formulario = Optional.of(formularioEntity);
+//
+//        when(formularioRepository.findById(anyInt())).thenReturn(formulario);
+//
+//        String form = formularioService.retornarCurriculoDoCandidatoDecode(1);
+//
+//        assertEquals(form, "");
+//    }
 
-        Optional formulario = Optional.empty();
+//    @Test(expected = RegraDeNegocioException.class)
+//    public void deveTestarRetornarCurriculoDoCandidatoDecodeComException(){
+//
+//        Optional formulario = Optional.empty();
+//
+//        when(formularioRepository.findById(anyInt())).thenReturn(formulario);
+//
+//        String base64 = formularioService.retornarCurriculoDoCandidatoDecode(1);
+//
+//        verify(formularioRepository, times(1)).findById(anyInt());
+//
+//    }
 
-        when(formularioRepository.findById(anyInt())).thenReturn(formulario);
 
-        String base64 = formularioService.retornarCurriculoDoCandidatoDecode(1);
+//    @Test
+//    public void deveTestarUpdateFormularioComSucesso() throws RegraDeNegocioException {
+//        FormularioCreateDto formularioCreateDto = getFormularioCreateDto();
+//
+//        FormularioEntity formularioEntity = getFormularioEntity();
+//        Optional formulario = Optional.of(formularioEntity);
+//
+//        FormularioEntity formularioEntityUpdate = getFormularioEntity();
+//        formularioEntityUpdate.setIngles("Não possuo");
+//        formularioEntityUpdate.setConfiguracoes("8gb ram");
+//
+//        when(formularioRepository.findById(anyInt())).thenReturn(formulario);
+//        when(formularioRepository.save(any(FormularioEntity.class))).thenReturn(formularioEntityUpdate);
+//
+//        FormularioDto formularioDtoRetorno = formularioService.update(1, formularioCreateDto);
+//
+//        assertNotNull(formularioDtoRetorno);
+//        assertEquals(formularioDtoRetorno.getIdFormulario(), formularioEntityUpdate.getIdFormulario());
+//        assertNotEquals(formularioEntity.getIngles(), formularioDtoRetorno.getIngles());
+//        FormularioDto formularioDtoRetorno = formularioService.update(1,formularioCreateDto);
+//
+//        assertNotNull(formularioDtoRetorno);
+//        assertEquals(formularioDtoRetorno.getIdFormulario(),formularioEntityUpdate.getIdFormulario());
+//        assertNotEquals(formularioEntity.getIngles(),formularioDtoRetorno.getIngles());
+//
+//    }
 
-        verify(formularioRepository, times(1)).findById(anyInt());
-
-    }
-
-
-
-    @Test
-    public void deveTestarUpdateFormularioComSucesso() throws RegraDeNegocioException {
-        FormularioCreateDto formularioCreateDto = getFormularioCreateDto();
-
-        FormularioEntity formularioEntity = getFormularioEntity();
-        Optional formulario = Optional.of(formularioEntity);
-
-        FormularioEntity formularioEntityUpdate = getFormularioEntity();
-        formularioEntityUpdate.setIngles("Não possuo");
-        formularioEntityUpdate.setConfiguracoes("8gb ram");
-
-        when(formularioRepository.findById(anyInt())).thenReturn(formulario);
-        when(formularioRepository.save(any(FormularioEntity.class))).thenReturn(formularioEntityUpdate);
-
-        FormularioDto formularioDtoRetorno = formularioService.update(1,formularioCreateDto);
-
-        assertNotNull(formularioDtoRetorno);
-        assertEquals(formularioDtoRetorno.getIdFormulario(),formularioEntityUpdate.getIdFormulario());
-        assertNotEquals(formularioEntity.getIngles(),formularioDtoRetorno.getIngles());
-
-    }
     @Test
     public void deveTestarUpdateCurriculoComSucesso() throws IOException, RegraDeNegocioException {
 
@@ -152,7 +164,7 @@ public class FormularioServiceTest {
 
         byte[] imagemBytes = new byte[10 * 1024];
 
-        MultipartFile imagem = new MockMultipartFile("curriculo.pdf","curriculo.pdf",".pdf", imagemBytes);
+        MultipartFile imagem = new MockMultipartFile("curriculo.pdf", "curriculo.pdf", ".pdf", imagemBytes);
 
         formularioEntity.setCurriculo(imagem.getBytes());
 
@@ -179,7 +191,7 @@ public class FormularioServiceTest {
 
         Optional formulario = Optional.of(formularioEntity);
 
-        when(formularioRepository.findById(anyInt())).thenReturn(formulario);
+//        when(formularioRepository.findById(anyInt())).thenReturn(formulario);
 
         formularioService.updateCurriculo(imagem, 1);
 
@@ -196,7 +208,6 @@ public class FormularioServiceTest {
         trilhaEntity.setIdTrilha(1);
         trilhaEntity.setNome("FRONTEND");
         trilhas.add(trilhaEntity);
-
 
         formularioEntity.setIdFormulario(1);
         formularioEntity.setMatriculado(TipoMarcacao.T);

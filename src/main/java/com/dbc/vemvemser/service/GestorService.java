@@ -75,7 +75,11 @@ public class GestorService {
                 .orElseThrow(() -> new RegraDeNegocioException("Usuario não encontrado!"));
     }
 
+
     public GestorDto editar(Integer id, GestorCreateDto gestorCreateDto) throws RegraDeNegocioException {
+        if(id != getIdLoggedUser()){
+            throw new RegraDeNegocioException("Você não tem permissão para editar esse gestor.");
+        }
         GestorEntity gestorEntity = findById(id);
         gestorEntity.setCargoEntity(cargoService.findById(gestorCreateDto.getTipoCargo()));
         gestorEntity.setNome(gestorCreateDto.getNome());
