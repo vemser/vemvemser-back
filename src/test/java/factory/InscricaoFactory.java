@@ -29,7 +29,6 @@ public class InscricaoFactory {
         inscricaoEntity.setDataInscricao(LocalDate.now());
         inscricaoEntity.setAvaliado(TipoMarcacao.T);
         inscricaoEntity.setCandidato(CandidatoFactory.getCandidatoEntity());
-        inscricaoEntity.setAvaliacaoEntity(AvaliacaoFactory.getAvaliacaoEntity());
         return inscricaoEntity;
     }
 
