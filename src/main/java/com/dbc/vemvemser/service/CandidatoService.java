@@ -28,7 +28,10 @@ public class CandidatoService {
 
 
     public CandidatoDto cadastro(CandidatoCreateDto candidatoCreateDto) throws RegraDeNegocioException {
-        if(!candidatoRepository.findCandidatoEntitiesByFormulario_IdFormulario(candidatoCreateDto.getIdFormulario()).isEmpty()){
+        if (candidatoRepository.findCandidatoEntitiesByEmail(candidatoCreateDto.getEmail()).isPresent()) {
+            throw new RegraDeNegocioException("Email já cadastrado");
+        }
+        if (!candidatoRepository.findCandidatoEntitiesByFormulario_IdFormulario(candidatoCreateDto.getIdFormulario()).isEmpty()) {
             throw new RegraDeNegocioException("Formulario cadastrado para outro candidato");
         }
         CandidatoEntity candidatoEntity = convertToEntity(candidatoCreateDto);
@@ -62,10 +65,10 @@ public class CandidatoService {
     }
 
     public CandidatoDto findCandidatoDtoByEmail(String email) throws RegraDeNegocioException {
-       Optional candidato= candidatoRepository.findCandidatoEntitiesByEmail(email);
-       if(candidato.isEmpty()) {
-        throw new RegraDeNegocioException("Candidato não encontrado!");
-       }
+        Optional candidato = candidatoRepository.findCandidatoEntitiesByEmail(email);
+        if (candidato.isEmpty()) {
+            throw new RegraDeNegocioException("Candidato não encontrado!");
+        }
         CandidatoDto candidatoDto = objectMapper.convertValue(candidato, CandidatoDto.class);
         CandidatoDto candidatoDtoRetorno = findDtoById(candidatoDto.getIdCandidato());
 
