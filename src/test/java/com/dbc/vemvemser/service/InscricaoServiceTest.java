@@ -1,4 +1,4 @@
-package com.dbc.vemvemser;
+package com.dbc.vemvemser.service;
 
 import com.dbc.vemvemser.service.InscricaoService;
 import org.junit.runner.RunWith;
