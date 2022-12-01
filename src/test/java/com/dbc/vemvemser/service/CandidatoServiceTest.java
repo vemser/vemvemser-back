@@ -1,8 +1,10 @@
 package com.dbc.vemvemser.service;
 
+import com.dbc.vemvemser.dto.AvaliacaoCreateDto;
 import com.dbc.vemvemser.dto.CandidatoCreateDto;
 import com.dbc.vemvemser.dto.CandidatoDto;
 import com.dbc.vemvemser.dto.PageDto;
+import com.dbc.vemvemser.entity.AvaliacaoEntity;
 import com.dbc.vemvemser.entity.CandidatoEntity;
 import com.dbc.vemvemser.entity.FormularioEntity;
 import com.dbc.vemvemser.entity.InscricaoEntity;
@@ -15,6 +17,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import factory.CandidatoFactory;
+import factory.FormularioFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,9 +63,9 @@ public class CandidatoServiceTest {
     @Test
     public void deveTestarCadastrarComSucesso() throws RegraDeNegocioException {
         // Criar variaveis (SETUP)
-        CandidatoCreateDto candidatoCreateDto = getCandidatoCreateDto();
+        CandidatoCreateDto candidatoCreateDto = CandidatoFactory.getCandidatoCreateDto();
 
-        CandidatoEntity candidatoEntity = getCandidatoEntity();
+        CandidatoEntity candidatoEntity = CandidatoFactory.getCandidatoEntity();
 
         candidatoEntity.setIdCandidato(1);
         when(candidatoRepository.save(any())).thenReturn(candidatoEntity);
@@ -74,13 +78,50 @@ public class CandidatoServiceTest {
         assertNotNull(candidatoDto.getIdCandidato());
     }
 
+//    @Test(expected = RegraDeNegocioException.class)
+//    public void deveTestarCadastrarComErroNoEmail() throws RegraDeNegocioException {
+//        // Criar variaveis (SETUP)
+//        CandidatoCreateDto candidatoCreateDto = new CandidatoCreateDto();
+//        candidatoCreateDto.setEmail("eduardosedrez@gmail.com");
+//
+//        CandidatoEntity candidatoEntity = new CandidatoEntity();
+//       List<CandidatoEntity> candidato = new ArrayList<>();
+//       candidato.add(CandidatoFactory.getCandidatoEntity());
+//
+////        !candidatoRepository.findCandidatoEntitiesByEmail(candidatoCreateDto.getEmail()).isEmpty()
+//        when(candidatoRepository.findCandidatoEntitiesByEmail(any())).thenReturn(candidato);
+//
+//        // Ação (ACT)
+//        candidatoService.cadastro(candidatoCreateDto);
+//
+//        verify(candidatoRepository, times(1)).save(any());
+//    }
+
+//    @Test(expected = RegraDeNegocioException.class)
+//    public void deveTestarCadastrarComErroDeFormularioRepetido() throws RegraDeNegocioException {
+//        // Criar variaveis (SETUP)
+//        CandidatoCreateDto candidatoCreateDto = new CandidatoCreateDto();
+//        candidatoCreateDto.setIdFormulario(1);
+//
+//        CandidatoEntity candidatoEntity = new CandidatoEntity();
+//        List<CandidatoCreateDto> candidato = new ArrayList<>();
+//        candidato.add(CandidatoFactory.getCandidatoCreateDto());
+////        !candidatoRepository.findCandidatoEntitiesByFormulario_IdFormulario(candidatoCreateDto.getIdFormulario()).isEmpty()
+//        when(candidatoRepository.findCandidatoEntitiesByFormulario_IdFormulario(any())).thenReturn(candidato);
+//
+//        // Ação (ACT)
+//        candidatoService.cadastro(candidatoCreateDto);
+//
+//        verify(candidatoRepository, times(1)).save(any());
+//    }
+
 
     @Test
     public void deveTestarFindByIdComSucesso() throws RegraDeNegocioException {
         // Criar variaveis (SETUP)
         Integer busca = 10;
 
-        CandidatoEntity candidatoEntity = getCandidatoEntity();
+        CandidatoEntity candidatoEntity = CandidatoFactory.getCandidatoEntity();
         candidatoEntity.setIdCandidato(1);
         when(candidatoRepository.findById(anyInt())).thenReturn(Optional.of(candidatoEntity));
 
@@ -97,7 +138,7 @@ public class CandidatoServiceTest {
         // Criar variaveis (SETUP)
         Integer busca = 10;
 
-        CandidatoEntity candidatoEntity = getCandidatoEntity();
+        CandidatoEntity candidatoEntity = CandidatoFactory.getCandidatoEntity();
         candidatoEntity.setIdCandidato(1);
         when(candidatoRepository.findById(anyInt())).thenReturn(Optional.of(candidatoEntity));
 
@@ -110,14 +151,14 @@ public class CandidatoServiceTest {
     public void deveTestarUpdateComSucesso() throws RegraDeNegocioException {
         // SETUP
         Integer id= 10;
-        CandidatoCreateDto candidatoCreateDto = getCandidatoCreateDto();
+        CandidatoCreateDto candidatoCreateDto = CandidatoFactory.getCandidatoCreateDto();
 
-        CandidatoEntity candidatoEntity = getCandidatoEntity();
+        CandidatoEntity candidatoEntity = CandidatoFactory.getCandidatoEntity();
         candidatoEntity.setIdCandidato(1);
         candidatoEntity.setNome("Ricardo de Lucas");
         when(candidatoRepository.findById(anyInt())).thenReturn(Optional.of(candidatoEntity));
 
-        CandidatoEntity candidato = getCandidatoEntity();
+        CandidatoEntity candidato = CandidatoFactory.getCandidatoEntity();
         when(candidatoRepository.save(any())).thenReturn(candidato);
 
         // Ação (ACT)
@@ -142,7 +183,7 @@ public class CandidatoServiceTest {
         // Criar variaveis (SETUP)
         Integer busca = 10;
 
-        CandidatoEntity candidatoEntity = getCandidatoEntity();
+        CandidatoEntity candidatoEntity = CandidatoFactory.getCandidatoEntity();
         candidatoEntity.setIdCandidato(1);
         when(candidatoRepository.findById(anyInt())).thenReturn(Optional.of(candidatoEntity));
 
@@ -154,24 +195,22 @@ public class CandidatoServiceTest {
         assertEquals(1, candidatoRecuperado.getIdCandidato());
     }
 
-//    @Test
-//    public void deveTestarFindCandidatoDtoByEmail() throws RegraDeNegocioException {
-//        // Criar variaveis (SETUP)
-//        String email = "eduardosedrez@gmail.com";
-//        CandidatoDto candidatoDto = getCandidatoDto();
-//
-//        CandidatoEntity candidatoEntity = getCandidatoEntity();
-//
-//        when(candidatoRepository.findById(anyInt())).thenReturn(Optional.of(candidatoEntity));
-//        when(formularioService.convertToDto(any())).thenReturn(candidatoEntity);
-//        when(candidatoService.findDtoById(anyInt())).thenReturn(candidatoDto);
-//
-//        // Ação (ACT)
-//        CandidatoDto candidatoRecuperado = candidatoService.findCandidatoDtoByEmail(email);
-//        // Verificação (ASSERT)
-//        assertNotNull(candidatoRecuperado);
-//        assertEquals("eduardosedrez@gmail.com", candidatoRecuperado.getEmail());
-//    }
+    @Test
+    public void deveTestarFindCandidatoDtoByEmail() throws RegraDeNegocioException {
+        // Criar variaveis (SETUP)
+        String email = "eduardosedrez@gmail.com";
+        CandidatoDto candidatoDto = CandidatoFactory.getCandidatoDto();
+
+        CandidatoEntity candidatoEntity = CandidatoFactory.getCandidatoEntity();
+
+        candidatoRepository.findCandidatoEntitiesByEmail(email);
+
+        // Ação (ACT)
+        List<CandidatoDto> candidatoRecuperado = candidatoService.findCandidatoDtoByEmail(email);
+        // Verificação (ASSERT)
+        assertNotNull(candidatoRecuperado);
+        assertEquals(email, candidatoEntity.getEmail());
+    }
 
 
 
@@ -193,47 +232,5 @@ public class CandidatoServiceTest {
 
 
 
-    private static CandidatoEntity getCandidatoEntity() {
-        CandidatoEntity candidatoEntity = new CandidatoEntity();
-        candidatoEntity.setNome("Eduardo Sedrez Rodrigues");
-        candidatoEntity.setDataNascimento(LocalDate.of(2013,10,13));
-        candidatoEntity.setEmail("eduardosedrez@gmail.com");
-        candidatoEntity.setTelefone("53981258964");
-        candidatoEntity.setRg("77.777.777-7");
-        candidatoEntity.setCpf("049.239.620-54");
-        candidatoEntity.setEstado("Rio Grande do Sul");
-        candidatoEntity.setCidade("Pelotas");
-        candidatoEntity.setPcd(TipoMarcacao.F);
-        candidatoEntity.setInscricao(new InscricaoEntity());
-        candidatoEntity.setFormulario(new FormularioEntity());
-        return candidatoEntity;
-    }
 
-    private static CandidatoCreateDto getCandidatoCreateDto() {
-        CandidatoCreateDto candidatoCreateDto = new CandidatoCreateDto();
-        candidatoCreateDto.setNome("Eduardo Sedrez Rodrigues");
-        candidatoCreateDto.setDataNascimento(LocalDate.of(2013,10,13));
-        candidatoCreateDto.setEmail("eduardosedrez@gmail.com");
-        candidatoCreateDto.setTelefone("53981258964");
-        candidatoCreateDto.setRg("77.777.777-7");
-        candidatoCreateDto.setCpf("049.239.620-54");
-        candidatoCreateDto.setEstado("Rio Grande do Sul");
-        candidatoCreateDto.setCidade("Pelotas");
-        candidatoCreateDto.setPcdboolean(false);
-        return candidatoCreateDto;
-    }
-
-    private static CandidatoDto getCandidatoDto() {
-        CandidatoDto candidatoDto = new CandidatoDto();
-        candidatoDto.setNome("Eduardo Sedrez Rodrigues");
-        candidatoDto.setDataNascimento(LocalDate.of(2013,10,13));
-        candidatoDto.setEmail("eduardosedrez@gmail.com");
-        candidatoDto.setTelefone("53981258964");
-        candidatoDto.setRg("77.777.777-7");
-        candidatoDto.setCpf("049.239.620-54");
-        candidatoDto.setEstado("Rio Grande do Sul");
-        candidatoDto.setCidade("Pelotas");
-        candidatoDto.setPcd(TipoMarcacao.F);
-        return candidatoDto;
-    }
 }
