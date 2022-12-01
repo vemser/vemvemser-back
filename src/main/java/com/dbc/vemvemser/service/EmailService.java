@@ -7,7 +7,6 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -31,25 +30,11 @@ public class EmailService {
     private final JavaMailSender emailSender;
 
 
-<<<<<<< HEAD
     public void sendEmail(CandidatoDto candidatoDto, TipoEmail tipoEmail) throws RegraDeNegocioException {
-=======
-    public void sendEmail(CandidatoDto candidatoDto, TipoEmail tipoEmail) {
->>>>>>> 7b9e5bd0a545bff90ab790585690ba5b2a37a6bd
         final String SUBJECT=" Processo Seletivo Vem Ser DBC - Primeira Etapa";
 
         MimeMessage mimeMessage = emailSender.createMimeMessage();
         try {
-<<<<<<< HEAD
-                MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-
-                mimeMessageHelper.setFrom(from);
-                mimeMessageHelper.setTo(candidatoDto.getEmail());
-                mimeMessageHelper.setSubject(SUBJECT);
-                mimeMessageHelper.setText(geContentFromTemplate(candidatoDto,tipoEmail), true);
-
-                emailSender.send(mimeMessageHelper.getMimeMessage());
-=======
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
 
             mimeMessageHelper.setFrom(from);
@@ -58,7 +43,6 @@ public class EmailService {
             mimeMessageHelper.setText(geContentFromTemplate(candidatoDto,tipoEmail), true);
 
             emailSender.send(mimeMessageHelper.getMimeMessage());
->>>>>>> 7b9e5bd0a545bff90ab790585690ba5b2a37a6bd
         } catch (MessagingException | IOException | TemplateException e) {
             throw new RegraDeNegocioException("Erro ao enviar email");
         }
