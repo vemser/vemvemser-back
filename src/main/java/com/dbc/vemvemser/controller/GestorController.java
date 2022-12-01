@@ -91,7 +91,7 @@ public class GestorController {
     )
     @PutMapping("/{idGestor}")
     public ResponseEntity<GestorDto> editar(@PathVariable(name = "idGestor") Integer idGestor,
-                                            @Valid @RequestBody GestorUpdateDto gestor) throws RegraDeNegocioException {
+                                            @Valid @RequestBody GestorCreateDto gestor) throws RegraDeNegocioException {
         log.info("Editando o Gestor...");
         GestorDto gestorEditado = gestorService.editar(idGestor, gestor);
         log.info("Gestor editado com sucesso!");

@@ -6,6 +6,7 @@ import com.dbc.vemvemser.entity.GestorEntity;
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.security.TokenService;
+import com.dbc.vemvemser.service.GestorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -33,6 +34,8 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
 
+    private final GestorService gestorService;
+
     private final TokenService tokenService;
 
     @Operation(summary = "Logar com um registro de funcionário.", description = "Loga no sistema com um login de funcionário.")
@@ -57,9 +60,26 @@ public class AuthController {
         Object principal = authenticate.getPrincipal();
         GestorEntity gestorEntity = (GestorEntity) principal;
         if (gestorEntity.getAtivo() != TipoMarcacao.F) {
-            TokenDto token = tokenService.getToken(gestorEntity);
+            TokenDto token = tokenService.getToken(gestorEntity, false);
             return new ResponseEntity<>(token, HttpStatus.OK);
         }
         return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+    }
+
+
+    @Operation(summary = "Esqueci minha senha.", description = "Faz a requisição para a troca de senha, que enviara um token para o email cadastrado")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Troca de senha solicitada."),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @PostMapping("/forgot-password")
+    public ResponseEntity<Void> findEmail(@RequestBody @Valid String email) throws RegraDeNegocioException {
+
+        gestorService.forgotPassword(email);
+
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }

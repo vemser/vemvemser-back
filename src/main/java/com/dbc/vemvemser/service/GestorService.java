@@ -1,11 +1,13 @@
 package com.dbc.vemvemser.service;
 
 
+import antlr.Token;
 import com.dbc.vemvemser.dto.*;
 import com.dbc.vemvemser.entity.GestorEntity;
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.GestorRepository;
+import com.dbc.vemvemser.security.TokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,6 +31,7 @@ public class GestorService {
     private final CargoService cargoService;
     private final ObjectMapper objectMapper;
     private final PasswordEncoder passwordEncoder;
+    private final TokenService tokenService;
 
     private static final TipoMarcacao USUARIO_ATIVO = TipoMarcacao.T;
 
@@ -72,11 +75,12 @@ public class GestorService {
                 .orElseThrow(() -> new RegraDeNegocioException("Usuario não encontrado!"));
     }
 
-    public GestorDto editar(Integer id, GestorUpdateDto gestorAtualizar) throws RegraDeNegocioException {
+    public GestorDto editar(Integer id, GestorCreateDto gestorCreateDto) throws RegraDeNegocioException {
         GestorEntity gestorEntity = findById(id);
-        gestorEntity.setCargoEntity(cargoService.findById(gestorAtualizar.getTipoCargo()));
-        gestorEntity.setNome(gestorAtualizar.getNome());
-        gestorEntity.setEmail(gestorAtualizar.getEmail());
+        gestorEntity.setCargoEntity(cargoService.findById(gestorCreateDto.getTipoCargo()));
+        gestorEntity.setNome(gestorCreateDto.getNome());
+        gestorEntity.setEmail(gestorCreateDto.getEmail());
+        gestorEntity.setSenha(passwordEncoder.encode(gestorCreateDto.getSenha()));
         gestorRepository.save(gestorEntity);
         GestorDto gestorDto = convertToDto(gestorEntity);
         return gestorDto;
@@ -104,6 +108,17 @@ public class GestorService {
 
     public Optional<GestorEntity> findByEmail(String email) {
         return gestorRepository.findByEmail(email);
+    }
+
+    public void forgotPassword(String email) throws RegraDeNegocioException {
+        Optional<GestorEntity> gestorEntity = findByEmail(email);
+        if (gestorEntity.isEmpty()) {
+            throw new RegraDeNegocioException("Email não encontrado");
+        }
+        GestorEntity gestor = objectMapper.convertValue(gestorEntity, GestorEntity.class);
+
+        TokenDto token = tokenService.getToken(gestor, true);
+
     }
 
     public Integer getIdLoggedUser() {
