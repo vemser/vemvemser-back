@@ -200,6 +200,27 @@ public class FormularioServiceTest {
 
     }
 
+    @Test
+    public void deveTestarFindDtoByIdComSucesso() throws RegraDeNegocioException {
+        FormularioEntity formularioEntity = getFormularioEntity();
+
+        when(formularioRepository.findById(anyInt())).thenReturn(Optional.of(formularioEntity));
+
+        FormularioDto formularioRetorno = formularioService.findDtoById(1);
+
+        assertEquals(formularioRetorno.getIdFormulario(), formularioEntity.getIdFormulario());
+    }
+
+    @Test
+    public void deveTestarDeleteByIdComSucesso() throws RegraDeNegocioException {
+    FormularioEntity formularioEntity = getFormularioEntity();
+
+    when(formularioRepository.findById(anyInt())).thenReturn(Optional.of(formularioEntity));
+
+    formularioService.deleteById(10);
+
+    }
+
     private FormularioEntity getFormularioEntity() {
         FormularioEntity formularioEntity = new FormularioEntity();
 
