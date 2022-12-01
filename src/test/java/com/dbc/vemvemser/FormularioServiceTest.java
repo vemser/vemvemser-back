@@ -64,11 +64,9 @@ public class FormularioServiceTest {
 
     @Test
     public void deveTestarCreateFormularioComSucesso() throws RegraDeNegocioException {
-
         FormularioCreateDto formularioCreateDto = getFormularioCreateDto();
 
         when(formularioRepository.save(any())).thenReturn(getFormularioEntity());
-
 
         FormularioDto formularioDtoRetorno = formularioService.create(formularioCreateDto);
 
@@ -88,26 +86,35 @@ public class FormularioServiceTest {
         verify(formularioRepository, times(1)).save(any());
     }
 
-//    @Test
-//    public void deveTestarRetornarCurriculoDoCandidatoDecodeComSucesso() throws RegraDeNegocioException, IOException {
-//
-//        FormularioEntity formularioEntity = getFormularioEntity();
-//
-////        byte[] imagemBytes = HexFormat.of().parseHex("e04fd020ea3a6910a2d808002b30309d");
-//        byte[] imagemBytes = new byte[10*1024];
-//
-//        MultipartFile imagem = new MockMultipartFile("imagem", imagemBytes);
-//
-//        formularioEntity.setCurriculo(imagem.getBytes());
-//
-//        Optional formulario = Optional.of(formularioEntity);
-//
-//        when(formularioRepository.findById(anyInt())).thenReturn(formulario);
-//
-//        String base64=formularioService.retornarCurriculoDoCandidatoDecode(1);
-//
-//        assertEquals(base64,"curriculo");
-//    }
+    @Test
+    public void deveTestarRetornarCurriculoDoCandidatoDecodeComSucesso() throws RegraDeNegocioException, IOException {
+        FormularioEntity formularioEntity = getFormularioEntity();
+
+        byte[] imagemBytes = "teste".getBytes();
+
+        formularioEntity.setCurriculo(imagemBytes);
+
+        Optional formulario = Optional.of(formularioEntity);
+
+        when(formularioRepository.findById(anyInt())).thenReturn(formulario);
+
+        String base64 = formularioService.retornarCurriculoDoCandidatoDecode(1);
+
+        assertEquals(base64, "curriculo");
+    }
+
+    @Test
+    public void deveTestarRetornarCurriculoVazioDoCandidatoDecodeComSucesso() throws RegraDeNegocioException, IOException {
+        FormularioEntity formularioEntity = getFormularioEntity();
+        formularioEntity.setCurriculo(null);
+        Optional<FormularioEntity> formulario = Optional.of(formularioEntity);
+
+        when(formularioRepository.findById(anyInt())).thenReturn(formulario);
+
+        String form = formularioService.retornarCurriculoDoCandidatoDecode(1);
+
+        assertEquals(form, "");
+    }
 
     @Test(expected = RegraDeNegocioException.class)
     public void deveTestarRetornarCurriculoDoCandidatoDecodeComException() throws RegraDeNegocioException {
@@ -121,7 +128,6 @@ public class FormularioServiceTest {
         verify(formularioRepository, times(1)).findById(anyInt());
 
     }
-
 
 
     @Test
@@ -138,13 +144,14 @@ public class FormularioServiceTest {
         when(formularioRepository.findById(anyInt())).thenReturn(formulario);
         when(formularioRepository.save(any(FormularioEntity.class))).thenReturn(formularioEntityUpdate);
 
-       FormularioDto formularioDtoRetorno = formularioService.update(1,formularioCreateDto);
+        FormularioDto formularioDtoRetorno = formularioService.update(1, formularioCreateDto);
 
-       assertNotNull(formularioDtoRetorno);
-       assertEquals(formularioDtoRetorno.getIdFormulario(),formularioEntityUpdate.getIdFormulario());
-       assertNotEquals(formularioEntity.getIngles(),formularioDtoRetorno.getIngles());
+        assertNotNull(formularioDtoRetorno);
+        assertEquals(formularioDtoRetorno.getIdFormulario(), formularioEntityUpdate.getIdFormulario());
+        assertNotEquals(formularioEntity.getIngles(), formularioDtoRetorno.getIngles());
 
     }
+
     @Test
     public void deveTestarUpdateCurriculoComSucesso() throws IOException, RegraDeNegocioException {
 
@@ -152,7 +159,7 @@ public class FormularioServiceTest {
 
         byte[] imagemBytes = new byte[10 * 1024];
 
-        MultipartFile imagem = new MockMultipartFile("curriculo.pdf","curriculo.pdf",".pdf", imagemBytes);
+        MultipartFile imagem = new MockMultipartFile("curriculo.pdf", "curriculo.pdf", ".pdf", imagemBytes);
 
         formularioEntity.setCurriculo(imagem.getBytes());
 

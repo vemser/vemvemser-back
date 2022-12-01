@@ -5,6 +5,7 @@ import com.dbc.vemvemser.entity.FormularioEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -12,5 +13,5 @@ public interface CandidatoRepository extends JpaRepository<CandidatoEntity, Inte
 
     Optional<CandidatoEntity> findCandidatoEntitiesByFormulario_IdFormulario(Integer idFormulario);
 
-    Optional<CandidatoEntity> findCandidatoEntitiesByEmail(String email);
+    List<CandidatoEntity> findCandidatoEntitiesByEmail(String email);
 }

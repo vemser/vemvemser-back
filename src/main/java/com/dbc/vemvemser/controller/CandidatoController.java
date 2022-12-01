@@ -55,7 +55,7 @@ public class CandidatoController {
         return new ResponseEntity<>(candidatoService.listaAllPaginado(pagina, tamanho, sort, order), HttpStatus.OK);
     }
 
-    @Operation(summary = "Busca candidato por ID", description = "Busca Candidato por ID")
+    @Operation(summary = "Busca candidato por EMAIL", description = "Busca Candidato por ID")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna um Candidato."),
@@ -64,7 +64,7 @@ public class CandidatoController {
             }
     )
     @GetMapping("/buscar-by-email")
-    public ResponseEntity<CandidatoDto> findCandidatoDtoByEmail(@RequestParam String email) throws RegraDeNegocioException {
+    public ResponseEntity<List<CandidatoDto>> findCandidatoDtoByEmail(@RequestParam String email) throws RegraDeNegocioException {
         return new ResponseEntity<>(candidatoService.findCandidatoDtoByEmail(email), HttpStatus.OK);
     }
 

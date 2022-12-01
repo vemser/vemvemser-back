@@ -73,6 +73,9 @@ public class GestorService {
     }
 
     public GestorDto editar(Integer id, GestorUpdateDto gestorAtualizar) throws RegraDeNegocioException {
+        if(id != getIdLoggedUser()){
+            throw new RegraDeNegocioException("Você não tem permissão para editar esse gestor.");
+        }
         GestorEntity gestorEntity = findById(id);
         gestorEntity.setCargoEntity(cargoService.findById(gestorAtualizar.getTipoCargo()));
         gestorEntity.setNome(gestorAtualizar.getNome());
