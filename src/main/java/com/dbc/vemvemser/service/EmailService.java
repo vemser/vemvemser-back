@@ -2,6 +2,7 @@ package com.dbc.vemvemser.service;
 
 import com.dbc.vemvemser.dto.CandidatoDto;
 import com.dbc.vemvemser.enums.TipoEmail;
+import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
@@ -30,35 +31,21 @@ public class EmailService {
     private final JavaMailSender emailSender;
 
 
-    public void sendEmail(CandidatoDto candidatoDto, TipoEmail tipoEmail) {
-        final String SUBJECT_INSCRICAO= candidatoDto.getNome()+", sua candidatura para o Vem Ser foi recebida pela DBC Company!";
-        final String SUBJECT_APROVADO= " Processo Seletivo Vem Ser DBC - Primeira Etapa";
+    public void sendEmail(CandidatoDto candidatoDto, TipoEmail tipoEmail) throws RegraDeNegocioException {
+        final String SUBJECT=" Processo Seletivo Vem Ser DBC - Primeira Etapa";
 
         MimeMessage mimeMessage = emailSender.createMimeMessage();
         try {
-            if(tipoEmail==TipoEmail.INSCRICAO){
                 MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
 
                 mimeMessageHelper.setFrom(from);
                 mimeMessageHelper.setTo(candidatoDto.getEmail());
-                mimeMessageHelper.setSubject(SUBJECT_INSCRICAO);
+                mimeMessageHelper.setSubject(SUBJECT);
                 mimeMessageHelper.setText(geContentFromTemplate(candidatoDto,tipoEmail), true);
 
                 emailSender.send(mimeMessageHelper.getMimeMessage());
-            } else {
-                MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-
-                mimeMessageHelper.setFrom(from);
-                mimeMessageHelper.setTo(candidatoDto.getEmail());
-                mimeMessageHelper.setSubject(SUBJECT_APROVADO);
-                mimeMessageHelper.setText(geContentFromTemplate(candidatoDto,tipoEmail), true);
-
-                emailSender.send(mimeMessageHelper.getMimeMessage());
-            }
-
-
         } catch (MessagingException | IOException | TemplateException e) {
-            e.printStackTrace();
+            throw new RegraDeNegocioException("Erro ao enviar email");
         }
     }
 
