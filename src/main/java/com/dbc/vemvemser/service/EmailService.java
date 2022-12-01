@@ -31,32 +31,18 @@ public class EmailService {
 
 
     public void sendEmail(CandidatoDto candidatoDto, TipoEmail tipoEmail) {
-        final String SUBJECT_INSCRICAO= candidatoDto.getNome()+", sua candidatura para o Vem Ser foi recebida pela DBC Company!";
-        final String SUBJECT_APROVADO= " Processo Seletivo Vem Ser DBC - Primeira Etapa";
+        final String SUBJECT=" Processo Seletivo Vem Ser DBC - Primeira Etapa";
 
         MimeMessage mimeMessage = emailSender.createMimeMessage();
         try {
-            if(tipoEmail==TipoEmail.INSCRICAO){
-                MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
 
-                mimeMessageHelper.setFrom(from);
-                mimeMessageHelper.setTo(candidatoDto.getEmail());
-                mimeMessageHelper.setSubject(SUBJECT_INSCRICAO);
-                mimeMessageHelper.setText(geContentFromTemplate(candidatoDto,tipoEmail), true);
+            mimeMessageHelper.setFrom(from);
+            mimeMessageHelper.setTo(candidatoDto.getEmail());
+            mimeMessageHelper.setSubject(SUBJECT);
+            mimeMessageHelper.setText(geContentFromTemplate(candidatoDto,tipoEmail), true);
 
-                emailSender.send(mimeMessageHelper.getMimeMessage());
-            } else {
-                MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-
-                mimeMessageHelper.setFrom(from);
-                mimeMessageHelper.setTo(candidatoDto.getEmail());
-                mimeMessageHelper.setSubject(SUBJECT_APROVADO);
-                mimeMessageHelper.setText(geContentFromTemplate(candidatoDto,tipoEmail), true);
-
-                emailSender.send(mimeMessageHelper.getMimeMessage());
-            }
-
-
+            emailSender.send(mimeMessageHelper.getMimeMessage());
         } catch (MessagingException | IOException | TemplateException e) {
             e.printStackTrace();
         }
