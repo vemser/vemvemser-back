@@ -124,7 +124,7 @@ public class GestorService {
 
     public List<GestorDto> contasInativas() {
         return gestorRepository.findByAtivo(USUARIO_INATIVO).stream()
-                .map(gestorEntity -> objectMapper.convertValue(gestorEntity, GestorDto.class))
+                .map(gestorEntity -> convertToDto(gestorEntity))
                 .toList();
     }
 

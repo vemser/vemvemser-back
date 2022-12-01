@@ -31,11 +31,16 @@ public class EmailService {
     private final JavaMailSender emailSender;
 
 
+<<<<<<< HEAD
     public void sendEmail(CandidatoDto candidatoDto, TipoEmail tipoEmail) throws RegraDeNegocioException {
+=======
+    public void sendEmail(CandidatoDto candidatoDto, TipoEmail tipoEmail) {
+>>>>>>> 7b9e5bd0a545bff90ab790585690ba5b2a37a6bd
         final String SUBJECT=" Processo Seletivo Vem Ser DBC - Primeira Etapa";
 
         MimeMessage mimeMessage = emailSender.createMimeMessage();
         try {
+<<<<<<< HEAD
                 MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
 
                 mimeMessageHelper.setFrom(from);
@@ -44,6 +49,16 @@ public class EmailService {
                 mimeMessageHelper.setText(geContentFromTemplate(candidatoDto,tipoEmail), true);
 
                 emailSender.send(mimeMessageHelper.getMimeMessage());
+=======
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+
+            mimeMessageHelper.setFrom(from);
+            mimeMessageHelper.setTo(candidatoDto.getEmail());
+            mimeMessageHelper.setSubject(SUBJECT);
+            mimeMessageHelper.setText(geContentFromTemplate(candidatoDto,tipoEmail), true);
+
+            emailSender.send(mimeMessageHelper.getMimeMessage());
+>>>>>>> 7b9e5bd0a545bff90ab790585690ba5b2a37a6bd
         } catch (MessagingException | IOException | TemplateException e) {
             throw new RegraDeNegocioException("Erro ao enviar email");
         }

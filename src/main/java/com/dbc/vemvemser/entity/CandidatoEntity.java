@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -21,6 +22,9 @@ public class CandidatoEntity {
 
     @Column(name = "nome")
     private String nome;
+
+    @Column(name = "data_nascimento")
+    private LocalDate dataNascimento;
 
     @Column(name = "email")
     private String email;
@@ -48,7 +52,7 @@ public class CandidatoEntity {
     private InscricaoEntity inscricao;
 
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name="ID_FORMULARIO", referencedColumnName = "ID_FORMULARIO")
     private FormularioEntity formulario;
 

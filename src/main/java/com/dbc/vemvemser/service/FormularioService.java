@@ -18,6 +18,7 @@ import org.springframework.util.Base64Utils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -34,7 +35,7 @@ public class FormularioService {
 
 
     public FormularioDto create(FormularioCreateDto formularioCreateDto) throws RegraDeNegocioException {
-        if(!formularioCreateDto.isMatriculadoBoolean()){
+        if (!formularioCreateDto.isMatriculadoBoolean()) {
             throw new RegraDeNegocioException("Precisa estar matriculado!");
         }
         FormularioEntity formulario = convertToEntity(formularioCreateDto);
@@ -45,10 +46,10 @@ public class FormularioService {
 
 
     public String retornarCurriculoDoCandidatoDecode(Integer idFormulario) throws RegraDeNegocioException {
-        Optional formularioRetorno = formularioRepository.findById(idFormulario);
+        Optional<FormularioEntity> formularioRetorno = formularioRepository.findById(idFormulario);
 
-        if (formularioRetorno.isEmpty()) {
-            throw new RegraDeNegocioException("Curriculo não encontrado");
+        if (formularioRetorno.get().getCurriculo() == null) {
+            formularioRetorno.get().setCurriculo("".getBytes());
         }
         FormularioEntity formularioComCurriculo = objectMapper.convertValue(formularioRetorno, FormularioEntity.class);
 
