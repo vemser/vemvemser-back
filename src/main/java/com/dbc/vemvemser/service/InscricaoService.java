@@ -53,6 +53,12 @@ public class InscricaoService {
         return inscricao;
     }
 
+    public List<InscricaoDto> findInscricaoPorEmail(String email){
+        List<InscricaoEntity> lista = inscricaoRepository.findInscricaoEntitiesByCandidato_Email(email);
+        return lista.stream().map(inscricaoEntity -> converterParaDTO(inscricaoEntity))
+                .toList();
+    }
+
     public PageDto<InscricaoDto> listar(Integer pagina, Integer tamanho, String sort, int order) {
         Sort ordenacao = Sort.by(sort).ascending();
         if (order == DESCENDING) {
