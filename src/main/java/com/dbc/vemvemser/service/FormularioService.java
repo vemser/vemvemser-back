@@ -45,10 +45,10 @@ public class FormularioService {
 
 
     public String retornarCurriculoDoCandidatoDecode(Integer idFormulario) throws RegraDeNegocioException {
-        Optional formularioRetorno = formularioRepository.findById(idFormulario);
+        Optional<FormularioEntity> formularioRetorno = formularioRepository.findById(idFormulario);
 
-        if (formularioRetorno.isEmpty()) {
-            throw new RegraDeNegocioException("Curriculo não encontrado");
+        if (formularioRetorno.get().getCurriculo().length == 0) {
+            throw new RegraDeNegocioException("Curriculo não encontrado.");
         }
         FormularioEntity formularioComCurriculo = objectMapper.convertValue(formularioRetorno, FormularioEntity.class);
 
