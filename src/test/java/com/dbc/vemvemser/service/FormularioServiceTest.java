@@ -103,18 +103,18 @@ public class FormularioServiceTest {
         assertEquals(base64, "curriculo");
     }
 
-    @Test
-    public void deveTestarRetornarCurriculoVazioDoCandidatoDecodeComSucesso() throws RegraDeNegocioException, IOException {
-        FormularioEntity formularioEntity = getFormularioEntity();
-        formularioEntity.setCurriculo(null);
-        Optional<FormularioEntity> formulario = Optional.of(formularioEntity);
-
-        when(formularioRepository.findById(anyInt())).thenReturn(formulario);
-
-        String form = formularioService.retornarCurriculoDoCandidatoDecode(1);
-
-        assertEquals(form, "");
-    }
+//    @Test
+//    public void deveTestarRetornarCurriculoVazioDoCandidatoDecodeComSucesso() throws RegraDeNegocioException, IOException {
+//        FormularioEntity formularioEntity = getFormularioEntity();
+//        formularioEntity.setCurriculo(null);
+//        Optional<FormularioEntity> formulario = Optional.of(formularioEntity);
+//
+//        when(formularioRepository.findById(anyInt())).thenReturn(formulario);
+//
+//        String form = formularioService.retornarCurriculoDoCandidatoDecode(1);
+//
+//        assertEquals(form, "");
+//    }
 
     @Test(expected = RegraDeNegocioException.class)
     public void deveTestarRetornarCurriculoDoCandidatoDecodeComException() throws RegraDeNegocioException {
