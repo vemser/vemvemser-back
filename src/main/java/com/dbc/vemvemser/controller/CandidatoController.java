@@ -2,6 +2,7 @@ package com.dbc.vemvemser.controller;
 
 import com.dbc.vemvemser.dto.CandidatoCreateDto;
 import com.dbc.vemvemser.dto.CandidatoDto;
+import com.dbc.vemvemser.dto.GestorDto;
 import com.dbc.vemvemser.dto.PageDto;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.service.CandidatoService;
@@ -65,6 +66,20 @@ public class CandidatoController {
     @GetMapping("/buscar-by-email")
     public ResponseEntity<CandidatoDto> findCandidatoDtoByEmail(@RequestParam String email) throws RegraDeNegocioException {
         return new ResponseEntity<>(candidatoService.findCandidatoDtoByEmail(email), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Listar Candidatos por ID", description = "Retorna um candidato por ID do banco de dados")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna Gestor"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @GetMapping("/id-candidato")
+    public ResponseEntity<CandidatoDto> findById(@RequestParam Integer idCandidato) throws RegraDeNegocioException {
+        CandidatoDto candidatoDto = candidatoService.findDtoById(idCandidato);
+        return new ResponseEntity<>(candidatoDto, HttpStatus.OK);
     }
 
     @Operation(summary = "Deletar Candidato", description = "deleta o candidato")
