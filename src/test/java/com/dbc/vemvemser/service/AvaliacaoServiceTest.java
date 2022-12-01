@@ -72,6 +72,7 @@ public class AvaliacaoServiceTest {
         when(avaliacaoRepository.findAvaliacaoEntitiesByInscricao_IdInscricao(anyInt())).thenReturn(Optional.empty());
         when(inscricaoService.findDtoByid(anyInt())).thenReturn(InscricaoFactory.getInscricaoDto());
         when(inscricaoService.convertToEntity(any())).thenReturn(InscricaoFactory.getInscricaoEntity());
+        when(inscricaoService.converterParaDTO((any()))).thenReturn(InscricaoFactory.getInscricaoDto());
         when(gestorService.findDtoById(anyInt())).thenReturn(GestorFactory.getGestorDto());
         when(gestorService.convertToEntity(any())).thenReturn(GestorFactory.getGestorEntity());
         when(gestorService.convertToDto(any())).thenReturn(GestorFactory.getGestorDto());

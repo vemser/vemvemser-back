@@ -13,8 +13,7 @@ public class AvaliacaoFactory {
         AvaliacaoDto avaliacaoDto = new AvaliacaoDto();
         avaliacaoDto.setAprovado(TipoMarcacao.T);
         avaliacaoDto.setIdAvaliacao(1);
-        avaliacaoDto.setInscricao(InscricaoFactory.getInscricaoDto());
-        
+        avaliacaoDto.setInscricao(InscricaoFactory.getInscricaoDto());;
         return avaliacaoDto;
     }
 
@@ -25,7 +24,7 @@ public class AvaliacaoFactory {
         avaliacaoEntity.setAprovado(TipoMarcacao.T);
         avaliacaoEntity.setIdAvaliacao(1);
         avaliacaoEntity.setAvaliador(GestorFactory.getGestorEntity());
-
+        avaliacaoEntity.setInscricao(InscricaoFactory.getInscricaoEntity());
         return avaliacaoEntity;
     }
 

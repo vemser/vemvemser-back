@@ -3,6 +3,7 @@ package factory;
 import com.dbc.vemvemser.dto.CandidatoDto;
 import com.dbc.vemvemser.dto.InscricaoCreateDto;
 import com.dbc.vemvemser.dto.InscricaoDto;
+import com.dbc.vemvemser.entity.AvaliacaoEntity;
 import com.dbc.vemvemser.entity.CandidatoEntity;
 import com.dbc.vemvemser.entity.InscricaoEntity;
 import com.dbc.vemvemser.enums.TipoMarcacao;
@@ -18,7 +19,6 @@ public class InscricaoFactory {
         inscricaoDto.setDataInscricao(LocalDate.now());
         inscricaoDto.setAvaliado(TipoMarcacao.T);
         inscricaoDto.setCandidato(CandidatoFactory.getCandidatoDto());
-
         return inscricaoDto;
     }
 
@@ -29,6 +29,7 @@ public class InscricaoFactory {
         inscricaoEntity.setDataInscricao(LocalDate.now());
         inscricaoEntity.setAvaliado(TipoMarcacao.T);
         inscricaoEntity.setCandidato(CandidatoFactory.getCandidatoEntity());
+        inscricaoEntity.setAvaliacaoEntity(new AvaliacaoEntity());
         return inscricaoEntity;
     }
 
