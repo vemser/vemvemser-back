@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface GestorRepository extends JpaRepository<GestorEntity, Integer> {
 
-    List<GestorEntity> findGestorEntitiesByNomeEqualsIgnoreCaseOrEmailEqualsIgnoreCaseAndCargoEntity(String nome, String email, CargoEntity cargo);
+    List<GestorEntity> findGestorEntitiesByCargoEntityAndNomeIgnoreCaseOrCargoEntityAndEmailIgnoreCase(CargoEntity cargo, String nome, CargoEntity cargoEntity, String email);
 
     List<GestorEntity> findByAtivo (TipoMarcacao ativo);
 
