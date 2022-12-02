@@ -23,9 +23,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.Base64Utils;
@@ -65,9 +63,9 @@ public class FormularioServiceTest {
 
     @Test
     public void deveTestarCreateFormularioComSucesso() throws RegraDeNegocioException {
-        FormularioCreateDto formularioCreateDto = getFormularioCreateDto();
+        FormularioCreateDto formularioCreateDto = FormularioFactory.getFormularioCreateDto();
 
-        when(formularioRepository.save(any())).thenReturn(getFormularioEntity());
+        when(formularioRepository.save(any())).thenReturn(FormularioFactory.getFormularioEntity());
 
         FormularioDto formularioDtoRetorno = formularioService.create(formularioCreateDto);
 
@@ -77,7 +75,7 @@ public class FormularioServiceTest {
     @Test(expected = RegraDeNegocioException.class)
     public void deveTestarCreateFormularioComException() throws RegraDeNegocioException {
 
-        FormularioCreateDto formularioCreateDto = getFormularioCreateDto();
+        FormularioCreateDto formularioCreateDto = FormularioFactory.getFormularioCreateDto();
         formularioCreateDto.setMatriculadoBoolean(false);
 
 //        when(formularioRepository.save(any())).thenReturn(formularioCreateDto);
@@ -184,7 +182,7 @@ public class FormularioServiceTest {
     @Test
     public void deveTestarUpdateCurriculoComSucesso() throws IOException, RegraDeNegocioException {
 
-        FormularioEntity formularioEntity = getFormularioEntity();
+        FormularioEntity formularioEntity = FormularioFactory.getFormularioEntity();
 
         byte[] imagemBytes = new byte[10 * 1024];
 
@@ -205,7 +203,7 @@ public class FormularioServiceTest {
 
     @Test(expected = RegraDeNegocioException.class)
     public void deveTestarUpdateCurriculoComRegraNegocioException() throws RegraDeNegocioException, IOException {
-        FormularioEntity formularioEntity = getFormularioEntity();
+        FormularioEntity formularioEntity = FormularioFactory.getFormularioEntity();
 
         byte[] imagemBytes = new byte[10 * 1024];
 
@@ -226,7 +224,7 @@ public class FormularioServiceTest {
 
     @Test
     public void deveTestarFindDtoByIdComSucesso() throws RegraDeNegocioException {
-        FormularioEntity formularioEntity = getFormularioEntity();
+        FormularioEntity formularioEntity = FormularioFactory.getFormularioEntity();
 
         when(formularioRepository.findById(anyInt())).thenReturn(Optional.of(formularioEntity));
 
@@ -237,7 +235,7 @@ public class FormularioServiceTest {
 
     @Test
     public void deveTestarDeleteByIdComSucesso() throws RegraDeNegocioException {
-    FormularioEntity formularioEntity = getFormularioEntity();
+    FormularioEntity formularioEntity = FormularioFactory.getFormularioEntity();
 
     when(formularioRepository.findById(anyInt())).thenReturn(Optional.of(formularioEntity));
 
@@ -245,77 +243,23 @@ public class FormularioServiceTest {
 
     }
 
-    private FormularioEntity getFormularioEntity() {
-        FormularioEntity formularioEntity = new FormularioEntity();
+    @Test
+    public void deveTestarListarPaginado() throws RegraDeNegocioException {
+        Integer pagina = 1;
+        Integer tamanho = 5;
+        String sort = "idFormulario";
+        Integer order = 1;//DESCENDING
+        Sort odernacao = Sort.by(sort).descending();
+        PageImpl<FormularioEntity> pageImpl = new PageImpl<>(List.of(FormularioFactory.getFormularioEntity()),
+                PageRequest.of(pagina, tamanho,odernacao), 0);
 
-        Set<TrilhaEntity> trilhas = new HashSet<>();
-        TrilhaEntity trilhaEntity = new TrilhaEntity();
-        trilhaEntity.setIdTrilha(1);
-        trilhaEntity.setNome("FRONTEND");
-        trilhas.add(trilhaEntity);
+        when(formularioRepository.findAll(any(Pageable.class))).thenReturn(pageImpl);
 
-        formularioEntity.setIdFormulario(1);
-        formularioEntity.setMatriculado(TipoMarcacao.T);
-        formularioEntity.setCurso("TECNICO T.I");
-        formularioEntity.setTurno(TipoTurno.NOITE);
-        formularioEntity.setInstituicao("PUC");
-        formularioEntity.setGithub("github.com");
-        formularioEntity.setLinkedin("linkedin.com");
-        formularioEntity.setDesafios(TipoMarcacao.T);
-        formularioEntity.setProblema(TipoMarcacao.T);
-        formularioEntity.setReconhecimento(TipoMarcacao.T);
-        formularioEntity.setAltruismo(TipoMarcacao.T);
-        formularioEntity.setResposta("outro");
-        formularioEntity.setDisponibilidade(TipoMarcacao.T);
-        formularioEntity.setEfetivacao(TipoMarcacao.T);
-        formularioEntity.setProva(TipoMarcacao.T);
-        formularioEntity.setIngles("Basico");
-        formularioEntity.setEspanhol("Não possuo");
-        formularioEntity.setNeurodiversidade("Não possuo");
-        formularioEntity.setConfiguracoes("16gb RAM");
-        formularioEntity.setEfetivacao(TipoMarcacao.T);
-        formularioEntity.setDisponibilidade(TipoMarcacao.T);
-        formularioEntity.setGenero("MASCULINO");
-        formularioEntity.setTrilhaEntitySet(trilhas);
-        formularioEntity.setOrientacao("Heterossexual");
-        formularioEntity.setLgpd(TipoMarcacao.T);
+        PageDto<FormularioDto> page = formularioService.listAllPaginado(pagina,tamanho,sort,order);
 
+        assertEquals(page.getTamanho(),tamanho);
 
-        return formularioEntity;
     }
 
-    private FormularioCreateDto getFormularioCreateDto() {
-        FormularioCreateDto formularioCreateDto = new FormularioCreateDto();
-
-        List<Integer> trilhas = new ArrayList<>();
-        trilhas.add(1);
-
-        formularioCreateDto.setMatriculadoBoolean(true);
-        formularioCreateDto.setCurso("TECNICO T.I");
-        formularioCreateDto.setTurno(TipoTurno.NOITE);
-        formularioCreateDto.setInstituicao("PUC");
-        formularioCreateDto.setGithub("github.com");
-        formularioCreateDto.setLinkedin("linkedin.com");
-        formularioCreateDto.setDesafiosBoolean(true);
-        formularioCreateDto.setProblemaBoolean(true);
-        formularioCreateDto.setReconhecimentoBoolean(true);
-        formularioCreateDto.setAltruismoBoolean(true);
-        formularioCreateDto.setResposta("outro");
-        formularioCreateDto.setDisponibilidadeBoolean(true);
-        formularioCreateDto.setEfetivacaoBoolean(true);
-        formularioCreateDto.setProvaBoolean(true);
-        formularioCreateDto.setIngles("Basico");
-        formularioCreateDto.setEspanhol("Não possuo");
-        formularioCreateDto.setNeurodiversidade("Não possuo");
-        formularioCreateDto.setConfiguracoes("16gb RAM");
-        formularioCreateDto.setEfetivacaoBoolean(true);
-        formularioCreateDto.setDisponibilidadeBoolean(true);
-        formularioCreateDto.setGenero("MASCULINO");
-        formularioCreateDto.setTrilhas(trilhas);
-        formularioCreateDto.setOrientacao("Heterossexual");
-        formularioCreateDto.setLgpdBoolean(true);
-
-        return formularioCreateDto;
-    }
 
 }
