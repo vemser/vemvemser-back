@@ -77,14 +77,14 @@ public class GestorService {
 
 
     public GestorDto editar(Integer id, GestorCreateDto gestorCreateDto) throws RegraDeNegocioException {
-        if (id != getIdLoggedUser()) {
+        if (id != getIdLoggedUser() && findById(getIdLoggedUser()).getCargoEntity().getNome() == "ROLE_COLABORADOR") {
             throw new RegraDeNegocioException("Você não tem permissão para editar esse gestor.");
         }
         GestorEntity gestorEntity = findById(id);
         gestorEntity.setCargoEntity(cargoService.findById(gestorCreateDto.getTipoCargo()));
         gestorEntity.setNome(gestorCreateDto.getNome());
         gestorEntity.setEmail(gestorCreateDto.getEmail());
-        if(gestorEntity.getSenha() != null || !gestorEntity.getSenha().isBlank()){
+        if(!gestorCreateDto.getSenha().isBlank()){
             gestorEntity.setSenha(passwordEncoder.encode(gestorCreateDto.getSenha()));
         }
         gestorRepository.save(gestorEntity);
