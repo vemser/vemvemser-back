@@ -181,7 +181,7 @@ public class GestorServiceTest {
         lista.add(gestorEntity);
 
         when(cargoService.findById(anyInt())).thenReturn(cargoEntity);
-        when(gestorRepository.findGestorEntitiesByNomeEqualsIgnoreCaseOrEmailEqualsIgnoreCaseAndCargoEntity(any(), any(), any()))
+        when(gestorRepository.findGestorEntitiesByCargoEntityAndNomeIgnoreCaseOrCargoEntityAndEmailIgnoreCase(any(), any(), any(), any()))
                 .thenReturn(lista);
         List<GestorDto> listaRetorno = gestorService.findGestorbyNomeOrEmail(gestorEmailNomeCargoDto);
 
