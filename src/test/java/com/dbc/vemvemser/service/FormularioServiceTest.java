@@ -1,8 +1,7 @@
 package com.dbc.vemvemser.service;
 
-import com.dbc.vemvemser.dto.FormularioCreateDto;
-import com.dbc.vemvemser.dto.FormularioDto;
-import com.dbc.vemvemser.dto.PageDto;
+import com.dbc.vemvemser.dto.*;
+import com.dbc.vemvemser.entity.CandidatoEntity;
 import com.dbc.vemvemser.entity.FormularioEntity;
 import com.dbc.vemvemser.entity.TrilhaEntity;
 import com.dbc.vemvemser.enums.TipoMarcacao;
@@ -15,6 +14,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import factory.CandidatoFactory;
+import factory.FormularioFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -85,6 +86,29 @@ public class FormularioServiceTest {
 
         verify(formularioRepository, times(1)).save(any());
     }
+
+    @Test
+    public void deveTestarUpdateComSucesso() throws RegraDeNegocioException {
+        // SETUP
+        Integer id= 10;
+        FormularioCreateDto formularioCreateDto = FormularioFactory.getFormularioCreateDto();
+
+        FormularioEntity formularioEntity = FormularioFactory.getFormularioEntity();
+        formularioEntity.setIdFormulario(1);
+        when(formularioRepository.findById(anyInt())).thenReturn(Optional.of(formularioEntity));
+
+        FormularioEntity formulario = FormularioFactory.getFormularioEntity();
+        when(formularioRepository.save(any())).thenReturn(formulario);
+
+        // Ação (ACT)
+        FormularioDto formularioDto = formularioService.update(id, formularioCreateDto);
+
+        // Verificação (ASSERT)
+        assertNotNull(formularioDto);
+        assertNotEquals("github.com/vemser/vemvemser-back", formularioDto.getGithub());
+    }
+
+
 
 //    @Test
 //    public void deveTestarRetornarCurriculoDoCandidatoDecodeComSucesso() throws RegraDeNegocioException, IOException {
