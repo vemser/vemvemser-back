@@ -109,7 +109,7 @@ public class InscricaoController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @DeleteMapping ("/{id-inscricao}")
+    @DeleteMapping
     public void  delete(@RequestParam ("id-inscricao") Integer idInscricao) throws RegraDeNegocioException {
 
         inscricaoService.delete(idInscricao);
