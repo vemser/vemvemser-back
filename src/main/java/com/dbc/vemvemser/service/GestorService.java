@@ -77,7 +77,7 @@ public class GestorService {
 
 
     public GestorDto editar(Integer id, GestorCreateDto gestorCreateDto) throws RegraDeNegocioException {
-        if(id != getIdLoggedUser()){
+        if (id != getIdLoggedUser()) {
             throw new RegraDeNegocioException("Você não tem permissão para editar esse gestor.");
         }
         GestorEntity gestorEntity = findById(id);
@@ -110,20 +110,14 @@ public class GestorService {
         gestorRepository.deleteById(id);
     }
 
-    public Optional<GestorEntity> findByEmail(String email) {
-        return gestorRepository.findByEmail(email);
+    public GestorEntity findByEmail(String email) throws RegraDeNegocioException {
+        return gestorRepository.findGestorEntityByEmailEqualsIgnoreCase(email)
+                .orElseThrow(() -> new RegraDeNegocioException("Email não encontrado"));
     }
 
-    public TokenDto forgotPassword(String email) throws RegraDeNegocioException {
-        Optional<GestorEntity> gestorEntity = findByEmail(email);
-        if (gestorEntity.isEmpty()) {
-            throw new RegraDeNegocioException("Email não encontrado");
-        }
-        GestorEntity gestor = objectMapper.convertValue(gestorEntity, GestorEntity.class);
-
-        TokenDto token = tokenService.getToken(gestor, true);
-
-        return token;
+    public void forgotPassword(GestorEmailDto gestorEmailDto) throws RegraDeNegocioException {
+        GestorEntity gestorEntity = findByEmail(gestorEmailDto.getEmail());
+        TokenDto token = tokenService.getToken(gestorEntity, true);
     }
 
     public Integer getIdLoggedUser() {

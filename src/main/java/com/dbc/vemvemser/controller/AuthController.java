@@ -1,5 +1,6 @@
 package com.dbc.vemvemser.controller;
 
+import com.dbc.vemvemser.dto.GestorEmailDto;
 import com.dbc.vemvemser.dto.LoginCreateDto;
 import com.dbc.vemvemser.dto.TokenDto;
 import com.dbc.vemvemser.entity.GestorEntity;
@@ -76,10 +77,9 @@ public class AuthController {
             }
     )
     @PostMapping("/forgot-password")
-    public ResponseEntity<TokenDto> findEmail(@RequestBody @Valid String email) throws RegraDeNegocioException {
+    public void recuparSenha(@RequestBody @Valid GestorEmailDto email) throws RegraDeNegocioException {
 
-      TokenDto tokenDto=  gestorService.forgotPassword(email);
-
-        return new ResponseEntity<>(tokenDto, HttpStatus.OK);
+        gestorService.forgotPassword(email);
+        new ResponseEntity<>(null, HttpStatus.OK);
     }
 }

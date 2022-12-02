@@ -1,6 +1,7 @@
 package com.dbc.vemvemser.security;
 
 import com.dbc.vemvemser.entity.GestorEntity;
+import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.service.GestorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,8 +19,11 @@ public class AuthenticationService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String loginUsername) throws UsernameNotFoundException {
-        Optional<GestorEntity> usuarioOptional = gestorService.findByEmail(loginUsername);
-        return usuarioOptional
-                .orElseThrow(() -> new UsernameNotFoundException("Usuário inválido"));
+        try {
+            GestorEntity usuarioOptional = gestorService.findByEmail(loginUsername);
+            return usuarioOptional;
+        } catch (RegraDeNegocioException e) {
+            throw new UsernameNotFoundException(e.getMessage());
+        }
     }
 }

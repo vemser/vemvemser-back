@@ -199,13 +199,13 @@ public class GestorServiceTest {
     }
 
     @Test
-    public void deveTestarFindByEmailComSucesso() {
+    public void deveTestarFindByEmailComSucesso() throws RegraDeNegocioException {
 
         GestorEntity gestorEntity = GestorFactory.getGestorEntity();
 
-        when(gestorRepository.findByEmail(anyString())).thenReturn(Optional.of(gestorEntity));
+        when(gestorRepository.findGestorEntityByEmailEqualsIgnoreCase(anyString())).thenReturn(Optional.of(gestorEntity));
 
-        Optional<GestorEntity> gestorRetorno = gestorService.findByEmail("email@email.com");
+        GestorEntity gestorRetorno = gestorService.findByEmail("email@email.com");
 
         Assert.assertNotNull(gestorRetorno);
     }
@@ -237,10 +237,10 @@ public class GestorServiceTest {
         tokenDto.setIdGestor(gestorEntity.getIdGestor());
         tokenDto.setToken("abcdefgh");
 
-        when(gestorRepository.findByEmail(anyString())).thenReturn(Optional.of(gestorEntity));
+        when(gestorRepository.findGestorEntityByEmailEqualsIgnoreCase(anyString())).thenReturn(Optional.of(gestorEntity));
         when(tokenService.getToken(any(), any())).thenReturn(tokenDto);
 
-        TokenDto tokenDtoRetorno = gestorService.forgotPassword("email@email.com.br");
+        TokenDto tokenDtoRetorno = gestorService.forgotPassword(new GestorEmailDto("email@email.com.br"));
 
         Assert.assertNotNull(tokenDtoRetorno);
         Assert.assertEquals(tokenDtoRetorno.getToken(), tokenDto.getToken());
@@ -249,11 +249,11 @@ public class GestorServiceTest {
     @Test(expected = RegraDeNegocioException.class)
     public void deveTestarForgotPasswordComException() throws RegraDeNegocioException {
 
-        when(gestorRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+        when(gestorRepository.findGestorEntityByEmailEqualsIgnoreCase(anyString())).thenReturn(Optional.empty());
 
-        gestorService.forgotPassword("email@email.com");
+        gestorService.forgotPassword(new GestorEmailDto("email@email.com"));
 
-        verify(gestorRepository, times(1)).findByEmail(anyString());
+        verify(gestorRepository, times(1)).findGestorEntityByEmailEqualsIgnoreCase(anyString());
     }
 
     @Test
@@ -308,14 +308,14 @@ public class GestorServiceTest {
         Integer order = 1;//DESCENDING
         Sort odernacao = Sort.by(sort).descending();
         PageImpl<GestorEntity> pageImpl = new PageImpl<>(List.of(GestorFactory.getGestorEntity()),
-                PageRequest.of(pagina, tamanho,odernacao), 0);
+                PageRequest.of(pagina, tamanho, odernacao), 0);
 
         when(gestorRepository.findAll(any(Pageable.class))).thenReturn(pageImpl);
         when(cargoService.convertToDto(any())).thenReturn(CargoFactory.getCargoDto());
 
-        PageDto<GestorDto> page = gestorService.listar(pagina,tamanho,sort,order);
+        PageDto<GestorDto> page = gestorService.listar(pagina, tamanho, sort, order);
 
-        assertEquals(page.getTamanho(),tamanho);
+        assertEquals(page.getTamanho(), tamanho);
     }
 
 }
