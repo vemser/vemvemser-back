@@ -261,6 +261,19 @@ public class FormularioServiceTest {
     }
 
     @Test
+    public void deveTestarRetornarCurriloCandidatoDecodeComSucesso() throws RegraDeNegocioException {
+        Integer idFormulario = 1;
+
+        when(formularioRepository.findById(anyInt())).thenReturn(Optional.of(FormularioFactory.getFormularioEntity()));
+
+        String base64 = formularioService.retornarCurriculoDoCandidatoDecode(idFormulario);
+
+        verify(formularioRepository,times(1)).findById(anyInt());
+        assertNotNull(base64);
+    }
+
+
+    @Test
     public void deveTestarConvertToEntityComSucesso(){
         FormularioDto formularioDto = FormularioFactory.getFormularioDto();
 

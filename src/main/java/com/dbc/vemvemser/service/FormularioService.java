@@ -54,7 +54,6 @@ public class FormularioService {
         return Base64Utils.encodeToString(formularioRetorno.getCurriculo());
     }
 
-
     public PageDto<FormularioDto> listAllPaginado(Integer pagina, Integer tamanho, String sort, int order) {
         Sort ordenacao = Sort.by(sort).ascending();
         if (order == DESCENDING) {
@@ -62,7 +61,6 @@ public class FormularioService {
         }
         PageRequest pageRequest = PageRequest.of(pagina, tamanho, ordenacao);
         Page<FormularioEntity> paginaFormularioEntity = formularioRepository.findAll(pageRequest);
-
         List<FormularioDto> formularioDtos = paginaFormularioEntity.getContent().stream()
                 .map(formularioEntity -> {
                     FormularioDto formulario = convertToDto(formularioEntity);
