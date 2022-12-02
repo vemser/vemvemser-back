@@ -28,9 +28,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -123,6 +126,23 @@ public class InscricaoServiceTest {
         InscricaoEntity inscricao = inscricaoService.setAvaliado(1);
 
         Assert.assertNotNull(inscricao);
+    }
+
+    @Test
+    public void deveTestarFindInscricaoPorEmail() throws RegraDeNegocioException {
+        // Criar variaveis (SETUP)
+        String email = "eduardosedrez@gmail.com";
+        CandidatoDto candidatoDto = CandidatoFactory.getCandidatoDto();
+
+        InscricaoEntity inscricaoEntity = InscricaoFactory.getInscricaoEntity();
+
+        inscricaoRepository.findInscricaoEntitiesByCandidato_Email(email);
+
+        // Ação (ACT)
+        List<InscricaoDto> inscricaoRecuperada = inscricaoService.findInscricaoPorEmail(email);
+        // Verificação (ASSERT)
+        assertNotNull(inscricaoRecuperada);
+        assertEquals(email, inscricaoEntity.getCandidato().getEmail());
     }
 
     @Test
