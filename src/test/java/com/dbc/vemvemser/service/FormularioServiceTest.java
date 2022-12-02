@@ -258,7 +258,6 @@ public class FormularioServiceTest {
         PageDto<FormularioDto> page = formularioService.listAllPaginado(pagina,tamanho,sort,order);
 
         assertEquals(page.getTamanho(),tamanho);
-
     }
 
     @Test

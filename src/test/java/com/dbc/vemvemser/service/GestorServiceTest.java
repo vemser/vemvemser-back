@@ -2,6 +2,7 @@ package com.dbc.vemvemser.service;
 
 import com.dbc.vemvemser.dto.*;
 import com.dbc.vemvemser.entity.CargoEntity;
+import com.dbc.vemvemser.entity.FormularioEntity;
 import com.dbc.vemvemser.entity.GestorEntity;
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
@@ -13,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import factory.CargoFactory;
+import factory.FormularioFactory;
 import factory.GestorFactory;
 import org.junit.Assert;
 import org.junit.Before;
@@ -21,6 +23,10 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,6 +37,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -291,6 +298,24 @@ public class GestorServiceTest {
         Assert.assertNotNull(gestorRetorno);
         Assert.assertEquals(gestorRetorno.getNome(), gestorEntity.getNome());
 
+    }
+
+    @Test
+    public void deveTestarListar() throws RegraDeNegocioException {
+        Integer pagina = 1;
+        Integer tamanho = 5;
+        String sort = "idFormulario";
+        Integer order = 1;//DESCENDING
+        Sort odernacao = Sort.by(sort).descending();
+        PageImpl<GestorEntity> pageImpl = new PageImpl<>(List.of(GestorFactory.getGestorEntity()),
+                PageRequest.of(pagina, tamanho,odernacao), 0);
+
+        when(gestorRepository.findAll(any(Pageable.class))).thenReturn(pageImpl);
+        when(cargoService.convertToDto(any())).thenReturn(CargoFactory.getCargoDto());
+
+        PageDto<GestorDto> page = gestorService.listar(pagina,tamanho,sort,order);
+
+        assertEquals(page.getTamanho(),tamanho);
     }
 
 }
