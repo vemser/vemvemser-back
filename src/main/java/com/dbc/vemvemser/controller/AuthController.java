@@ -76,10 +76,10 @@ public class AuthController {
             }
     )
     @PostMapping("/forgot-password")
-    public ResponseEntity<Void> findEmail(@RequestBody @Valid String email) throws RegraDeNegocioException {
+    public ResponseEntity<TokenDto> findEmail(@RequestBody @Valid String email) throws RegraDeNegocioException {
 
-        gestorService.forgotPassword(email);
+      TokenDto tokenDto=  gestorService.forgotPassword(email);
 
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>(tokenDto, HttpStatus.OK);
     }
 }
