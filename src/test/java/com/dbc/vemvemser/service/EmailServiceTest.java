@@ -4,6 +4,7 @@ import com.dbc.vemvemser.dto.CandidatoDto;
 import com.dbc.vemvemser.enums.TipoEmail;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.service.EmailService;
+import factory.CandidatoFactory;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.junit.Before;
@@ -51,7 +52,7 @@ public class EmailServiceTest {
     @Test
     public void deveTestarSendEmailComSucesso() throws MessagingException, IOException, RegraDeNegocioException {
 
-        CandidatoDto candidatoDto = getCandidatoDto();
+        CandidatoDto candidatoDto = CandidatoFactory.getCandidatoDto();
 
         TipoEmail tipoEmail = TipoEmail.INSCRICAO;
 
@@ -68,7 +69,7 @@ public class EmailServiceTest {
     @Test(expected = RegraDeNegocioException.class)
     public void deveTestarSendEmailComIOException() throws MessagingException, IOException, RegraDeNegocioException {
 
-        CandidatoDto candidatoDto = getCandidatoDto();
+        CandidatoDto candidatoDto = CandidatoFactory.getCandidatoDto();
 
         when(emailSender.createMimeMessage()).thenReturn(mimeMessage);
         doThrow(new IOException()).when(fmConfiguration).getTemplate(anyString());
@@ -82,7 +83,7 @@ public class EmailServiceTest {
     public void deveTestarGeContentFromTemplateInscricaoComSucesso() throws IOException, TemplateException {
 
         Template template = new Template("", Reader.nullReader());
-        CandidatoDto candidatoDto = getCandidatoDto();
+        CandidatoDto candidatoDto = CandidatoFactory.getCandidatoDto();
 
         Map<String, Object> dados = new HashMap<>();
         dados.put("nome", candidatoDto.getNome());
@@ -103,7 +104,7 @@ public class EmailServiceTest {
     public void deveTestarGeContentFromTemplateAprovadoComSucesso() throws IOException, TemplateException {
 
         Template template = new Template("", Reader.nullReader());
-        CandidatoDto candidatoDto = getCandidatoDto();
+        CandidatoDto candidatoDto = CandidatoFactory.getCandidatoDto();
 
         Map<String, Object> dados = new HashMap<>();
         dados.put("nome", candidatoDto.getNome());
@@ -125,7 +126,7 @@ public class EmailServiceTest {
     public void deveTestarGeContentFromTemplateReprovadoComSucesso() throws IOException, TemplateException {
 
         Template template = new Template("", Reader.nullReader());
-        CandidatoDto candidatoDto = getCandidatoDto();
+        CandidatoDto candidatoDto = CandidatoFactory.getCandidatoDto();
 
         Map<String, Object> dados = new HashMap<>();
         dados.put("nome", candidatoDto.getNome());
@@ -142,13 +143,5 @@ public class EmailServiceTest {
         assertNotNull(geContenteFromTemplateRetorno);
     }
 
-    private CandidatoDto getCandidatoDto() {
-        CandidatoDto candidatoDto = new CandidatoDto();
 
-        candidatoDto.setIdCandidato(1);
-        candidatoDto.setEmail("ricardo@gmail.com");
-        candidatoDto.setNome("Ricardo");
-
-        return candidatoDto;
-    }
 }
