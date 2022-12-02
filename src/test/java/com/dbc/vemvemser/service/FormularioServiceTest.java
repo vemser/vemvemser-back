@@ -261,5 +261,17 @@ public class FormularioServiceTest {
 
     }
 
+    @Test
+    public void deveTestarConvertToEntityComSucesso(){
+        FormularioDto formularioDto = FormularioFactory.getFormularioDto();
+
+        when(trilhaService.convertToEntity(any())).thenReturn(FormularioFactory.getFormularioEntity().getTrilhaEntitySet());
+
+        FormularioEntity formulario = formularioService.convertToEntity(formularioDto);
+
+        assertEquals(formulario.getIdFormulario(),formularioDto.getIdFormulario());
+
+    }
+
 
 }
