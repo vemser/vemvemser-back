@@ -1,5 +1,6 @@
 package com.dbc.vemvemser.controller;
 
+import com.dbc.vemvemser.dto.CandidatoDto;
 import com.dbc.vemvemser.dto.InscricaoCreateDto;
 import com.dbc.vemvemser.dto.InscricaoDto;
 import com.dbc.vemvemser.dto.PageDto;
@@ -51,7 +52,7 @@ public class InscricaoController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @GetMapping("/{id}")
+    @GetMapping("/by-id")
     public ResponseEntity<InscricaoDto> findById(@RequestParam ("id") Integer id) throws RegraDeNegocioException {
         InscricaoDto inscricaoDto=inscricaoService.findDtoByid(id);
         return new ResponseEntity<>(inscricaoDto, HttpStatus.OK);
@@ -88,6 +89,18 @@ public class InscricaoController {
 //        return new ResponseEntity<>( inscricaoDto, HttpStatus.OK);
 //    }
 
+    @Operation(summary = "Busca inscricao por EMAIL", description = "Busca inscrição por ID")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna uma inscrição."),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @GetMapping("/buscar-by-email")
+    public ResponseEntity<List<InscricaoDto>> findInscricaoPorEmail(@RequestParam String email) {
+        return new ResponseEntity<>(inscricaoService.findInscricaoPorEmail(email), HttpStatus.OK);
+    }
     @Operation(summary = "Deleta inscrição por ID", description = "Deleta inscrição por ID")
     @ApiResponses(
             value = {

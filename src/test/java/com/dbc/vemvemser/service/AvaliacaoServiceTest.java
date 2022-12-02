@@ -82,7 +82,6 @@ public class AvaliacaoServiceTest {
         when(gestorService.convertToDto(any())).thenReturn(GestorFactory.getGestorDto());
         when(avaliacaoRepository.save(any())).thenReturn(AvaliacaoFactory.getAvaliacaoEntityAprovado());
 
-
         AvaliacaoDto avaliacaoDtoRetorno = avaliacaoService.create(avaliacaoCreateDto);
 
         Assert.notNull(avaliacaoDtoRetorno);
