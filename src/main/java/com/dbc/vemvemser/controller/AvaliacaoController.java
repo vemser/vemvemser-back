@@ -2,6 +2,8 @@ package com.dbc.vemvemser.controller;
 
 import com.dbc.vemvemser.dto.AvaliacaoCreateDto;
 import com.dbc.vemvemser.dto.AvaliacaoDto;
+import com.dbc.vemvemser.dto.InscricaoDto;
+import com.dbc.vemvemser.dto.PageDto;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.service.AvaliacaoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,10 +36,10 @@ public class AvaliacaoController {
             }
     )
     @PostMapping
-    public ResponseEntity<AvaliacaoDto> create (@RequestBody AvaliacaoCreateDto avaliacaoCreateDto) throws RegraDeNegocioException {
-       AvaliacaoDto avaliacaoDto= avaliacaoService.create(avaliacaoCreateDto);
+    public ResponseEntity<AvaliacaoDto> create(@RequestBody AvaliacaoCreateDto avaliacaoCreateDto) throws RegraDeNegocioException {
+        AvaliacaoDto avaliacaoDto = avaliacaoService.create(avaliacaoCreateDto);
 
-    return new ResponseEntity<>(avaliacaoDto, HttpStatus.OK);
+        return new ResponseEntity<>(avaliacaoDto, HttpStatus.OK);
     }
 
     @Operation(summary = "Listar todas Avaliações", description = "Retorna uma lista com todas avaliações")
@@ -49,8 +51,11 @@ public class AvaliacaoController {
             }
     )
     @GetMapping
-    public ResponseEntity<List<AvaliacaoDto>> listAll(){
-       return new ResponseEntity<>(avaliacaoService.list(),HttpStatus.OK);
+    public ResponseEntity<PageDto<AvaliacaoDto>> listAll(@RequestParam(defaultValue = "0", required = false) Integer pagina,
+                                                         @RequestParam(defaultValue = "10", required = false) Integer tamanho,
+                                                         @RequestParam(defaultValue = "idAvaliacao", required = false) String sort,
+                                                         @RequestParam(defaultValue = "0", required = false) int order) {
+        return new ResponseEntity<>(avaliacaoService.list(pagina, tamanho, sort, order), HttpStatus.OK);
     }
 
 
@@ -66,9 +71,9 @@ public class AvaliacaoController {
     public ResponseEntity<AvaliacaoDto> update(@RequestParam Integer idAvaliacao,
                                                @RequestBody AvaliacaoCreateDto avaliacaoCreateDto) throws RegraDeNegocioException {
 
-        AvaliacaoDto avaliacaoDtoRetorno = avaliacaoService.update(idAvaliacao,avaliacaoCreateDto);
+        AvaliacaoDto avaliacaoDtoRetorno = avaliacaoService.update(idAvaliacao, avaliacaoCreateDto);
 
-        return new ResponseEntity<>(avaliacaoDtoRetorno,HttpStatus.OK);
+        return new ResponseEntity<>(avaliacaoDtoRetorno, HttpStatus.OK);
     }
 
 
@@ -84,6 +89,19 @@ public class AvaliacaoController {
     public ResponseEntity<Void> delete(Integer idAvaliacao) throws RegraDeNegocioException {
         avaliacaoService.deleteById(idAvaliacao);
 
-        return new ResponseEntity<>(null,HttpStatus.OK);
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Busca avaliacao por EMAIL", description = "Busca avaliação por email")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna uma avaliacao."),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @GetMapping("/buscar-by-email")
+    public ResponseEntity<List<AvaliacaoDto>> findInscricaoPorEmail(@RequestParam String email) {
+        return new ResponseEntity<>(avaliacaoService.findAvaliacaoByCanditadoEmail(email), HttpStatus.OK);
     }
 }

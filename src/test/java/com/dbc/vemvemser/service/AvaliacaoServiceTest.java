@@ -23,12 +23,18 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.validation.constraints.AssertTrue;
 import java.time.LocalDate;
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
@@ -41,18 +47,15 @@ public class AvaliacaoServiceTest {
 
     @Mock
     private InscricaoService inscricaoService;
-
     @Mock
     private EmailService emailService;
     @Mock
     private GestorService gestorService;
-
     @Mock
     private FormularioService formularioService;
 
     @Mock
     private InscricaoRepository inscricaoRepository;
-
     @Mock
     private CargoService cargoService;
 
@@ -125,11 +128,38 @@ public class AvaliacaoServiceTest {
     }
 
     @Test
-    public void deveTestarListComSucesso() {
-        AvaliacaoEntity avaliacaoEntity = AvaliacaoFactory.getAvaliacaoEntityAprovado();
-        when(avaliacaoRepository.findAll()).thenReturn(List.of(avaliacaoEntity));
-        avaliacaoService.list();
-        verify(avaliacaoRepository, times(1)).findAll();
+    public void deveTestarListarPaginado() throws RegraDeNegocioException {
+        Integer pagina = 1;
+        Integer tamanho = 5;
+        String sort = "idAvaliacao";
+        Integer order = 1;//DESCENDING
+        Sort odernacao = Sort.by(sort).descending();
+        PageImpl<AvaliacaoEntity> pageImpl = new PageImpl<>(List.of(AvaliacaoFactory.getAvaliacaoEntityAprovado()),
+                PageRequest.of(pagina, tamanho, odernacao), 0);
+
+        when(avaliacaoRepository.findAll(any(Pageable.class))).thenReturn(pageImpl);
+
+        PageDto<AvaliacaoDto> page = avaliacaoService.list(pagina, tamanho, sort, order);
+
+        assertEquals(page.getTamanho(), tamanho);
+
+    }
+
+    @Test
+    public void deveTestarFindAvaliacaoPorEmail() throws RegraDeNegocioException {
+        // Criar variaveis (SETUP)
+        String email = "eduardosedrez@gmail.com";
+        List<AvaliacaoDto> avaliacaoDtos = List.of(AvaliacaoFactory.getAvaliacaoDto());
+        List<AvaliacaoEntity> avaliacaoEntities = List.of(AvaliacaoFactory.getAvaliacaoEntityReprovado());
+
+        when(avaliacaoRepository.findAvaliacaoEntitiesByInscricao_Candidato_Email(any())).thenReturn(avaliacaoEntities);
+        when(gestorService.convertToDto(any())).thenReturn(GestorFactory.getGestorDto());
+        when(inscricaoService.converterParaDTO(any())).thenReturn(InscricaoFactory.getInscricaoDto());
+        // Ação (ACT)
+        List<AvaliacaoDto> avaliacaoDtos1 = avaliacaoService.findAvaliacaoByCanditadoEmail(email);
+        // Verificação (ASSERT)
+        assertNotNull(avaliacaoDtos1);
+        assertEquals(email, avaliacaoDtos1.get(0).getInscricao().getCandidato().getEmail());
     }
 
     @Test
