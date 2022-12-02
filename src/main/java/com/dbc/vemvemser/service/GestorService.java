@@ -3,6 +3,7 @@ package com.dbc.vemvemser.service;
 
 import antlr.Token;
 import com.dbc.vemvemser.dto.*;
+import com.dbc.vemvemser.entity.CargoEntity;
 import com.dbc.vemvemser.entity.GestorEntity;
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
@@ -97,10 +98,8 @@ public class GestorService {
         if (gestorEmailNomeCargoDto.getNome().isBlank() && gestorEmailNomeCargoDto.getEmail().isBlank()) {
             return Collections.emptyList();
         }
-
-        List<GestorEntity> lista = gestorRepository.findGestorEntitiesByNomeEqualsIgnoreCaseOrEmailEqualsIgnoreCaseAndCargoEntity(gestorEmailNomeCargoDto.getNome(),
-                gestorEmailNomeCargoDto.getEmail(),
-                cargoService.findById(gestorEmailNomeCargoDto.getCargo().getCargo()));
+       CargoEntity cargo = cargoService.findById(gestorEmailNomeCargoDto.getCargo().getCargo());
+        List<GestorEntity> lista = gestorRepository.findGestorEntitiesByCargoEntityAndNomeIgnoreCaseOrCargoEntityAndEmailIgnoreCase(cargo, gestorEmailNomeCargoDto.getNome(), cargo,gestorEmailNomeCargoDto.getEmail());
         return lista.stream()
                 .map(gestorEntity -> convertToDto(gestorEntity))
                 .toList();
