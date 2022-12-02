@@ -1,9 +1,6 @@
 package com.dbc.vemvemser.service;
 
-import com.dbc.vemvemser.dto.CandidatoDto;
-import com.dbc.vemvemser.dto.FormularioDto;
-import com.dbc.vemvemser.dto.InscricaoCreateDto;
-import com.dbc.vemvemser.dto.InscricaoDto;
+import com.dbc.vemvemser.dto.*;
 import com.dbc.vemvemser.entity.CandidatoEntity;
 import com.dbc.vemvemser.entity.FormularioEntity;
 import com.dbc.vemvemser.entity.InscricaoEntity;
@@ -25,6 +22,10 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.HashSet;
@@ -193,5 +194,24 @@ public class InscricaoServiceTest {
         Assert.assertNotNull(inscricaoEntityRetorno);
     }
 
+
+    @Test
+    public void deveTestarListarPaginado() throws RegraDeNegocioException {
+        Integer pagina = 1;
+        Integer tamanho = 5;
+        String sort = "idInscricao";
+        Integer order = 1;//DESCENDING
+        Sort odernacao = Sort.by(sort).descending();
+        PageImpl<InscricaoEntity> inscricaoEntities = new PageImpl<>(List.of(InscricaoFactory.getInscricaoEntity()),
+                PageRequest.of(pagina, tamanho,odernacao), 0);
+
+        when(inscricaoRepository.findAll(any(Pageable.class))).thenReturn(inscricaoEntities);
+        when(candidatoService.convertToDto(any())).thenReturn(CandidatoFactory.getCandidatoDto());
+
+        PageDto<InscricaoDto> page = inscricaoService.listar(pagina,tamanho,sort,order);
+
+        assertEquals(page.getTamanho(),tamanho);
+
+    }
 
 }

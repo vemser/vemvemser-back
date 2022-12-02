@@ -143,16 +143,17 @@ public class GestorServiceTest {
         UsernamePasswordAuthenticationToken user
                 = new UsernamePasswordAuthenticationToken(1, gestorEntity.getEmail(), Collections.emptyList());
         SecurityContextHolder.getContext().setAuthentication(user);
-
+        when(gestorRepository.findById(anyInt())).thenReturn(Optional.of(GestorFactory.getGestorEntity()));
         GestorDto gestorDto = objectMapper.convertValue(user, GestorDto.class);
 
         GestorCreateDto gestorCreateDto = GestorFactory.getGestorCreateDto();
         gestorEntity.setIdGestor(gestorDto.getIdGestor());
 
-        GestorDto gestorDtoRetorno = gestorService.editar(4, gestorCreateDto);
-
+        GestorDto gestorDtoRetorno = gestorService.editar(9, gestorCreateDto);
 
     }
+
+
 
     @Test
     public void deveTestarGestorByNomeOrEmailComListaVaziaComSucesso() throws RegraDeNegocioException {

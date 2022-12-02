@@ -16,7 +16,7 @@ public class CargoFactory {
     public static CargoEntity getCargoEntity(){
         CargoEntity cargoEntity = new CargoEntity();
         cargoEntity.setIdCargo(1);
-        cargoEntity.setNome("nome");
+        cargoEntity.setNome("ROLE_COLABORADOR");
         return cargoEntity;
     }
 }
