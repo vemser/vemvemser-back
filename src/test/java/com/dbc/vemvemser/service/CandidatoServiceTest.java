@@ -1,13 +1,7 @@
 package com.dbc.vemvemser.service;
 
-import com.dbc.vemvemser.dto.AvaliacaoCreateDto;
-import com.dbc.vemvemser.dto.CandidatoCreateDto;
-import com.dbc.vemvemser.dto.CandidatoDto;
-import com.dbc.vemvemser.dto.PageDto;
-import com.dbc.vemvemser.entity.AvaliacaoEntity;
-import com.dbc.vemvemser.entity.CandidatoEntity;
-import com.dbc.vemvemser.entity.FormularioEntity;
-import com.dbc.vemvemser.entity.InscricaoEntity;
+import com.dbc.vemvemser.dto.*;
+import com.dbc.vemvemser.entity.*;
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.CandidatoRepository;
@@ -28,11 +22,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+import static factory.TrilhaFactory.getTrilhaDto;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -48,6 +40,8 @@ public class CandidatoServiceTest {
     @Mock
     private CandidatoRepository candidatoRepository;
 
+    @Mock
+    private TrilhaService trilhaService;
     @Mock
     private FormularioService formularioService;
 
@@ -78,42 +72,43 @@ public class CandidatoServiceTest {
         assertNotNull(candidatoDto.getIdCandidato());
     }
 
-//    @Test(expected = RegraDeNegocioException.class)
-//    public void deveTestarCadastrarComErroNoEmail() throws RegraDeNegocioException {
-//        // Criar variaveis (SETUP)
-//        CandidatoCreateDto candidatoCreateDto = new CandidatoCreateDto();
-//        candidatoCreateDto.setEmail("eduardosedrez@gmail.com");
-//
-//        CandidatoEntity candidatoEntity = new CandidatoEntity();
-//       List<CandidatoEntity> candidato = new ArrayList<>();
-//       candidato.add(CandidatoFactory.getCandidatoEntity());
-//
-////        !candidatoRepository.findCandidatoEntitiesByEmail(candidatoCreateDto.getEmail()).isEmpty()
-//        when(candidatoRepository.findCandidatoEntitiesByEmail(any())).thenReturn(candidato);
-//
-//        // Ação (ACT)
-//        candidatoService.cadastro(candidatoCreateDto);
-//
-//        verify(candidatoRepository, times(1)).save(any());
-//    }
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveTestarCadastrarComErroNoEmail() throws RegraDeNegocioException {
+        // Criar variaveis (SETUP)
+        CandidatoCreateDto candidatoCreateDto = new CandidatoCreateDto();
+        candidatoCreateDto.setEmail("eduardosedrez@gmail.com");
 
-//    @Test(expected = RegraDeNegocioException.class)
-//    public void deveTestarCadastrarComErroDeFormularioRepetido() throws RegraDeNegocioException {
-//        // Criar variaveis (SETUP)
-//        CandidatoCreateDto candidatoCreateDto = new CandidatoCreateDto();
-//        candidatoCreateDto.setIdFormulario(1);
-//
-//        CandidatoEntity candidatoEntity = new CandidatoEntity();
-//        List<CandidatoCreateDto> candidato = new ArrayList<>();
-//        candidato.add(CandidatoFactory.getCandidatoCreateDto());
-////        !candidatoRepository.findCandidatoEntitiesByFormulario_IdFormulario(candidatoCreateDto.getIdFormulario()).isEmpty()
-//        when(candidatoRepository.findCandidatoEntitiesByFormulario_IdFormulario(any())).thenReturn(candidato);
-//
-//        // Ação (ACT)
-//        candidatoService.cadastro(candidatoCreateDto);
-//
-//        verify(candidatoRepository, times(1)).save(any());
-//    }
+        CandidatoEntity candidatoEntity = new CandidatoEntity();
+       List<CandidatoEntity> candidato = new ArrayList<>();
+       candidato.add(CandidatoFactory.getCandidatoEntity());
+
+//        !candidatoRepository.findCandidatoEntitiesByEmail(candidatoCreateDto.getEmail()).isEmpty()
+        when(candidatoRepository.findCandidatoEntitiesByEmail(any())).thenReturn(candidato);
+
+        // Ação (ACT)
+        candidatoService.cadastro(candidatoCreateDto);
+
+        verify(candidatoRepository, times(1)).save(any());
+    }
+
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveTestarCadastrarComErroDeFormularioRepetido() throws RegraDeNegocioException {
+        // Criar variaveis (SETUP)
+        CandidatoCreateDto candidatoCreateDto = new CandidatoCreateDto();
+        candidatoCreateDto.setIdFormulario(1);
+
+
+        CandidatoEntity candidato = new CandidatoEntity();
+        FormularioEntity formulario = new FormularioEntity();
+        candidato.setFormulario(formulario);
+//        !candidatoRepository.findCandidatoEntitiesByFormulario_IdFormulario(candidatoCreateDto.getIdFormulario()).isEmpty()
+        when(candidatoRepository.findCandidatoEntitiesByFormulario_IdFormulario(any())).thenReturn(Optional.of(candidato));
+
+        // Ação (ACT)
+        candidatoService.cadastro(candidatoCreateDto);
+
+        verify(candidatoRepository, times(1)).save(any());
+    }
 
 
     @Test
@@ -212,25 +207,23 @@ public class CandidatoServiceTest {
         assertEquals(email, candidatoEntity.getEmail());
     }
 
+    @Test
+    public void deveTestarConvertToEntity(){
+        // Criar variaveis (SETUP)
 
+        FormularioDto form = new FormularioDto();
+        TrilhaDto trilhaDto = getTrilhaDto();
+        Set<TrilhaEntity> trilhaEntity = trilhaService.convertToEntity(Set.of(trilhaDto));
+        //candidatoEntity.setFormulario(formularioService.convertToEntity(candidatoDto.getFormulario()));
 
-//    @Test
-//    public void deveTestarListarComSucesso() {
-//        // Criar variaveis (SETUP)
-//        List<CandidatoEntity> lista = new ArrayList<>();
-//        lista.add(getCandidatoEntity());
-//        when(candidatoRepository.findAll()).thenReturn(lista);
-//
-//        // Ação (ACT)
-//        List<PageDto> candidatos = candidatoService.listaAllPaginado(1,10, "" ,1);
-//
-//        // Verificação (ASSERT)
-//        assertNotNull(candidatos);
-//        assertTrue(candidatos.size() > 0);
-//        assertEquals(1, lista.size());
-//    }
+        // Ação (ACT)
+        Set<TrilhaEntity> trilha = trilhaService.convertToEntity(form.getTrilhas());
+        FormularioEntity formularioEntity = formularioService.convertToEntity(form);
+        CandidatoEntity candidatoEntity = candidatoService.convertToEntity(CandidatoFactory.getCandidatoDto());
 
+        // Verificação (ASSERT)
+        assertNotNull(trilha);
 
-
+    }
 
 }
