@@ -30,7 +30,7 @@ public class AvaliacaoEntity {
     private TipoMarcacao aprovado;
 
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name="ID_INSCRICAO", referencedColumnName = "ID_INSCRICAO")
     private InscricaoEntity inscricao;
 }

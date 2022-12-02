@@ -23,7 +23,6 @@ public class GestorCreateDto {
     @NotNull
     private String email;
 
-    @NotNull
     private String senha;
 
     private Integer tipoCargo;

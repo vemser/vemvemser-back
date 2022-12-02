@@ -84,7 +84,9 @@ public class GestorService {
         gestorEntity.setCargoEntity(cargoService.findById(gestorCreateDto.getTipoCargo()));
         gestorEntity.setNome(gestorCreateDto.getNome());
         gestorEntity.setEmail(gestorCreateDto.getEmail());
-        gestorEntity.setSenha(passwordEncoder.encode(gestorCreateDto.getSenha()));
+        if(gestorEntity.getSenha() != null || !gestorEntity.getSenha().isBlank()){
+            gestorEntity.setSenha(passwordEncoder.encode(gestorCreateDto.getSenha()));
+        }
         gestorRepository.save(gestorEntity);
         GestorDto gestorDto = convertToDto(gestorEntity);
         return gestorDto;
