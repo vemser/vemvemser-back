@@ -240,10 +240,7 @@ public class GestorServiceTest {
         when(gestorRepository.findGestorEntityByEmailEqualsIgnoreCase(anyString())).thenReturn(Optional.of(gestorEntity));
         when(tokenService.getToken(any(), any())).thenReturn(tokenDto);
 
-        TokenDto tokenDtoRetorno = gestorService.forgotPassword(new GestorEmailDto("email@email.com.br"));
-
-        Assert.assertNotNull(tokenDtoRetorno);
-        Assert.assertEquals(tokenDtoRetorno.getToken(), tokenDto.getToken());
+        gestorService.forgotPassword(new GestorEmailDto("email@email.com.br"));
     }
 
     @Test(expected = RegraDeNegocioException.class)

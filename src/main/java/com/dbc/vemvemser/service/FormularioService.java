@@ -45,15 +45,13 @@ public class FormularioService {
     }
 
 
-    public String retornarCurriculoDoCandidatoDecode(Integer idFormulario){
-        Optional<FormularioEntity> formularioRetorno = formularioRepository.findById(idFormulario);
+    public String retornarCurriculoDoCandidatoDecode(Integer idFormulario) throws RegraDeNegocioException {
+        FormularioEntity formularioRetorno = findById(idFormulario);
 
-        if (formularioRetorno.get().getCurriculo() == null) {
-            formularioRetorno.get().setCurriculo("".getBytes());
+        if (formularioRetorno.getCurriculo() == null) {
+            formularioRetorno.setCurriculo("".getBytes());
         }
-        FormularioEntity formularioComCurriculo = objectMapper.convertValue(formularioRetorno, FormularioEntity.class);
-
-        return Base64Utils.encodeToString(formularioComCurriculo.getCurriculo());
+        return Base64Utils.encodeToString(formularioRetorno.getCurriculo());
     }
 
 
