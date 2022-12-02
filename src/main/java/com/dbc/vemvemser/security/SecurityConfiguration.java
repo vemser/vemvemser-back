@@ -31,8 +31,9 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .authorizeHttpRequests((authz) ->
                         authz.antMatchers("/", "/auth", "/auth/**", "/formulario/cadastro", "/candidato/cadastro",
-                                        "/inscricao/cadastro", "/formulario/**", "/trilha/listar").permitAll()
-//                                .antMatchers("/formulario/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
+                                        "/inscricao/cadastro", "/formulario/update-curriculo-by-id-formulario", "/trilha/listar").permitAll()
+                                .antMatchers(HttpMethod.GET, "/formulario/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
+                                .antMatchers(HttpMethod.PUT, "/formulario").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
                                 .antMatchers("/candidato/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
                                 .antMatchers("/avaliacao/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
                                 .antMatchers(HttpMethod.GET, "/inscricao/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
