@@ -80,7 +80,6 @@ public class CandidatoService {
         List<CandidatoDto> candidatoDtos = paginaCandidatoEntity.getContent().stream()
                 .map(candidatoEntity -> {
                     CandidatoDto candidatoDto = convertToDto(candidatoEntity);
-                    candidatoDto.setFormulario(formularioService.convertToDto(candidatoEntity.getFormulario()));
                     return candidatoDto;
                 }).toList();
 

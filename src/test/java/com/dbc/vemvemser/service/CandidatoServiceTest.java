@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.*;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
@@ -79,8 +80,8 @@ public class CandidatoServiceTest {
         candidatoCreateDto.setEmail("eduardosedrez@gmail.com");
 
         CandidatoEntity candidatoEntity = new CandidatoEntity();
-       List<CandidatoEntity> candidato = new ArrayList<>();
-       candidato.add(CandidatoFactory.getCandidatoEntity());
+        List<CandidatoEntity> candidato = new ArrayList<>();
+        candidato.add(CandidatoFactory.getCandidatoEntity());
 
 //        !candidatoRepository.findCandidatoEntitiesByEmail(candidatoCreateDto.getEmail()).isEmpty()
         when(candidatoRepository.findCandidatoEntitiesByEmail(any())).thenReturn(candidato);
@@ -145,7 +146,7 @@ public class CandidatoServiceTest {
     @Test
     public void deveTestarUpdateComSucesso() throws RegraDeNegocioException {
         // SETUP
-        Integer id= 10;
+        Integer id = 10;
         CandidatoCreateDto candidatoCreateDto = CandidatoFactory.getCandidatoCreateDto();
 
         CandidatoEntity candidatoEntity = CandidatoFactory.getCandidatoEntity();
@@ -163,6 +164,7 @@ public class CandidatoServiceTest {
         assertNotNull(candidatoDto);
         assertNotEquals("Eduardo Sedrez", candidatoDto.getNome());
     }
+
     @Test(expected = RegraDeNegocioException.class)
     public void deveTestarFindByIdComErro() throws RegraDeNegocioException {
         // Criar variaveis (SETUP)
@@ -208,7 +210,7 @@ public class CandidatoServiceTest {
     }
 
     @Test
-    public void deveTestarConvertToEntity(){
+    public void deveTestarConvertToEntity() {
         // Criar variaveis (SETUP)
 
         FormularioDto form = new FormularioDto();
@@ -223,6 +225,25 @@ public class CandidatoServiceTest {
 
         // Verificação (ASSERT)
         assertNotNull(trilha);
+
+    }
+
+    @Test
+    public void deveTestarListarPaginado() throws RegraDeNegocioException {
+        Integer pagina = 1;
+        Integer tamanho = 5;
+        String sort = "idCandidato";
+        Integer order = 1;//DESCENDING
+        Sort odernacao = Sort.by(sort).descending();
+        PageImpl<CandidatoEntity> candidatoEntities = new PageImpl<>(List.of(CandidatoFactory.getCandidatoEntity()),
+                PageRequest.of(pagina, tamanho,odernacao), 0);
+
+        when(candidatoRepository.findAll(any(Pageable.class))).thenReturn(candidatoEntities);
+        when(formularioService.convertToDto(any())).thenReturn(FormularioFactory.getFormularioDto());
+
+        PageDto<CandidatoDto> page = candidatoService.listaAllPaginado(pagina,tamanho,sort,order);
+
+        assertEquals(page.getTamanho(),tamanho);
 
     }
 
