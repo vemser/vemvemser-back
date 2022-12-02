@@ -3,6 +3,7 @@ package factory;
 import com.dbc.vemvemser.dto.CargoDto;
 import com.dbc.vemvemser.dto.GestorCreateDto;
 import com.dbc.vemvemser.dto.GestorDto;
+import com.dbc.vemvemser.dto.GestorEmailNomeCargoDto;
 import com.dbc.vemvemser.entity.CargoEntity;
 import com.dbc.vemvemser.entity.GestorEntity;
 import com.dbc.vemvemser.enums.TipoCargo;
@@ -41,5 +42,15 @@ public class GestorFactory {
         gestorDto.setTipoCargo(TipoCargo.ADMINISTRADOR.getCargo());
 
         return gestorDto;
+    }
+
+    public static GestorEmailNomeCargoDto getGestorEmailNomeCargoDto(){
+        GestorEmailNomeCargoDto gestorEmailNomeCargoDto = new GestorEmailNomeCargoDto();
+
+        gestorEmailNomeCargoDto.setCargo(TipoCargo.ADMINISTRADOR);
+        gestorEmailNomeCargoDto.setEmail("gestor@dbccompany.com.br");
+        gestorEmailNomeCargoDto.setNome("Gestor");
+
+        return gestorEmailNomeCargoDto;
     }
 }

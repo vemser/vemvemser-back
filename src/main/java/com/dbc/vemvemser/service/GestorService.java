@@ -114,7 +114,7 @@ public class GestorService {
         return gestorRepository.findByEmail(email);
     }
 
-    public void forgotPassword(String email) throws RegraDeNegocioException {
+    public TokenDto forgotPassword(String email) throws RegraDeNegocioException {
         Optional<GestorEntity> gestorEntity = findByEmail(email);
         if (gestorEntity.isEmpty()) {
             throw new RegraDeNegocioException("Email não encontrado");
@@ -123,6 +123,7 @@ public class GestorService {
 
         TokenDto token = tokenService.getToken(gestor, true);
 
+        return token;
     }
 
     public Integer getIdLoggedUser() {
