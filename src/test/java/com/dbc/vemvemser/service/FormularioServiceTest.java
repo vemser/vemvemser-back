@@ -50,6 +50,8 @@ public class FormularioServiceTest {
     @Mock
     private TrilhaService trilhaService;
 
+    @Mock
+    private MultipartFile multipartFile;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -144,18 +146,25 @@ public class FormularioServiceTest {
         verify(formularioRepository, times(1)).save(any(FormularioEntity.class));
     }
 
-    @Test(expected = RegraDeNegocioException.class)
+    @Test
     public void deveTestarUpdateCurriculoInvalidoComRegraNegocioException() throws RegraDeNegocioException, IOException {
-        FormularioEntity formularioEntity = FormularioFactory.getFormularioEntity();
+        try {
+            FormularioEntity formularioEntity = FormularioFactory.getFormularioEntity();
 
-        byte[] imagemBytes = new byte[10 * 1024];
-        MultipartFile imagem = new MockMultipartFile("curriculo.pdf", imagemBytes);
-        formularioEntity.setCurriculo(imagem.getBytes());
+            byte[] imagemBytes = new byte[10 * 1024];
+            MultipartFile imagem = new MockMultipartFile("currilo.pdf", imagemBytes);
+            formularioEntity.setCurriculo(imagem.getBytes());
 
-        formularioService.updateCurriculo(imagem, 1);
+            when(formularioRepository.findById(anyInt())).thenReturn(Optional.of(FormularioFactory.getFormularioEntity()));
+            when(multipartFile.getOriginalFilename()).thenReturn("curriculo.pdf");
+            when(multipartFile.getBytes()).thenThrow(new IOException());
+            formularioService.updateCurriculo(imagem, 1);
+
+        }catch (RegraDeNegocioException e){
+            assertEquals(e.getMessage(),"Arquivo invalido");
+        }
 
         verify(formularioRepository, times(1)).findById(anyInt());
-        verify(formularioRepository, times(1)).save(any(FormularioEntity.class));
     }
 
     @Test

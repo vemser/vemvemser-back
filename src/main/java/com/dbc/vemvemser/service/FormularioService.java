@@ -101,11 +101,11 @@ public class FormularioService {
 
         try {
             String arquivo = curriculo.getOriginalFilename();
+            FormularioEntity formulario = findById(idFormulario);
+            formulario.setCurriculo(curriculo.getBytes());
             if (!arquivo.endsWith(".pdf")) {
                 throw new RegraDeNegocioException("Formato de arquivo invalido!");
             }
-            FormularioEntity formulario = findById(idFormulario);
-            formulario.setCurriculo(curriculo.getBytes());
             formularioRepository.save(formulario);
         } catch (IOException e) {
             throw new RegraDeNegocioException("Arquivo invalido");
