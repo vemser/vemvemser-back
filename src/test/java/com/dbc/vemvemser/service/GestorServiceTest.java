@@ -135,6 +135,22 @@ public class GestorServiceTest {
         Assert.assertNotNull(gestorDtoRetorno);
     }
 
+    @Test
+    public void deveTestarEditarSenhaComSucesso() throws RegraDeNegocioException {
+
+        GestorEntity gestorEntity = GestorFactory.getGestorEntity();
+        GestorSenhaDto gestorSenhaDto = new GestorSenhaDto();
+        gestorSenhaDto.setSenha("123");
+
+        GestorCreateDto gestorCreateDto = GestorFactory.getGestorCreateDto();
+        when(passwordEncoder.encode(anyString())).thenReturn("ASDH1H1239381");
+        when(gestorRepository.findById(anyInt())).thenReturn(Optional.of(gestorEntity));
+        
+        GestorDto gestorDtoRetorno = gestorService.editarSenha(1, gestorSenhaDto);
+
+        Assert.assertNotNull(gestorDtoRetorno);
+    }
+
     @Test(expected = RegraDeNegocioException.class)
     public void deveTestarEditarComException() throws RegraDeNegocioException {
 
