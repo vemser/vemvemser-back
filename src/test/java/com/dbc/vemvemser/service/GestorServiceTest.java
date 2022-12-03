@@ -4,6 +4,7 @@ import com.dbc.vemvemser.dto.*;
 import com.dbc.vemvemser.entity.CargoEntity;
 import com.dbc.vemvemser.entity.FormularioEntity;
 import com.dbc.vemvemser.entity.GestorEntity;
+import com.dbc.vemvemser.enums.TipoEmail;
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.CargoRepository;
@@ -27,11 +28,13 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -54,6 +57,9 @@ public class GestorServiceTest {
 
     @Mock
     private CargoRepository cargoRepository;
+
+    @Mock
+    private EmailService emailService;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -145,7 +151,7 @@ public class GestorServiceTest {
         GestorCreateDto gestorCreateDto = GestorFactory.getGestorCreateDto();
         when(passwordEncoder.encode(anyString())).thenReturn("ASDH1H1239381");
         when(gestorRepository.findById(anyInt())).thenReturn(Optional.of(gestorEntity));
-        
+
         GestorDto gestorDtoRetorno = gestorService.editarSenha(1, gestorSenhaDto);
 
         Assert.assertNotNull(gestorDtoRetorno);
@@ -231,17 +237,14 @@ public class GestorServiceTest {
     public void deveTestarGetLoggedUser() throws RegraDeNegocioException {
 
         GestorEntity gestorEntity = GestorFactory.getGestorEntity();
-
         UsernamePasswordAuthenticationToken user
                 = new UsernamePasswordAuthenticationToken(1, gestorEntity.getEmail(), Collections.emptyList());
         SecurityContextHolder.getContext().setAuthentication(user);
-
         GestorEntity gestorEntityUser = objectMapper.convertValue(user, GestorEntity.class);
 
         when(gestorRepository.findById(anyInt())).thenReturn(Optional.of(gestorEntityUser));
 
         GestorDto gestorDtoRetorno = gestorService.getLoggedUser();
-
 
         Assert.assertNotNull(gestorDtoRetorno);
     }
@@ -258,6 +261,8 @@ public class GestorServiceTest {
         when(tokenService.getToken(any(), any())).thenReturn(tokenDto);
 
         gestorService.forgotPassword(new GestorEmailDto("email@email.com.br",""));
+
+        verify(emailService,times(1)).sendEmail(any(),any());
     }
 
     @Test(expected = RegraDeNegocioException.class)
