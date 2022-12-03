@@ -1,39 +1,33 @@
 package com.dbc.vemvemser.service;
 
-import com.dbc.vemvemser.dto.*;
-import com.dbc.vemvemser.entity.CandidatoEntity;
+import com.dbc.vemvemser.dto.FormularioCreateDto;
+import com.dbc.vemvemser.dto.FormularioDto;
+import com.dbc.vemvemser.dto.PageDto;
 import com.dbc.vemvemser.entity.FormularioEntity;
-import com.dbc.vemvemser.entity.TrilhaEntity;
-import com.dbc.vemvemser.enums.TipoMarcacao;
-import com.dbc.vemvemser.enums.TipoTurno;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.FormularioRepository;
-import com.dbc.vemvemser.service.FormularioService;
-import com.dbc.vemvemser.service.TrilhaService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import factory.CandidatoFactory;
 import factory.FormularioFactory;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.util.Base64Utils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -137,34 +131,13 @@ public class FormularioServiceTest {
         FormularioEntity formularioEntity = FormularioFactory.getFormularioEntity();
 
         byte[] imagemBytes = new byte[10 * 1024];
-        MultipartFile imagem = new MockMultipartFile("curriculo", imagemBytes);
+        MultipartFile imagem = new MockMultipartFile("curriculo", "curriculo", "docx", imagemBytes);
         formularioEntity.setCurriculo(imagem.getBytes());
-        Optional formulario = Optional.of(formularioEntity);
+        when(formularioRepository.findById(anyInt())).thenReturn(Optional.of(formularioEntity));
 
         formularioService.updateCurriculo(imagem, 1);
-
-        verify(formularioRepository, times(1)).findById(anyInt());
-        verify(formularioRepository, times(1)).save(any(FormularioEntity.class));
     }
 
-    @Test(expected = Exception.class)
-    public void deveTestarUpdateCurriculoComRegraNegocioExceptionIoExceptionComSucesso() throws RegraDeNegocioException, IOException {
-
-            FormularioEntity formularioEntity = FormularioFactory.getFormularioEntity();
-
-            MultipartFile curriculoFake = Mockito.mock(MultipartFile.class, Mockito.RETURNS_DEEP_STUBS);
-            when(curriculoFake.getOriginalFilename()).thenReturn("seila.pdf");
-            when(curriculoFake.getBytes()).thenThrow(new IOException(""));
-            when(formularioRepository.findById(anyInt())).thenReturn(Optional.of(FormularioFactory.getFormularioEntity()));
-
-            formularioEntity.setCurriculo(curriculoFake.getBytes());
-
-            formularioService.updateCurriculo(curriculoFake, 1);
-
-            verify(formularioRepository, times(1)).findById(anyInt());
-            verify(formularioRepository, times(1)).save(any(FormularioEntity.class));
-
-    }
 
     @Test
     public void deveTestarFindDtoByIdComSucesso() throws RegraDeNegocioException {

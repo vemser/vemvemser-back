@@ -98,17 +98,18 @@ public class FormularioService {
     }
 
     public void updateCurriculo(MultipartFile curriculo, Integer idFormulario) throws RegraDeNegocioException {
-
-        String arquivo = curriculo.getOriginalFilename();
-        FormularioEntity formulario = findById(idFormulario);
-        if (!arquivo.endsWith(".pdf")) {
-            throw new RegraDeNegocioException("Formato de arquivo invalido!");
-        }
         try {
+            String arquivo = curriculo.getOriginalFilename();
+            FormularioEntity formulario = findById(idFormulario);
+            if (!arquivo.endsWith(".pdf")) {
+                throw new RegraDeNegocioException("");
+            }
+
             formulario.setCurriculo(curriculo.getBytes());
             formularioRepository.save(formulario);
-        } catch (IOException e) {
-            throw new RegraDeNegocioException("Arquivo invalido");
+
+        } catch (Exception e) {
+            throw new RegraDeNegocioException("Arquivo invalido!");
         }
     }
 
@@ -142,4 +143,5 @@ public class FormularioService {
         formulario.setTrilhaEntitySet(trilhaService.convertToEntity(formularioDto.getTrilhas()));
         return formulario;
     }
+
 }
