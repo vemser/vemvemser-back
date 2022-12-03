@@ -69,28 +69,32 @@ public class InscricaoServiceTest {
         ReflectionTestUtils.setField(inscricaoService, "objectMapper", objectMapper);
     }
 
-//    @Test
-//    public void deveTestarCreateComSucesso() throws RegraDeNegocioException {
-//        CandidatoEntity candidatoEntity = CandidatoFactory.getCandidatoEntity();
-//
-//        CandidatoDto candidatoDto = CandidatoFactory.getCandidatoDto();
-//
-//        FormularioEntity formularioEntity = FormularioFactory.getFormularioEntity();
-//
-//        InscricaoCreateDto inscricaoCreateDto = InscricaoFactory.getInscricaoCreateDto();
-//        when(inscricaoRepository.findInscricaoEntitiesByCandidato_IdCandidato(anyInt()))
-//                .thenReturn(Optional.empty());
-//
-//        when(candidatoService.findDtoById(any()))
-//                .thenReturn(candidatoDto);
-//
-//        when(candidatoService.convertToEntity(any()))
-//                .thenReturn(candidatoEntity);
-//
-//        inscricaoService.create(inscricaoCreateDto);
-//
-//        verify(inscricaoRepository, times(1)).save(any());
-//    }
+    @Test
+    public void deveTestarCreateComSucesso() throws RegraDeNegocioException {
+        CandidatoEntity candidatoEntity = CandidatoFactory.getCandidatoEntity();
+
+        CandidatoDto candidatoDto = CandidatoFactory.getCandidatoDto();
+        candidatoDto.setEmail("email@email.com");
+
+        FormularioEntity formularioEntity = FormularioFactory.getFormularioEntity();
+
+        InscricaoCreateDto inscricaoCreateDto = InscricaoFactory.getInscricaoCreateDto();
+
+        when(candidatoService.convertToDto(any())).thenReturn(candidatoDto);
+
+        when(inscricaoRepository.findInscricaoEntitiesByCandidato_IdCandidato(anyInt()))
+                .thenReturn(Optional.empty());
+
+        when(candidatoService.findDtoById(any()))
+                .thenReturn(candidatoDto);
+
+        when(candidatoService.convertToEntity(any()))
+                .thenReturn(candidatoEntity);
+
+        inscricaoService.create(inscricaoCreateDto);
+
+        verify(inscricaoRepository, times(1)).save(any());
+    }
 
     @Test(expected = RegraDeNegocioException.class)
     public void deveTestarCreateComException() throws RegraDeNegocioException {
@@ -203,14 +207,14 @@ public class InscricaoServiceTest {
         Integer order = 1;//DESCENDING
         Sort odernacao = Sort.by(sort).descending();
         PageImpl<InscricaoEntity> inscricaoEntities = new PageImpl<>(List.of(InscricaoFactory.getInscricaoEntity()),
-                PageRequest.of(pagina, tamanho,odernacao), 0);
+                PageRequest.of(pagina, tamanho, odernacao), 0);
 
         when(inscricaoRepository.findAll(any(Pageable.class))).thenReturn(inscricaoEntities);
         when(candidatoService.convertToDto(any())).thenReturn(CandidatoFactory.getCandidatoDto());
 
-        PageDto<InscricaoDto> page = inscricaoService.listar(pagina,tamanho,sort,order);
+        PageDto<InscricaoDto> page = inscricaoService.listar(pagina, tamanho, sort, order);
 
-        assertEquals(page.getTamanho(),tamanho);
+        assertEquals(page.getTamanho(), tamanho);
 
     }
 
