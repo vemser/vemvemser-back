@@ -156,7 +156,7 @@ public class GestorController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @GetMapping("/gestor-by-nome-email")
+    @PostMapping("/gestor-by-nome-email")
     public ResponseEntity<List<GestorDto>> pegarGestorPorEmailNomeCargo(@RequestBody GestorEmailNomeCargoDto gestorEmailNomeCargoDto) throws RegraDeNegocioException {
         log.info("Buscando gestor por cargo e ( email ou nome )");
         return new ResponseEntity<>(gestorService.findGestorbyNomeOrEmail(gestorEmailNomeCargoDto), HttpStatus.OK);
