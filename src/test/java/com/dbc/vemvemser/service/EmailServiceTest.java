@@ -50,34 +50,36 @@ public class EmailServiceTest {
         ReflectionTestUtils.setField(emailService, "from", from);
     }
 
-//    @Test
-//    public void deveTestarSendEmailComSucesso() throws MessagingException, IOException, RegraDeNegocioException {
-//
-//        CandidatoDto candidatoDto = CandidatoFactory.getCandidatoDto();
-//
-//        TipoEmail tipoEmail = TipoEmail.INSCRICAO;
-//
-//        Template template = new Template("t ", Reader.nullReader());
-//        when(emailSender.createMimeMessage()).thenReturn(mimeMessage);
-//        when(fmConfiguration.getTemplate(anyString())).thenReturn(template);
-//
-//        //emailService.sendEmail(candidatoDto, tipoEmail,null);
-//
-//        verify(emailSender).send(mimeMessage);
-//    }
+    @Test
+    public void deveTestarSendEmailComSucesso() throws MessagingException, IOException, RegraDeNegocioException {
+
+        SendEmailDto sendEmailDto = new SendEmailDto();
+        sendEmailDto.setNome("admin");
+        sendEmailDto.setEmail("admin@dbccompany.com");
+        sendEmailDto.setUrlToken("AS*(&!@!#NPASDA*(H&!@!#PH");
+
+        Template template = new Template("t ", Reader.nullReader());
+        when(emailSender.createMimeMessage()).thenReturn(mimeMessage);
+        when(fmConfiguration.getTemplate(anyString())).thenReturn(template);
+
+        emailService.sendEmail(sendEmailDto, TipoEmail.APROVADO);
+
+        verify(emailSender,times(1)).send(mimeMessage);
+    }
 
 
-//    @Test(expected = RegraDeNegocioException.class)
-//    public void deveTestarSendEmailComIOException() throws MessagingException, IOException, RegraDeNegocioException {
-//
-//        when(emailSender.createMimeMessage()).thenReturn(mimeMessage);
-//        doThrow(new IOException()).when(fmConfiguration).getTemplate(anyString());
-//
-//        SendEmailDto sendEmailDto = new SendEmailDto();
-//        sendEmailDto.setEmail("");
-//        sendEmailDto.setNome("");
-//        emailService.sendEmail(sendEmailDto, TipoEmail.INSCRICAO);
-//    }
+    @Test(expected = RegraDeNegocioException.class)
+    public void deveTestarSendEmailComIOException() throws MessagingException, IOException, RegraDeNegocioException {
+
+        SendEmailDto sendEmailDto = new SendEmailDto();
+        sendEmailDto.setNome("admin");
+        sendEmailDto.setEmail("admin@@@@@");
+        sendEmailDto.setUrlToken("AS*(&!@!#NPASDA*(H&!@!#PH");
+
+        when(emailSender.createMimeMessage()).thenReturn(mimeMessage);
+
+        emailService.sendEmail(sendEmailDto, TipoEmail.INSCRICAO);
+    }
 
 
     @Test
@@ -98,6 +100,25 @@ public class EmailServiceTest {
         dados.put("msg2", "Mensagem2");
         dados.put("msg3", "Mensagem3");
         TipoEmail tipoEmail = TipoEmail.REPROVADO;
+
+        when(fmConfiguration.getTemplate(anyString())).thenReturn(template);
+        String geContenteFromTemplateRetorno = emailService.geContentFromTemplate(sendEmailDto, tipoEmail);
+
+        assertNotNull(geContenteFromTemplateRetorno);
+    }
+
+    @Test
+    public void deveTestarGeContentFromTemplateRecoverComSucesso() throws IOException, TemplateException {
+
+        Template template = new Template("", Reader.nullReader());
+        CandidatoDto candidatoDto = CandidatoFactory.getCandidatoDto();
+
+        SendEmailDto sendEmailDto = new SendEmailDto();
+        sendEmailDto.setNome(candidatoDto.getNome());
+        sendEmailDto.setEmail(candidatoDto.getEmail());
+        sendEmailDto.setUrlToken("www.ols.com.br");
+
+        TipoEmail tipoEmail = TipoEmail.RECOVER_PASSWORD;
 
         when(fmConfiguration.getTemplate(anyString())).thenReturn(template);
         String geContenteFromTemplateRetorno = emailService.geContentFromTemplate(sendEmailDto, tipoEmail);
