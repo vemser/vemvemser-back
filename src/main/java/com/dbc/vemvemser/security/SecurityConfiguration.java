@@ -32,15 +32,15 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests((authz) ->
                         authz.antMatchers("/", "/auth", "/auth/**", "/formulario/cadastro", "/candidato/cadastro",
                                         "/inscricao/cadastro", "/formulario/update-curriculo-by-id-formulario", "/trilha/listar").permitAll()
-//                                .antMatchers(HttpMethod.GET, "/formulario/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
-//                                .antMatchers(HttpMethod.PUT, "/formulario").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
-//                                .antMatchers("/candidato/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
-//                                .antMatchers("/avaliacao/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
-//                                .antMatchers(HttpMethod.GET, "/inscricao/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
-//                                .antMatchers(HttpMethod.PUT, "/gestor").hasAnyRole("ADMINISTRADOR","COLABORADOR")
-//                                .antMatchers(HttpMethod.GET, "/gestor").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
-//                                .antMatchers(HttpMethod.POST, "/gestor").hasRole("ADMINISTRADOR")
-//                                .antMatchers(HttpMethod.DELETE, "/**").hasRole("ADMINISTRADOR")
+                                .antMatchers(HttpMethod.GET, "/formulario/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
+                                .antMatchers(HttpMethod.PUT, "/formulario").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
+                                .antMatchers("/candidato/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
+                                .antMatchers("/avaliacao/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
+                                .antMatchers(HttpMethod.GET, "/inscricao/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
+                                .antMatchers(HttpMethod.PUT, "/gestor").hasAnyRole("ADMINISTRADOR","COLABORADOR")
+                                .antMatchers(HttpMethod.GET, "/gestor").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
+                                .antMatchers(HttpMethod.POST, "/gestor").hasRole("ADMINISTRADOR")
+                                .antMatchers(HttpMethod.DELETE, "/**").hasRole("ADMINISTRADOR")
                                 .anyRequest().authenticated()
                 );
         http.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);

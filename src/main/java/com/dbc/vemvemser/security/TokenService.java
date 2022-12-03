@@ -32,7 +32,7 @@ public class TokenService {
     private static final String CHAVE_CARGOS = "CARGOS";
     private final ObjectMapper objectMapper;
 
-    private static final int VALIDADE_TOKEN_CINCO_MINUTOS = 5;
+    private static final int VALIDADE_TOKEN_CINCO_MINUTOS = 20;
     private static final int VALIDADE_TOKEN_UM_DIA = 1;
     @Value("${jwt.secret}")
     private String secret;

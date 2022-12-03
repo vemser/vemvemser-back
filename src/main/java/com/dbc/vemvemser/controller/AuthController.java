@@ -39,6 +39,7 @@ public class AuthController {
 
     private final TokenService tokenService;
 
+
     @Operation(summary = "Logar com um registro de funcionário.", description = "Loga no sistema com um login de funcionário.")
     @ApiResponses(
             value = {
@@ -49,6 +50,7 @@ public class AuthController {
     )
     @PostMapping("/login")
     public ResponseEntity<TokenDto> auth(@RequestBody @Valid LoginCreateDto loginCreateDto) throws RegraDeNegocioException {
+        log.info("autenticando usuario...");
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(
                         loginCreateDto.getEmail(),
@@ -62,8 +64,10 @@ public class AuthController {
         GestorEntity gestorEntity = (GestorEntity) principal;
         if (gestorEntity.getAtivo() != TipoMarcacao.F) {
             TokenDto token = tokenService.getToken(gestorEntity, false);
+            log.info("Usuario autenticado, IdGestor:" + gestorEntity.getIdGestor());
             return new ResponseEntity<>(token, HttpStatus.OK);
         }
+        log.info("Erro ao tentar autenticar.");
         return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
     }
 
@@ -78,8 +82,9 @@ public class AuthController {
     )
     @PostMapping("/forgot-password")
     public void recuparSenha(@RequestBody @Valid GestorEmailDto email) throws RegraDeNegocioException {
-
+        log.info("Solicitação de recuperação de senha gestor: " + email);
         gestorService.forgotPassword(email);
+        log.info("Solicitação de recuperação enviada ao email");
         new ResponseEntity<>(null, HttpStatus.OK);
     }
 }

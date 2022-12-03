@@ -3,10 +3,7 @@ package com.dbc.vemvemser.controller;
 
 import com.dbc.vemvemser.dto.FormularioCreateDto;
 import com.dbc.vemvemser.dto.FormularioDto;
-import com.dbc.vemvemser.dto.GestorSenhaDto;
 import com.dbc.vemvemser.dto.PageDto;
-import com.dbc.vemvemser.enums.TipoMarcacao;
-import com.dbc.vemvemser.enums.TipoTurno;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.service.FormularioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,8 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.IOException;
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -45,8 +40,9 @@ public class FormularioController {
     )
     @PostMapping("/cadastro")
     public ResponseEntity<FormularioDto> create(@RequestBody FormularioCreateDto formularioCreateDto) throws RegraDeNegocioException {
+        log.info("Criando formulario...");
         FormularioDto formularioDto = formularioService.create(formularioCreateDto);
-        log.info("Criando Formulario ID:" + formularioDto.getIdFormulario());
+        log.info("Formulario criado, id:"+formularioDto.getIdFormulario());
         return new ResponseEntity<>(formularioDto, HttpStatus.OK);
     }
 
@@ -62,8 +58,9 @@ public class FormularioController {
     @PutMapping(value = "/update-curriculo-by-id-formulario", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> updateCurriculo(@RequestParam Integer idFormulario,
                                                 @RequestPart(value = "file") MultipartFile curriculo) throws RegraDeNegocioException {
+        log.info("Atualizando currilo do formulario: "+idFormulario+"...");
         formularioService.updateCurriculo(curriculo, idFormulario);
-        log.info("Atualizando Formulario ID: " + idFormulario);
+        log.info("Atualizado Formulario ID: " + idFormulario);
         return ResponseEntity.ok().build();
     }
 

@@ -1,6 +1,7 @@
 package com.dbc.vemvemser.controller;
 
-import com.dbc.vemvemser.dto.*;
+import com.dbc.vemvemser.dto.TrilhaCreateDto;
+import com.dbc.vemvemser.dto.TrilhaDto;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.service.TrilhaService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,14 +10,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -37,8 +34,9 @@ public class TrilhaController {
             }
     )
     public ResponseEntity<TrilhaDto> create(@RequestBody TrilhaCreateDto trilhaCreateDto) {
+        log.info("Criando Trilha...");
         TrilhaDto trilhaDto = trilhaService.create(trilhaCreateDto);
-        log.info("Criando Formulario ID:" + trilhaDto.getIdTrilha());
+        log.info("Trilha criada.");
         return new ResponseEntity<>(trilhaDto, HttpStatus.OK);
     }
 
@@ -67,8 +65,9 @@ public class TrilhaController {
     )
     @DeleteMapping
     public void delete(@RequestParam Integer idTrilha) throws RegraDeNegocioException {
+        log.info("Deletando trilha...");
         trilhaService.delete(idTrilha);
-        log.info("Deletando Formulario ID: " + idTrilha);
+        log.info("trilha deletada");
         new ResponseEntity<>(null, HttpStatus.OK);
     }
 }

@@ -1,6 +1,5 @@
 package com.dbc.vemvemser.controller;
 
-import com.dbc.vemvemser.dto.CandidatoDto;
 import com.dbc.vemvemser.dto.InscricaoCreateDto;
 import com.dbc.vemvemser.dto.InscricaoDto;
 import com.dbc.vemvemser.dto.PageDto;
@@ -16,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -38,8 +38,9 @@ public class InscricaoController {
     )
     @PostMapping("/cadastro")
     public ResponseEntity<InscricaoDto> create(@RequestBody @Valid InscricaoCreateDto inscricaoCreateDto) throws RegraDeNegocioException {
-        log.info("ENTROU NO CHAMADO DO CREATE");
-        InscricaoDto inscricaoDto=inscricaoService.create(inscricaoCreateDto);
+        log.info("Criando inscrição");
+        InscricaoDto inscricaoDto = inscricaoService.create(inscricaoCreateDto);
+        log.info("Inscrição criada");
         return new ResponseEntity<>(inscricaoDto, HttpStatus.OK);
     }
 
@@ -53,10 +54,13 @@ public class InscricaoController {
             }
     )
     @GetMapping("/by-id")
-    public ResponseEntity<InscricaoDto> findById(@RequestParam ("id") Integer id) throws RegraDeNegocioException {
-        InscricaoDto inscricaoDto=inscricaoService.findDtoByid(id);
+    public ResponseEntity<InscricaoDto> findById(@RequestParam("id") Integer id) throws RegraDeNegocioException {
+        log.info("Buscando inscrição por id...");
+        InscricaoDto inscricaoDto = inscricaoService.findDtoByid(id);
+        log.info("Inscrição encontrada");
         return new ResponseEntity<>(inscricaoDto, HttpStatus.OK);
     }
+
     @Operation(summary = "Busca toda lista de inscrições", description = "Retonar uma lista com todas inscrições do Banco de dados.")
     @ApiResponses(
             value = {
@@ -66,28 +70,14 @@ public class InscricaoController {
             }
     )
     @GetMapping
-    public ResponseEntity<PageDto<InscricaoDto>> listar(@RequestParam(defaultValue = "0", required = false)Integer pagina,
-                                                        @RequestParam(defaultValue = "10", required = false)Integer tamanho,
-                                                        @RequestParam(defaultValue = "idInscricao", required = false)String sort,
-                                                        @RequestParam(defaultValue = "0", required = false)int order) {
-        return new ResponseEntity<>(inscricaoService.listar(pagina,tamanho,sort,order), HttpStatus.OK);
+    public ResponseEntity<PageDto<InscricaoDto>> listar(@RequestParam(defaultValue = "0", required = false) Integer pagina,
+                                                        @RequestParam(defaultValue = "10", required = false) Integer tamanho,
+                                                        @RequestParam(defaultValue = "idInscricao", required = false) String sort,
+                                                        @RequestParam(defaultValue = "0", required = false) int order) {
+        log.info("Listando inscrições");
+        return new ResponseEntity<>(inscricaoService.listar(pagina, tamanho, sort, order), HttpStatus.OK);
     }
 
-//    @Operation(summary = "Atualizar inscrição", description = "Atualiza uma inscrição por iID")
-//    @ApiResponses(
-//            value = {
-//                    @ApiResponse(responseCode = "200", description = "Atualizou uma inscrição com sucesso"),
-//                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-//                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
-//            }
-//    )
-//    @PutMapping ("/{id-inscricao}")
-//    public ResponseEntity <InscricaoDto> update(@RequestParam ("id-inscricao") Integer idInscricao,@RequestBody InscricaoCreateDto inscricaoCreateDto) throws RegraDeNegocioException {
-//
-//        InscricaoDto inscricaoDto= inscricaoService.update(idInscricao,inscricaoCreateDto);
-//
-//        return new ResponseEntity<>( inscricaoDto, HttpStatus.OK);
-//    }
 
     @Operation(summary = "Busca inscricao por EMAIL", description = "Busca inscrição por ID")
     @ApiResponses(
@@ -99,8 +89,12 @@ public class InscricaoController {
     )
     @GetMapping("/buscar-by-email")
     public ResponseEntity<List<InscricaoDto>> findInscricaoPorEmail(@RequestParam String email) {
-        return new ResponseEntity<>(inscricaoService.findInscricaoPorEmail(email), HttpStatus.OK);
+        log.info("Buscando Inscrição por email...");
+        List<InscricaoDto> list = inscricaoService.findInscricaoPorEmail(email);
+        log.info("Retornando inscrição encontrada.");
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
     @Operation(summary = "Deleta inscrição por ID", description = "Deleta inscrição por ID")
     @ApiResponses(
             value = {
@@ -110,10 +104,11 @@ public class InscricaoController {
             }
     )
     @DeleteMapping
-    public void  delete(@RequestParam ("id-inscricao") Integer idInscricao) throws RegraDeNegocioException {
-
+    public void delete(@RequestParam("id-inscricao") Integer idInscricao) throws RegraDeNegocioException {
+        log.info("Deletando inscrição");
         inscricaoService.delete(idInscricao);
-
+        log.info("Inscrição deletada");
+        new ResponseEntity<>(null,HttpStatus.OK);
     }
 
 }

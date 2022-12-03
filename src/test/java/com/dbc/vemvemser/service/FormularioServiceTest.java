@@ -22,6 +22,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.*;
 import org.springframework.mock.web.MockMultipartFile;
@@ -90,7 +91,7 @@ public class FormularioServiceTest {
     @Test
     public void deveTestarUpdateComSucesso() throws RegraDeNegocioException {
         // SETUP
-        Integer id= 10;
+        Integer id = 10;
         FormularioCreateDto formularioCreateDto = FormularioFactory.getFormularioCreateDto();
 
         FormularioEntity formularioEntity = FormularioFactory.getFormularioEntity();
@@ -146,25 +147,23 @@ public class FormularioServiceTest {
         verify(formularioRepository, times(1)).save(any(FormularioEntity.class));
     }
 
-    @Test
-    public void deveTestarUpdateCurriculoInvalidoComRegraNegocioException() throws RegraDeNegocioException, IOException {
-        try {
+    @Test(expected = Exception.class)
+    public void deveTestarUpdateCurriculoComRegraNegocioExceptionIoExceptionComSucesso() throws RegraDeNegocioException, IOException {
+
             FormularioEntity formularioEntity = FormularioFactory.getFormularioEntity();
 
-            byte[] imagemBytes = new byte[10 * 1024];
-            MultipartFile imagem = new MockMultipartFile("currilo.pdf", imagemBytes);
-            formularioEntity.setCurriculo(imagem.getBytes());
-
+            MultipartFile curriculoFake = Mockito.mock(MultipartFile.class, Mockito.RETURNS_DEEP_STUBS);
+            when(curriculoFake.getOriginalFilename()).thenReturn("seila.pdf");
+            when(curriculoFake.getBytes()).thenThrow(new IOException(""));
             when(formularioRepository.findById(anyInt())).thenReturn(Optional.of(FormularioFactory.getFormularioEntity()));
-            when(multipartFile.getOriginalFilename()).thenReturn("curriculo.pdf");
-            when(multipartFile.getBytes()).thenThrow(new IOException());
-            formularioService.updateCurriculo(imagem, 1);
 
-        }catch (RegraDeNegocioException e){
-            assertEquals(e.getMessage(),"Arquivo invalido");
-        }
+            formularioEntity.setCurriculo(curriculoFake.getBytes());
 
-        verify(formularioRepository, times(1)).findById(anyInt());
+            formularioService.updateCurriculo(curriculoFake, 1);
+
+            verify(formularioRepository, times(1)).findById(anyInt());
+            verify(formularioRepository, times(1)).save(any(FormularioEntity.class));
+
     }
 
     @Test
@@ -180,11 +179,11 @@ public class FormularioServiceTest {
 
     @Test
     public void deveTestarDeleteByIdComSucesso() throws RegraDeNegocioException {
-    FormularioEntity formularioEntity = FormularioFactory.getFormularioEntity();
+        FormularioEntity formularioEntity = FormularioFactory.getFormularioEntity();
 
-    when(formularioRepository.findById(anyInt())).thenReturn(Optional.of(formularioEntity));
+        when(formularioRepository.findById(anyInt())).thenReturn(Optional.of(formularioEntity));
 
-    formularioService.deleteById(10);
+        formularioService.deleteById(10);
 
     }
 
@@ -196,13 +195,13 @@ public class FormularioServiceTest {
         Integer order = 1;//DESCENDING
         Sort odernacao = Sort.by(sort).descending();
         PageImpl<FormularioEntity> pageImpl = new PageImpl<>(List.of(FormularioFactory.getFormularioEntity()),
-                PageRequest.of(pagina, tamanho,odernacao), 0);
+                PageRequest.of(pagina, tamanho, odernacao), 0);
 
         when(formularioRepository.findAll(any(Pageable.class))).thenReturn(pageImpl);
 
-        PageDto<FormularioDto> page = formularioService.listAllPaginado(pagina,tamanho,sort,order);
+        PageDto<FormularioDto> page = formularioService.listAllPaginado(pagina, tamanho, sort, order);
 
-        assertEquals(page.getTamanho(),tamanho);
+        assertEquals(page.getTamanho(), tamanho);
     }
 
     @Test
@@ -213,20 +212,20 @@ public class FormularioServiceTest {
 
         String base64 = formularioService.retornarCurriculoDoCandidatoDecode(idFormulario);
 
-        verify(formularioRepository,times(1)).findById(anyInt());
+        verify(formularioRepository, times(1)).findById(anyInt());
         assertNotNull(base64);
     }
 
 
     @Test
-    public void deveTestarConvertToEntityComSucesso(){
+    public void deveTestarConvertToEntityComSucesso() {
         FormularioDto formularioDto = FormularioFactory.getFormularioDto();
 
         when(trilhaService.convertToEntity(any())).thenReturn(FormularioFactory.getFormularioEntity().getTrilhaEntitySet());
 
         FormularioEntity formulario = formularioService.convertToEntity(formularioDto);
 
-        assertEquals(formulario.getIdFormulario(),formularioDto.getIdFormulario());
+        assertEquals(formulario.getIdFormulario(), formularioDto.getIdFormulario());
 
     }
 

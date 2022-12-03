@@ -2,7 +2,6 @@ package com.dbc.vemvemser.controller;
 
 import com.dbc.vemvemser.dto.CandidatoCreateDto;
 import com.dbc.vemvemser.dto.CandidatoDto;
-import com.dbc.vemvemser.dto.GestorDto;
 import com.dbc.vemvemser.dto.PageDto;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.service.CandidatoService;
@@ -10,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/candidato")
 @Validated
@@ -36,7 +37,10 @@ public class CandidatoController {
     )
     @PostMapping("/cadastro")
     public ResponseEntity<CandidatoDto> cadastroCandidato(@Valid @RequestBody CandidatoCreateDto candidatoCreateDto) throws RegraDeNegocioException {
-        return ResponseEntity.ok(candidatoService.cadastro(candidatoCreateDto));
+        log.info("Cadastrando candidato...");
+        CandidatoDto candidatoDto = candidatoService.cadastro(candidatoCreateDto);
+        log.info("Candidato cadastrado.");
+        return ResponseEntity.ok(candidatoDto);
     }
 
     @Operation(summary = "Listar Candidato", description = "Lista de candidatos")
@@ -52,10 +56,11 @@ public class CandidatoController {
                                                                   @RequestParam(defaultValue = "10", required = false) Integer tamanho,
                                                                   @RequestParam(defaultValue = "idCandidato", required = false) String sort,
                                                                   @RequestParam(defaultValue = "0", required = false) int order) {
+        log.info("Retornando lista de candidatos.");
         return new ResponseEntity<>(candidatoService.listaAllPaginado(pagina, tamanho, sort, order), HttpStatus.OK);
     }
 
-    @Operation(summary = "Busca candidato por EMAIL", description = "Busca Candidato por ID")
+    @Operation(summary = "Busca candidato por EMAIL", description = "Busca Candidato por EMAIL")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorna um Candidato."),
@@ -65,6 +70,9 @@ public class CandidatoController {
     )
     @GetMapping("/buscar-by-email")
     public ResponseEntity<List<CandidatoDto>> findCandidatoDtoByEmail(@RequestParam String email) throws RegraDeNegocioException {
+        log.info("Buscando candidato pelo email...");
+        List<CandidatoDto> candidatoDtos = candidatoService.findCandidatoDtoByEmail(email);
+        log.info("Retornando candidato.");
         return new ResponseEntity<>(candidatoService.findCandidatoDtoByEmail(email), HttpStatus.OK);
     }
 
@@ -76,9 +84,11 @@ public class CandidatoController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @GetMapping("/id-candidato")
+    @GetMapping("/by-idCandidato")
     public ResponseEntity<CandidatoDto> findById(@RequestParam Integer idCandidato) throws RegraDeNegocioException {
+        log.info("Buscando candidato por id...");
         CandidatoDto candidatoDto = candidatoService.findDtoById(idCandidato);
+        log.info("Retornando candidato encontrado");
         return new ResponseEntity<>(candidatoDto, HttpStatus.OK);
     }
 
@@ -92,7 +102,9 @@ public class CandidatoController {
     )
     @DeleteMapping("/deletar")
     public void deletarCandidato(@RequestParam Integer idCandidato) throws RegraDeNegocioException {
+        log.info("Deletando Candidato...");
         candidatoService.deleteById(idCandidato);
+        log.info("Candidato Deletado.");
         new ResponseEntity<>(null, HttpStatus.OK);
     }
 
@@ -107,7 +119,9 @@ public class CandidatoController {
     @PutMapping("/update")
     public ResponseEntity<CandidatoDto> atualizarCandidato(@RequestParam Integer idCandidato,
                                                            @RequestBody @Valid CandidatoCreateDto candidatoCreateDto) throws RegraDeNegocioException {
+        log.info("Atualizando Candidato...");
         CandidatoDto candidatoDto = candidatoService.update(idCandidato, candidatoCreateDto);
+        log.info("Candidato Atualizado.");
         return new ResponseEntity<>(candidatoDto, HttpStatus.OK);
     }
 

@@ -1,26 +1,15 @@
 package com.dbc.vemvemser.controller;
 
-import com.dbc.vemvemser.dto.GestorCreateDto;
-import com.dbc.vemvemser.dto.GestorDto;
-import com.dbc.vemvemser.dto.LoginCreateDto;
-import com.dbc.vemvemser.dto.PageDto;
-import com.dbc.vemvemser.entity.GestorEntity;
-import com.dbc.vemvemser.enums.TipoCargo;
-import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.dto.*;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
-import com.dbc.vemvemser.security.TokenService;
 import com.dbc.vemvemser.service.GestorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,6 +39,7 @@ public class GestorController {
                                                      @RequestParam(defaultValue = "10", required = false) Integer tamanho,
                                                      @RequestParam(defaultValue = "idGestor", required = false) String sort,
                                                      @RequestParam(defaultValue = "0", required = false) int order) {
+        log.info("Listando gestores...");
         return new ResponseEntity<>(gestorService.listar(pagina, tamanho, sort, order), HttpStatus.OK);
     }
 
@@ -63,7 +53,9 @@ public class GestorController {
     )
     @GetMapping("/id-gestor")
     public ResponseEntity<GestorDto> findById(@RequestParam Integer idGestor) throws RegraDeNegocioException {
+        log.info("Buscando gestor com id:"+idGestor+"...");
         GestorDto gestorDto = gestorService.findDtoById(idGestor);
+        log.info("Gestor encontrado.");
         return new ResponseEntity<>(gestorDto, HttpStatus.OK);
     }
 
@@ -78,7 +70,10 @@ public class GestorController {
     )
     @PostMapping("/cadastro")
     public ResponseEntity<GestorDto> cadastroCandidato(@Valid @RequestBody GestorCreateDto gestorCreateDto) throws RegraDeNegocioException {
-        return ResponseEntity.ok(gestorService.cadastrar(gestorCreateDto));
+        log.info("Cadastrando novo gestor...");
+        GestorDto gestorDto = gestorService.cadastrar(gestorCreateDto);
+        log.info("Gestor cadastrado.");
+        return ResponseEntity.ok(gestorDto);
     }
 
     @Operation(summary = "Atualizar o colaborador/administrador", description = "Atualiza o colaborador/administrador no banco de dados")
@@ -101,9 +96,9 @@ public class GestorController {
     @PutMapping("/trocar-senha/{idGestor}")
     public ResponseEntity<GestorDto> editarSenhaGestor(@PathVariable(name = "idGestor") Integer idGestor,
                                             @Valid @RequestBody GestorSenhaDto gestor) throws RegraDeNegocioException {
-        log.info("Editando o Gestor...");
+        log.info("Editando senha do Gestor...");
         GestorDto gestorEditado = gestorService.editarSenha(idGestor, gestor);
-        log.info("Gestor editado com sucesso!");
+        log.info("Gestor senha editado com sucesso!");
         return new ResponseEntity<>(gestorEditado, HttpStatus.OK);
     }
 
@@ -118,8 +113,9 @@ public class GestorController {
     )
     @DeleteMapping("/{idGestor}")
     public ResponseEntity<Void> remover(@PathVariable(name = "idGestor") Integer idGestor) throws RegraDeNegocioException {
+        log.info("Deletando gestor...");
         gestorService.remover(idGestor);
-        log.info("Usuário deletado com sucesso");
+        log.info("Gestor deletado com sucesso");
         return ResponseEntity.noContent().build();
     }
 
@@ -133,6 +129,7 @@ public class GestorController {
     )
     @PutMapping("/desativacao-conta/{idGestor}")
     public ResponseEntity<GestorDto> desativar(@PathVariable(name = "idGestor") Integer idGestor) throws RegraDeNegocioException {
+        log.info("Desativando gestor com id:"+idGestor);
         return new ResponseEntity<>(gestorService.desativarConta(idGestor), HttpStatus.OK);
 
     }
@@ -147,6 +144,7 @@ public class GestorController {
     )
     @GetMapping("/contas-inativas")
     public ResponseEntity<List<GestorDto>> listarContaInativas() {
+        log.info("Listando contas inativas");
         return new ResponseEntity<>(gestorService.contasInativas(), HttpStatus.OK);
     }
 
@@ -158,8 +156,9 @@ public class GestorController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @PostMapping("/gestor-by-nome-email")
+    @GetMapping("/gestor-by-nome-email")
     public ResponseEntity<List<GestorDto>> pegarGestorPorEmailNomeCargo(@RequestBody GestorEmailNomeCargoDto gestorEmailNomeCargoDto) throws RegraDeNegocioException {
+        log.info("Buscando gestor por cargo e ( email ou nome )");
         return new ResponseEntity<>(gestorService.findGestorbyNomeOrEmail(gestorEmailNomeCargoDto), HttpStatus.OK);
     }
 
@@ -173,6 +172,7 @@ public class GestorController {
     )
     @GetMapping("/gestor-logado")
     public ResponseEntity<GestorDto> pegarUserLogado() throws RegraDeNegocioException {
+        log.info("Buscando gestor logado.");
         return new ResponseEntity<>(gestorService.getLoggedUser(), HttpStatus.OK);
     }
 

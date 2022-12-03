@@ -1,8 +1,10 @@
 package com.dbc.vemvemser.service;
 
 
-import com.dbc.vemvemser.dto.*;
-import com.dbc.vemvemser.entity.CandidatoEntity;
+import com.dbc.vemvemser.dto.FormularioCreateDto;
+import com.dbc.vemvemser.dto.FormularioDto;
+import com.dbc.vemvemser.dto.PageDto;
+import com.dbc.vemvemser.dto.TrilhaDto;
 import com.dbc.vemvemser.entity.FormularioEntity;
 import com.dbc.vemvemser.entity.TrilhaEntity;
 import com.dbc.vemvemser.enums.TipoMarcacao;
@@ -18,9 +20,7 @@ import org.springframework.util.Base64Utils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -99,13 +99,13 @@ public class FormularioService {
 
     public void updateCurriculo(MultipartFile curriculo, Integer idFormulario) throws RegraDeNegocioException {
 
+        String arquivo = curriculo.getOriginalFilename();
+        FormularioEntity formulario = findById(idFormulario);
+        if (!arquivo.endsWith(".pdf")) {
+            throw new RegraDeNegocioException("Formato de arquivo invalido!");
+        }
         try {
-            String arquivo = curriculo.getOriginalFilename();
-            FormularioEntity formulario = findById(idFormulario);
             formulario.setCurriculo(curriculo.getBytes());
-            if (!arquivo.endsWith(".pdf")) {
-                throw new RegraDeNegocioException("Formato de arquivo invalido!");
-            }
             formularioRepository.save(formulario);
         } catch (IOException e) {
             throw new RegraDeNegocioException("Arquivo invalido");

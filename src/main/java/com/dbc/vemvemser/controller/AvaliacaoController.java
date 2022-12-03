@@ -2,7 +2,6 @@ package com.dbc.vemvemser.controller;
 
 import com.dbc.vemvemser.dto.AvaliacaoCreateDto;
 import com.dbc.vemvemser.dto.AvaliacaoDto;
-import com.dbc.vemvemser.dto.InscricaoDto;
 import com.dbc.vemvemser.dto.PageDto;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.service.AvaliacaoService;
@@ -37,8 +36,9 @@ public class AvaliacaoController {
     )
     @PostMapping
     public ResponseEntity<AvaliacaoDto> create(@RequestBody AvaliacaoCreateDto avaliacaoCreateDto) throws RegraDeNegocioException {
+        log.info("Criando Avaliação...");
         AvaliacaoDto avaliacaoDto = avaliacaoService.create(avaliacaoCreateDto);
-
+        log.info("Avaliação criada.");
         return new ResponseEntity<>(avaliacaoDto, HttpStatus.OK);
     }
 
@@ -55,6 +55,7 @@ public class AvaliacaoController {
                                                          @RequestParam(defaultValue = "10", required = false) Integer tamanho,
                                                          @RequestParam(defaultValue = "idAvaliacao", required = false) String sort,
                                                          @RequestParam(defaultValue = "0", required = false) int order) {
+        log.info("Listando avaliações");
         return new ResponseEntity<>(avaliacaoService.list(pagina, tamanho, sort, order), HttpStatus.OK);
     }
 
@@ -70,9 +71,9 @@ public class AvaliacaoController {
     @PutMapping
     public ResponseEntity<AvaliacaoDto> update(@RequestParam Integer idAvaliacao,
                                                @RequestBody AvaliacaoCreateDto avaliacaoCreateDto) throws RegraDeNegocioException {
-
+        log.info("Atualizando Avaliação...");
         AvaliacaoDto avaliacaoDtoRetorno = avaliacaoService.update(idAvaliacao, avaliacaoCreateDto);
-
+        log.info("Avaliação atualizada.");
         return new ResponseEntity<>(avaliacaoDtoRetorno, HttpStatus.OK);
     }
 
@@ -87,8 +88,9 @@ public class AvaliacaoController {
     )
     @DeleteMapping
     public ResponseEntity<Void> delete(Integer idAvaliacao) throws RegraDeNegocioException {
+        log.info("Deletando Avaliação...");
         avaliacaoService.deleteById(idAvaliacao);
-
+        log.info("Avaliação deletada.");
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
@@ -102,6 +104,9 @@ public class AvaliacaoController {
     )
     @GetMapping("/buscar-by-email")
     public ResponseEntity<List<AvaliacaoDto>> findInscricaoPorEmail(@RequestParam String email) {
-        return new ResponseEntity<>(avaliacaoService.findAvaliacaoByCanditadoEmail(email), HttpStatus.OK);
+        log.info("Buscando avaliação pelo email do candidato...");
+        List<AvaliacaoDto> avaliacaoDto = avaliacaoService.findAvaliacaoByCanditadoEmail(email);
+        log.info("Retornando avaliações.");
+        return new ResponseEntity<>(avaliacaoDto, HttpStatus.OK);
     }
 }
