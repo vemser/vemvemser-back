@@ -241,7 +241,7 @@ public class GestorServiceTest {
         when(gestorRepository.findGestorEntityByEmailEqualsIgnoreCase(anyString())).thenReturn(Optional.of(gestorEntity));
         when(tokenService.getToken(any(), any())).thenReturn(tokenDto);
 
-        gestorService.forgotPassword(new GestorEmailDto("email@email.com.br"));
+        gestorService.forgotPassword(new GestorEmailDto("email@email.com.br",""));
     }
 
     @Test(expected = RegraDeNegocioException.class)
@@ -249,7 +249,7 @@ public class GestorServiceTest {
 
         when(gestorRepository.findGestorEntityByEmailEqualsIgnoreCase(anyString())).thenReturn(Optional.empty());
 
-        gestorService.forgotPassword(new GestorEmailDto("email@email.com"));
+        gestorService.forgotPassword(new GestorEmailDto("email@email.com",""));
 
         verify(gestorRepository, times(1)).findGestorEntityByEmailEqualsIgnoreCase(anyString());
     }

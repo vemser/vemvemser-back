@@ -13,4 +13,6 @@ public class GestorEmailDto {
     @NotNull
     @Email
     private String email;
+
+    private String url;
 }

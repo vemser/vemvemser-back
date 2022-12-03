@@ -98,6 +98,15 @@ public class GestorController {
         return new ResponseEntity<>(gestorEditado, HttpStatus.OK);
     }
 
+    @PutMapping("/trocar-senha/{idGestor}")
+    public ResponseEntity<GestorDto> editarSenhaGestor(@PathVariable(name = "idGestor") Integer idGestor,
+                                            @Valid @RequestBody GestorSenhaDto gestor) throws RegraDeNegocioException {
+        log.info("Editando o Gestor...");
+        GestorDto gestorEditado = gestorService.editarSenha(idGestor, gestor);
+        log.info("Gestor editado com sucesso!");
+        return new ResponseEntity<>(gestorEditado, HttpStatus.OK);
+    }
+
     @Operation(summary = "Deletar colaborador/administrador", description = "Deletar o colaborador/administrador no banco de dados")
     @ApiResponses(
             value = {

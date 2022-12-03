@@ -1,9 +1,6 @@
 package com.dbc.vemvemser.service;
 
-import com.dbc.vemvemser.dto.AvaliacaoCreateDto;
-import com.dbc.vemvemser.dto.AvaliacaoDto;
-import com.dbc.vemvemser.dto.InscricaoDto;
-import com.dbc.vemvemser.dto.PageDto;
+import com.dbc.vemvemser.dto.*;
 import com.dbc.vemvemser.entity.AvaliacaoEntity;
 import com.dbc.vemvemser.entity.InscricaoEntity;
 import com.dbc.vemvemser.enums.TipoEmail;
@@ -38,10 +35,13 @@ public class AvaliacaoService {
         AvaliacaoEntity avaliacaoEntity = convertToEntity(avaliacaoCreateDto);
         AvaliacaoDto avaliacaoDto = convertToDto(avaliacaoRepository.save(avaliacaoEntity));
         avaliacaoDto.setAvaliador(gestorService.convertToDto(avaliacaoEntity.getAvaliador()));
+        SendEmailDto sendEmailDto = new SendEmailDto();
+        sendEmailDto.setNome(avaliacaoDto.getInscricao().getCandidato().getNome());
+        sendEmailDto.setEmail(avaliacaoDto.getInscricao().getCandidato().getEmail());
         if (avaliacaoDto.getAprovado() == TipoMarcacao.T) {
-            emailService.sendEmail(avaliacaoDto.getInscricao().getCandidato(), TipoEmail.APROVADO);
+            emailService.sendEmail(sendEmailDto, TipoEmail.APROVADO);
         } else {
-            emailService.sendEmail(avaliacaoDto.getInscricao().getCandidato(), TipoEmail.REPROVADO);
+            emailService.sendEmail(sendEmailDto, TipoEmail.REPROVADO);
         }
         inscricaoService.setAvaliado(avaliacaoCreateDto.getIdInscricao());
         return avaliacaoDto;
@@ -85,7 +85,7 @@ public class AvaliacaoService {
                 .orElseThrow(() -> new RegraDeNegocioException("Avaliação não encontrada!"));
     }
 
-    public List<AvaliacaoDto> findAvaliacaoByCanditadoEmail(String email){
+    public List<AvaliacaoDto> findAvaliacaoByCanditadoEmail(String email) {
         List<AvaliacaoEntity> lista = avaliacaoRepository.findAvaliacaoEntitiesByInscricao_Candidato_Email(email);
         return lista.stream().map(avaliacaoEntity -> convertToDto(avaliacaoEntity))
                 .toList();

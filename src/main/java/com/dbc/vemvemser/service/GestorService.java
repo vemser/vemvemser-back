@@ -5,6 +5,7 @@ import antlr.Token;
 import com.dbc.vemvemser.dto.*;
 import com.dbc.vemvemser.entity.CargoEntity;
 import com.dbc.vemvemser.entity.GestorEntity;
+import com.dbc.vemvemser.enums.TipoEmail;
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.repository.GestorRepository;
@@ -33,6 +34,8 @@ public class GestorService {
     private final ObjectMapper objectMapper;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
+
+    private final EmailService emailService;
 
     private static final TipoMarcacao USUARIO_ATIVO = TipoMarcacao.T;
 
@@ -94,6 +97,15 @@ public class GestorService {
 
     }
 
+    public GestorDto editarSenha(Integer id, GestorSenhaDto gestorSenhaDto) throws RegraDeNegocioException {
+        GestorEntity gestorEntity = findById(id);
+        gestorEntity.setSenha(passwordEncoder.encode(gestorSenhaDto.getSenha()));
+        gestorRepository.save(gestorEntity);
+        GestorDto gestorDto = convertToDto(gestorEntity);
+        return gestorDto;
+
+    }
+
     public List<GestorDto> findGestorbyNomeOrEmail(GestorEmailNomeCargoDto gestorEmailNomeCargoDto) throws RegraDeNegocioException {
         if (gestorEmailNomeCargoDto.getNome().isBlank() && gestorEmailNomeCargoDto.getEmail().isBlank()) {
             return Collections.emptyList();
@@ -119,6 +131,13 @@ public class GestorService {
     public void forgotPassword(GestorEmailDto gestorEmailDto) throws RegraDeNegocioException {
         GestorEntity gestorEntity = findByEmail(gestorEmailDto.getEmail());
         TokenDto token = tokenService.getToken(gestorEntity, true);
+
+        SendEmailDto sendEmailDto = new SendEmailDto();
+        sendEmailDto.setEmail(gestorEntity.getEmail());
+        sendEmailDto.setNome(gestorEntity.getNome());
+        String url = gestorEmailDto.getUrl();
+        sendEmailDto.setUrlToken(url+"/forgot-password/?token="+token.getToken());
+        emailService.sendEmail(sendEmailDto, TipoEmail.RECOVER_PASSWORD);
     }
 
     public Integer getIdLoggedUser() {

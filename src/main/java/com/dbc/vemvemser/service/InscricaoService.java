@@ -1,9 +1,6 @@
 package com.dbc.vemvemser.service;
 
-import com.dbc.vemvemser.dto.GestorDto;
-import com.dbc.vemvemser.dto.InscricaoCreateDto;
-import com.dbc.vemvemser.dto.InscricaoDto;
-import com.dbc.vemvemser.dto.PageDto;
+import com.dbc.vemvemser.dto.*;
 import com.dbc.vemvemser.entity.GestorEntity;
 import com.dbc.vemvemser.entity.InscricaoEntity;
 import com.dbc.vemvemser.enums.TipoEmail;
@@ -32,7 +29,7 @@ public class InscricaoService {
     private final ObjectMapper objectMapper;
 
     public InscricaoDto create(InscricaoCreateDto inscricaoCreateDto) throws RegraDeNegocioException {
-        if(!inscricaoRepository.findInscricaoEntitiesByCandidato_IdCandidato(inscricaoCreateDto.getIdCandidato()).isEmpty()){
+        if (!inscricaoRepository.findInscricaoEntitiesByCandidato_IdCandidato(inscricaoCreateDto.getIdCandidato()).isEmpty()) {
             throw new RegraDeNegocioException("Formulario cadastrado para outro candidato");
         }
         InscricaoEntity inscricaoEntity = convertToEntity(inscricaoCreateDto);
@@ -41,19 +38,21 @@ public class InscricaoService {
         inscricaoEntity.setAvaliado(TipoMarcacao.F);
         inscricaoRepository.save(inscricaoEntity);
         InscricaoDto inscricaoDto = converterParaDTO(inscricaoEntity);
-
-        emailService.sendEmail(inscricaoDto.getCandidato(), TipoEmail.INSCRICAO);
+        SendEmailDto sendEmailDto = new SendEmailDto();
+        sendEmailDto.setNome(inscricaoEntity.getCandidato().getNome());
+        sendEmailDto.setEmail(inscricaoDto.getCandidato().getEmail());
+        emailService.sendEmail(sendEmailDto, TipoEmail.INSCRICAO);
         return inscricaoDto;
     }
 
     public InscricaoEntity setAvaliado(Integer idInscricao) throws RegraDeNegocioException {
         InscricaoEntity inscricaoEntity = findById(idInscricao);
         inscricaoEntity.setAvaliado(TipoMarcacao.T);
-        InscricaoEntity inscricao =inscricaoRepository.save(inscricaoEntity);
+        InscricaoEntity inscricao = inscricaoRepository.save(inscricaoEntity);
         return inscricao;
     }
 
-    public List<InscricaoDto> findInscricaoPorEmail(String email){
+    public List<InscricaoDto> findInscricaoPorEmail(String email) {
         List<InscricaoEntity> lista = inscricaoRepository.findInscricaoEntitiesByCandidato_Email(email);
         return lista.stream().map(inscricaoEntity -> converterParaDTO(inscricaoEntity))
                 .toList();

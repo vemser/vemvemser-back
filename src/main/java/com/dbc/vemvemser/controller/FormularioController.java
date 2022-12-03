@@ -3,6 +3,7 @@ package com.dbc.vemvemser.controller;
 
 import com.dbc.vemvemser.dto.FormularioCreateDto;
 import com.dbc.vemvemser.dto.FormularioDto;
+import com.dbc.vemvemser.dto.GestorSenhaDto;
 import com.dbc.vemvemser.dto.PageDto;
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.dbc.vemvemser.enums.TipoTurno;
@@ -60,7 +61,7 @@ public class FormularioController {
     )
     @PutMapping(value = "/update-curriculo-by-id-formulario", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> updateCurriculo(@RequestParam Integer idFormulario,
-                                                @RequestPart MultipartFile curriculo) throws RegraDeNegocioException {
+                                                @RequestPart(value = "file") MultipartFile curriculo) throws RegraDeNegocioException {
         formularioService.updateCurriculo(curriculo, idFormulario);
         log.info("Atualizando Formulario ID: " + idFormulario);
         return ResponseEntity.ok().build();
