@@ -74,6 +74,9 @@ public class AvaliacaoService {
         return avaliacaoRetorno;
     }
 
+    public AvaliacaoDto findDtoById(Integer idAvaliacao) throws RegraDeNegocioException {
+        return convertToDto(findById(idAvaliacao));
+    }
 
     public void deleteById(Integer idAvaliacao) throws RegraDeNegocioException {
         findById(idAvaliacao);

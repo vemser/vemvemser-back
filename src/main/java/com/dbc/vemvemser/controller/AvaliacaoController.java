@@ -2,6 +2,7 @@ package com.dbc.vemvemser.controller;
 
 import com.dbc.vemvemser.dto.AvaliacaoCreateDto;
 import com.dbc.vemvemser.dto.AvaliacaoDto;
+import com.dbc.vemvemser.dto.InscricaoDto;
 import com.dbc.vemvemser.dto.PageDto;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.service.AvaliacaoService;
@@ -92,6 +93,22 @@ public class AvaliacaoController {
         avaliacaoService.deleteById(idAvaliacao);
         log.info("Avaliação deletada.");
         return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Buscar Avaliacao por id", description = "Busca uma avaliacao por ID")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorna uma avaliação"),
+                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
+                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
+            }
+    )
+    @GetMapping("/by-id")
+    public ResponseEntity<AvaliacaoDto> findById(@RequestParam("id") Integer id) throws RegraDeNegocioException {
+        log.info("Buscando avaliação por id...");
+        AvaliacaoDto avaliacaoDto = avaliacaoService.findDtoById(id);
+        log.info("Inscrição encontrada");
+        return new ResponseEntity<>(avaliacaoDto, HttpStatus.OK);
     }
 
     @Operation(summary = "Busca avaliacao por EMAIL", description = "Busca avaliação por email")
