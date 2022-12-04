@@ -99,7 +99,7 @@ public class CandidatoService {
 
     private CandidatoEntity convertToEntity(CandidatoCreateDto candidatoCreateDto) throws RegraDeNegocioException {
         CandidatoEntity candidatoEntity = objectMapper.convertValue(candidatoCreateDto, CandidatoEntity.class);
-        candidatoEntity.setPcd(candidatoCreateDto.isPcdboolean() ? TipoMarcacao.T : TipoMarcacao.F);
+        candidatoEntity.setPcd(candidatoCreateDto.isPcdBoolean() ? TipoMarcacao.T : TipoMarcacao.F);
         candidatoEntity.setFormulario(formularioService.convertToEntity(formularioService.findDtoById(candidatoCreateDto.getIdFormulario())));
         return candidatoEntity;
     }

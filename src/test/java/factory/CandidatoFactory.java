@@ -35,7 +35,7 @@ public class CandidatoFactory {
         candidatoCreateDto.setCpf("049.239.620-54");
         candidatoCreateDto.setEstado("Rio Grande do Sul");
         candidatoCreateDto.setCidade("Pelotas");
-        candidatoCreateDto.setPcdboolean(false);
+        candidatoCreateDto.setPcdBoolean(false);
         candidatoCreateDto.setIdFormulario(FormularioFactory.getFormularioEntity().getIdFormulario());
         return candidatoCreateDto;
     }
