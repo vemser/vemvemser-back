@@ -23,7 +23,7 @@ public class CargoEntity implements GrantedAuthority {
     private String nome;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "cargoEntity",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cargoEntity", fetch = FetchType.LAZY)
     private Set<GestorEntity> pessoa;
 
     @Override

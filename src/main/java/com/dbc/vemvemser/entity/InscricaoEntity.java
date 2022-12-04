@@ -33,10 +33,10 @@ public class InscricaoEntity {
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name="ID_CANDIDATO", referencedColumnName = "ID_CANDIDATO")
+    @JoinColumn(name = "ID_CANDIDATO", referencedColumnName = "ID_CANDIDATO")
     private CandidatoEntity candidato;
 
-    @OneToOne(mappedBy ="inscricao" ,fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "inscricao", fetch = FetchType.LAZY)
     private AvaliacaoEntity avaliacaoEntity;
 
 }

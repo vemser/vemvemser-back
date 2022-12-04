@@ -9,6 +9,7 @@ public enum TipoCargo {
     TipoCargo(Integer cargo) {
         this.cargo = cargo;
     }
+
     public Integer getCargo() {
         return cargo;
     }

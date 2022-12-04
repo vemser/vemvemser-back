@@ -1,6 +1,9 @@
 package com.dbc.vemvemser.service;
 
-import com.dbc.vemvemser.dto.*;
+import com.dbc.vemvemser.dto.AvaliacaoCreateDto;
+import com.dbc.vemvemser.dto.AvaliacaoDto;
+import com.dbc.vemvemser.dto.PageDto;
+import com.dbc.vemvemser.dto.SendEmailDto;
 import com.dbc.vemvemser.entity.AvaliacaoEntity;
 import com.dbc.vemvemser.entity.InscricaoEntity;
 import com.dbc.vemvemser.enums.TipoEmail;

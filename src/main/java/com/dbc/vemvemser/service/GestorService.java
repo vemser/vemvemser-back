@@ -1,7 +1,6 @@
 package com.dbc.vemvemser.service;
 
 
-import antlr.Token;
 import com.dbc.vemvemser.dto.*;
 import com.dbc.vemvemser.entity.CargoEntity;
 import com.dbc.vemvemser.entity.GestorEntity;
@@ -19,10 +18,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -88,7 +85,7 @@ public class GestorService {
         gestorEntity.setCargoEntity(cargoService.findById(gestorCreateDto.getTipoCargo()));
         gestorEntity.setNome(gestorCreateDto.getNome());
         gestorEntity.setEmail(gestorCreateDto.getEmail());
-        if(!gestorCreateDto.getSenha().isBlank()){
+        if (!gestorCreateDto.getSenha().isBlank()) {
             gestorEntity.setSenha(passwordEncoder.encode(gestorCreateDto.getSenha()));
         }
         gestorRepository.save(gestorEntity);
@@ -110,8 +107,8 @@ public class GestorService {
         if (gestorEmailNomeCargoDto.getNome().isBlank() && gestorEmailNomeCargoDto.getEmail().isBlank()) {
             return Collections.emptyList();
         }
-       CargoEntity cargo = cargoService.findById(gestorEmailNomeCargoDto.getCargo().getCargo());
-        List<GestorEntity> lista = gestorRepository.findGestorEntitiesByCargoEntityAndNomeIgnoreCaseOrCargoEntityAndEmailIgnoreCase(cargo, gestorEmailNomeCargoDto.getNome(), cargo,gestorEmailNomeCargoDto.getEmail());
+        CargoEntity cargo = cargoService.findById(gestorEmailNomeCargoDto.getCargo().getCargo());
+        List<GestorEntity> lista = gestorRepository.findGestorEntitiesByCargoEntityAndNomeIgnoreCaseOrCargoEntityAndEmailIgnoreCase(cargo, gestorEmailNomeCargoDto.getNome(), cargo, gestorEmailNomeCargoDto.getEmail());
         return lista.stream()
                 .map(gestorEntity -> convertToDto(gestorEntity))
                 .toList();
@@ -136,7 +133,7 @@ public class GestorService {
         sendEmailDto.setEmail(gestorEntity.getEmail());
         sendEmailDto.setNome(gestorEntity.getNome());
         String url = gestorEmailDto.getUrl();
-        sendEmailDto.setUrlToken(url+"/forgot-password/?token="+token.getToken());
+        sendEmailDto.setUrlToken(url + "/forgot-password/?token=" + token.getToken());
         emailService.sendEmail(sendEmailDto, TipoEmail.RECOVER_PASSWORD);
     }
 

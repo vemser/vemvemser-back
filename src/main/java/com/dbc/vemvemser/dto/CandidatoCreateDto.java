@@ -14,9 +14,8 @@ import java.time.LocalDate;
 public class CandidatoCreateDto {
 
 
-
     @NotNull
-    @Size(min = 3, max= 255, message = "O nome deve ter de 3 a 255 caracteres")
+    @Size(min = 3, max = 255, message = "O nome deve ter de 3 a 255 caracteres")
     @Schema(description = "Nome do candidato", example = "José da Silva da Silva")
     @Pattern(regexp = "^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{0,}", message = "Não permitido números e caracteres especiais.")
     private String nome;
@@ -30,12 +29,12 @@ public class CandidatoCreateDto {
     private String email;
 
     @NotNull
-    @Size(min = 8, max= 255, message = "O nome deve ter de 8 a 30 caracteres")
+    @Size(min = 8, max = 255, message = "O nome deve ter de 8 a 30 caracteres")
     @Schema(description = "Telefone do candidato", example = "32251515")
     private String telefone;
 
     @NotNull
-    @Size(min = 3, max= 255, message = "O nome deve ter de 8 a 30 caracteres")
+    @Size(min = 3, max = 255, message = "O nome deve ter de 8 a 30 caracteres")
     @Schema(description = "Registro Geral (RG)", example = "77.777.777-7")
     private String rg;
 
@@ -48,12 +47,12 @@ public class CandidatoCreateDto {
     private String estado;
 
     @NotNull
-    @Size(min = 3, max= 255, message = "O nome deve ter de 3 a 30 caracteres")
+    @Size(min = 3, max = 255, message = "O nome deve ter de 3 a 30 caracteres")
     @Schema(description = "Cidade em que habita o candidato", example = "Porto Alegre")
     private String cidade;
 
     @Schema(example = "T", description = "T(TRUE) or F(FALSE)")
-    private boolean pcdboolean;
+    private boolean pcdBoolean;
 
     @NotNull
     private Integer idFormulario;

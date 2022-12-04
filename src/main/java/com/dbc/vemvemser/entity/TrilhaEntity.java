@@ -1,7 +1,6 @@
 package com.dbc.vemvemser.entity;
 
 
-import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,7 +28,7 @@ public class TrilhaEntity {
 
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "trilhaEntitySet",fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "trilhaEntitySet", fetch = FetchType.LAZY)
     private Set<FormularioEntity> formularios;
 
 }

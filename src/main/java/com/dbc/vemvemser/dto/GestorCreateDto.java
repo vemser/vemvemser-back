@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 public class GestorCreateDto {
 
     @NotNull
-    @Size(min = 3, max= 255, message = "O nome deve ter de 3 a 255 caracteres")
+    @Size(min = 3, max = 255, message = "O nome deve ter de 3 a 255 caracteres")
     @Schema(description = "Nome do gestor", example = "Márcia da Silva Santos")
     private String nome;
 

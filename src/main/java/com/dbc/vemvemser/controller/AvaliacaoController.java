@@ -2,7 +2,6 @@ package com.dbc.vemvemser.controller;
 
 import com.dbc.vemvemser.dto.AvaliacaoCreateDto;
 import com.dbc.vemvemser.dto.AvaliacaoDto;
-import com.dbc.vemvemser.dto.InscricaoDto;
 import com.dbc.vemvemser.dto.PageDto;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
 import com.dbc.vemvemser.service.AvaliacaoService;

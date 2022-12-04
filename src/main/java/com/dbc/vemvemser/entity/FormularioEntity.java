@@ -101,7 +101,7 @@ public class FormularioEntity {
     @Column(name = "ORIENTACAO")
     private String orientacao;
 
-    @OneToOne(mappedBy ="formulario" ,fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "formulario", fetch = FetchType.LAZY)
     private CandidatoEntity candidato;
 
     @JsonIgnore

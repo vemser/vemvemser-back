@@ -1,19 +1,14 @@
 package com.dbc.vemvemser.security;
 
 
-
-
 import com.dbc.vemvemser.dto.CargoDto;
 import com.dbc.vemvemser.dto.TokenDto;
 import com.dbc.vemvemser.entity.GestorEntity;
-import com.dbc.vemvemser.enums.TipoEmail;
-import com.dbc.vemvemser.service.CargoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
-import org.bouncycastle.jcajce.BCFKSLoadStoreParameter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -43,10 +38,10 @@ public class TokenService {
         Date date = Date.from(dataLocalDateTime.atZone(ZoneId.systemDefault()).toInstant());
 
         Date dateExpiration;
-        if(recuperacao){
+        if (recuperacao) {
             LocalDateTime localDateExperation = dataLocalDateTime.plusMinutes(VALIDADE_TOKEN_CINCO_MINUTOS);
             dateExpiration = Date.from(localDateExperation.atZone(ZoneId.systemDefault()).toInstant());
-        }else {
+        } else {
             LocalDateTime localDateExperation = dataLocalDateTime.plusDays(VALIDADE_TOKEN_UM_DIA);
             dateExpiration = Date.from(localDateExperation.atZone(ZoneId.systemDefault()).toInstant());
         }
@@ -57,13 +52,13 @@ public class TokenService {
         String token = Jwts.builder()
                 .setIssuer("vemvemser")
                 .claim(Claims.ID, gestorEntity.getIdGestor().toString())
-                .claim(CHAVE_CARGOS,cargosDoGestor)
+                .claim(CHAVE_CARGOS, cargosDoGestor)
                 .setIssuedAt(date)
                 .setExpiration(dateExpiration)
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
 
-        return new TokenDto(token,gestorEntity.getIdGestor(),objectMapper.convertValue(gestorEntity.getCargoEntity(), CargoDto.class));
+        return new TokenDto(token, gestorEntity.getIdGestor(), objectMapper.convertValue(gestorEntity.getCargoEntity(), CargoDto.class));
     }
 
     public UsernamePasswordAuthenticationToken isValid(String token) {

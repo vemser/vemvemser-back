@@ -42,7 +42,7 @@ public class FormularioController {
     public ResponseEntity<FormularioDto> create(@RequestBody FormularioCreateDto formularioCreateDto) throws RegraDeNegocioException {
         log.info("Criando formulario...");
         FormularioDto formularioDto = formularioService.create(formularioCreateDto);
-        log.info("Formulario criado, id:"+formularioDto.getIdFormulario());
+        log.info("Formulario criado, id:" + formularioDto.getIdFormulario());
         return new ResponseEntity<>(formularioDto, HttpStatus.OK);
     }
 
@@ -58,7 +58,7 @@ public class FormularioController {
     @PutMapping(value = "/update-curriculo-by-id-formulario", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> updateCurriculo(@RequestParam Integer idFormulario,
                                                 @RequestPart(value = "file") MultipartFile curriculo) throws RegraDeNegocioException {
-        log.info("Atualizando currilo do formulario: "+idFormulario+"...");
+        log.info("Atualizando currilo do formulario: " + idFormulario + "...");
         formularioService.updateCurriculo(curriculo, idFormulario);
         log.info("Atualizado Formulario ID: " + idFormulario);
         return ResponseEntity.ok().build();

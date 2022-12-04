@@ -8,8 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.validation.constraints.AssertTrue;
 import java.util.List;
 
 @Getter
@@ -34,7 +32,7 @@ public class FormularioCreateDto {
     private String github;
 
     @Schema(example = "https://linkedin.com/", description = "Link referente ao seu Linkedin")
-    private String Linkedin;
+    private String linkedin;
 
     @Schema(example = "true", description = "T(TRUE) or F(FALSE)")
     private boolean desafiosBoolean;
@@ -84,6 +82,6 @@ public class FormularioCreateDto {
     @Schema(example = "Heterosexual")
     private String orientacao;
 
-    @Schema(example = "[ 1 ]" , description = "Escolha sua(s) trilha(s) entre Frontend (1), Backend (2) e QA (3)")
+    @Schema(example = "[ 1 ]", description = "Escolha sua(s) trilha(s) entre Frontend (1), Backend (2) e QA (3)")
     private List<Integer> trilhas;
 }

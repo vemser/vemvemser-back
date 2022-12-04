@@ -14,7 +14,7 @@ public interface GestorRepository extends JpaRepository<GestorEntity, Integer> {
 
     List<GestorEntity> findGestorEntitiesByCargoEntityAndNomeIgnoreCaseOrCargoEntityAndEmailIgnoreCase(CargoEntity cargo, String nome, CargoEntity cargoEntity, String email);
 
-    List<GestorEntity> findByAtivo (TipoMarcacao ativo);
+    List<GestorEntity> findByAtivo(TipoMarcacao ativo);
 
     Optional<GestorEntity> findGestorEntityByEmailEqualsIgnoreCase(String email);
 

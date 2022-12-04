@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -108,7 +107,7 @@ public class InscricaoController {
         log.info("Deletando inscrição");
         inscricaoService.delete(idInscricao);
         log.info("Inscrição deletada");
-        new ResponseEntity<>(null,HttpStatus.OK);
+        new ResponseEntity<>(null, HttpStatus.OK);
     }
 
 }

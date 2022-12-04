@@ -1,6 +1,5 @@
 package com.dbc.vemvemser.service;
 
-import com.dbc.vemvemser.dto.CandidatoDto;
 import com.dbc.vemvemser.dto.SendEmailDto;
 import com.dbc.vemvemser.enums.TipoEmail;
 import com.dbc.vemvemser.exception.RegraDeNegocioException;
@@ -8,7 +7,6 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -54,9 +52,9 @@ public class EmailService {
         final String MESSAGE_DUVIDA = "Em caso de dúvidas, nos contate através do e-mail <br> VemSer@dbccompany.com.br";
 
         String base = tipoEmail.getDescricao();
-        if(tipoEmail.equals(TipoEmail.RECOVER_PASSWORD)){
+        if (tipoEmail.equals(TipoEmail.RECOVER_PASSWORD)) {
             String urlToken = sendEmailDto.getUrlToken();
-            base = base.replace("/url/",urlToken);
+            base = base.replace("/url/", urlToken);
         }
 
         Map<String, Object> dados = new HashMap<>();

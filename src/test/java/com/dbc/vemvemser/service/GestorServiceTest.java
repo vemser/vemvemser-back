@@ -237,9 +237,12 @@ public class GestorServiceTest {
     public void deveTestarGetLoggedUser() throws RegraDeNegocioException {
 
         GestorEntity gestorEntity = GestorFactory.getGestorEntity();
+
         UsernamePasswordAuthenticationToken user
                 = new UsernamePasswordAuthenticationToken(1, gestorEntity.getEmail(), Collections.emptyList());
+
         SecurityContextHolder.getContext().setAuthentication(user);
+
         GestorEntity gestorEntityUser = objectMapper.convertValue(user, GestorEntity.class);
 
         when(gestorRepository.findById(anyInt())).thenReturn(Optional.of(gestorEntityUser));

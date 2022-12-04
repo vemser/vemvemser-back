@@ -53,7 +53,7 @@ public class GestorController {
     )
     @GetMapping("/id-gestor")
     public ResponseEntity<GestorDto> findById(@RequestParam Integer idGestor) throws RegraDeNegocioException {
-        log.info("Buscando gestor com id:"+idGestor+"...");
+        log.info("Buscando gestor com id:" + idGestor + "...");
         GestorDto gestorDto = gestorService.findDtoById(idGestor);
         log.info("Gestor encontrado.");
         return new ResponseEntity<>(gestorDto, HttpStatus.OK);
@@ -95,7 +95,7 @@ public class GestorController {
 
     @PutMapping("/trocar-senha/{idGestor}")
     public ResponseEntity<GestorDto> editarSenhaGestor(@PathVariable(name = "idGestor") Integer idGestor,
-                                            @Valid @RequestBody GestorSenhaDto gestor) throws RegraDeNegocioException {
+                                                       @Valid @RequestBody GestorSenhaDto gestor) throws RegraDeNegocioException {
         log.info("Editando senha do Gestor...");
         GestorDto gestorEditado = gestorService.editarSenha(idGestor, gestor);
         log.info("Gestor senha editado com sucesso!");
@@ -129,7 +129,7 @@ public class GestorController {
     )
     @PutMapping("/desativacao-conta/{idGestor}")
     public ResponseEntity<GestorDto> desativar(@PathVariable(name = "idGestor") Integer idGestor) throws RegraDeNegocioException {
-        log.info("Desativando gestor com id:"+idGestor);
+        log.info("Desativando gestor com id:" + idGestor);
         return new ResponseEntity<>(gestorService.desativarConta(idGestor), HttpStatus.OK);
 
     }

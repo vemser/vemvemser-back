@@ -1,4 +1,5 @@
 package com.dbc.vemvemser.entity;
+
 import com.dbc.vemvemser.enums.TipoMarcacao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
@@ -15,8 +16,8 @@ import java.time.LocalDate;
 public class CandidatoEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="SEQ_CANDIDATO")
-    @SequenceGenerator(name = "SEQ_CANDIDATO", sequenceName = "SEQ_CANDIDATO",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CANDIDATO")
+    @SequenceGenerator(name = "SEQ_CANDIDATO", sequenceName = "SEQ_CANDIDATO", allocationSize = 1)
     @Column(name = "id_candidato")
     private Integer idCandidato;
 
@@ -48,12 +49,12 @@ public class CandidatoEntity {
     @Enumerated(EnumType.STRING)
     private TipoMarcacao pcd;
 
-    @OneToOne(mappedBy ="candidato" ,fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "candidato", fetch = FetchType.LAZY)
     private InscricaoEntity inscricao;
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name="ID_FORMULARIO", referencedColumnName = "ID_FORMULARIO")
+    @JoinColumn(name = "ID_FORMULARIO", referencedColumnName = "ID_FORMULARIO")
     private FormularioEntity formulario;
 
 }

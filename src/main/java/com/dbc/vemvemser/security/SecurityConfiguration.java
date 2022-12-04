@@ -37,7 +37,7 @@ public class SecurityConfiguration {
                                 .antMatchers("/candidato/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
                                 .antMatchers("/avaliacao/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
                                 .antMatchers(HttpMethod.GET, "/inscricao/**").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
-                                .antMatchers(HttpMethod.PUT, "/gestor").hasAnyRole("ADMINISTRADOR","COLABORADOR")
+                                .antMatchers(HttpMethod.PUT, "/gestor").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
                                 .antMatchers(HttpMethod.GET, "/gestor").hasAnyRole("ADMINISTRADOR", "COLABORADOR")
                                 .antMatchers(HttpMethod.POST, "/gestor").hasRole("ADMINISTRADOR")
                                 .antMatchers(HttpMethod.DELETE, "/**").hasRole("ADMINISTRADOR")
