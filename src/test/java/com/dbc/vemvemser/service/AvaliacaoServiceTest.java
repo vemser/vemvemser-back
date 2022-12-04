@@ -95,6 +95,19 @@ public class AvaliacaoServiceTest {
     }
 
     @Test
+    public void deveTestarFindByDtoComSucesso() throws RegraDeNegocioException{
+        int id = 1;
+        AvaliacaoEntity avaliacaoEntity = AvaliacaoFactory.getAvaliacaoEntityAprovado();
+
+        when(avaliacaoRepository.findById(anyInt()))
+                .thenReturn(Optional.of(avaliacaoEntity));
+
+        AvaliacaoDto avaliacaoDto = avaliacaoService.findDtoById(id);
+
+        assertEquals(id,avaliacaoDto.getIdAvaliacao());
+    }
+
+    @Test
     public void deveTestarCreateComSucessoReprovado() throws RegraDeNegocioException {
         AvaliacaoCreateDto avaliacaoCreateDto = AvaliacaoFactory.getAvaliacaoCreateDto();
 
