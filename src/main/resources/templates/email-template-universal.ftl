@@ -5,20 +5,20 @@
 </head>
 
 <body>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<table width="75%" border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td align="center" valign="top" bgcolor="#838383"
             style="background-color: #0078ff">
             <br> <br>
-            <table width="600" cellspacing="0" cellpadding="0">
+            <table width="400" cellspacing="0" cellpadding="0">
                 <tr>
                     <td align="center" valign="op" bgcolor="#385385"
                         style="border: 0px solid transparent;
-border-radius: 38px;
+border-radius: 16px;
 background-color: #E5ECEC;
 backgrily: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; padding: 0px 15px 10px 15px;">
 
-                        <div style="font-size: 48px; color:black;">
+                        <div style="font-size: 32px; color:black;">
                             <br>
                             <b>Olá ${nome}</b>
                         </div>
@@ -36,9 +36,12 @@ backgrily: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; paddin
 
                             <br>
                             <br>
-                            <p style="font-size:18px;border: 5px solid transparent;
-                                border-radius: 38px;background: rgb(121,9,75);
-                               background-color: #0078ff;
+                            <p style="font-size:18px;
+                            border: 5px solid transparent;
+                            border-radius: 16px;
+                            background: rgb(121,9,75);
+                            background-color: #0078ff;
+                            padding: 2px 6px;
 color: white;">${msg3}
                                 <br>
                             </p>

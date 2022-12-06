@@ -20,12 +20,12 @@ public enum TipoEmail {
             "então separamos algumas dicas e links para que você siga evoluindo na área e venha trabalhar conosco numa próxima oportunidade.",
             "DBC Company - Primeira etapa."),
 
-    RECOVER_PASSWORD("Trouble signing in?<br>" +
-            "Resetting your password is easy.<br>" +
-            "Just press the button below and follow the instructions. We’ll have you up and running in no time.<br>" +
-            "/url/" +
-            " If you did not make this request then please ignore this email.<br>", "DBC Company - recuperação de senha");
-
+    RECOVER_PASSWORD("Problemas ao logar?<br>" +
+            "Resetar sua senha é simples.<br>" +
+            "Apenas pressione o botão abaixo e siga as instruções.<br>" +
+            "Lembrando que o link expira em 5 minutos.<br>" +
+            "<br><button style='display: block; background: #0078FF; border: none; border-radius: 7px; padding: 4px 2px;'><a href='/url/' style='color:white; padding:4px 8px'> Reset Password </a></button><br>" +
+            " Se você não solicitou esta recuperação, apenas ignore este Email.<br>", "DBC Company - recuperação de senha");
     private String descricao;
     private String subject;
 
