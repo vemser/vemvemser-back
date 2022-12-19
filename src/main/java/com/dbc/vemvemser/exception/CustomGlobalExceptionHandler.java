@@ -28,6 +28,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         body.put("timestamp", new Date());
         body.put("status", status.value());
 
+        // FIXME trocar para stream.tolist()
         List<String> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()

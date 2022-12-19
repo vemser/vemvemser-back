@@ -15,6 +15,7 @@ public class AuthenticationService implements UserDetailsService {
 
     private final GestorService gestorService;
 
+    // FIXME pode retornar direto a var
     @Override
     public UserDetails loadUserByUsername(String loginUsername) throws UsernameNotFoundException {
         try {

@@ -71,7 +71,7 @@ public class CandidatoController {
     @GetMapping("/buscar-by-email")
     public ResponseEntity<List<CandidatoDto>> findCandidatoDtoByEmail(@RequestParam String email) throws RegraDeNegocioException {
         log.info("Buscando candidato pelo email...");
-        List<CandidatoDto> candidatoDtos = candidatoService.findCandidatoDtoByEmail(email);
+        List<CandidatoDto> candidatoDtos = candidatoService.findCandidatoDtoByEmail(email); // FIXME sem uso
         log.info("Retornando candidato.");
         return new ResponseEntity<>(candidatoService.findCandidatoDtoByEmail(email), HttpStatus.OK);
     }

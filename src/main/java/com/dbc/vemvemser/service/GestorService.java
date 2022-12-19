@@ -76,7 +76,7 @@ public class GestorService {
                 .orElseThrow(() -> new RegraDeNegocioException("Usuario não encontrado!"));
     }
 
-
+    // FIXME usar equals
     public GestorDto editar(Integer id, GestorCreateDto gestorCreateDto) throws RegraDeNegocioException {
         if (id != getIdLoggedUser() && findById(getIdLoggedUser()).getCargoEntity().getNome() == "ROLE_COLABORADOR") {
             throw new RegraDeNegocioException("Você não tem permissão para editar esse gestor.");
